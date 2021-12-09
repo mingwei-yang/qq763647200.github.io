@@ -208,7 +208,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-12-09 22:31:22 / 修改时间：22:33:36" itemprop="dateCreated datePublished" datetime="2021-12-09T22:31:22+08:00">2021-12-09</time>
+              <time title="创建时间：2021-12-09 22:31:22 / 修改时间：22:36:00" itemprop="dateCreated datePublished" datetime="2021-12-09T22:31:22+08:00">2021-12-09</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,114 +233,14 @@
       
           <h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>这篇是发表在 EC21 上的文章。考虑的情形是有一个不可知的状态，买家能够选择一个行动，其收益取决于状态和行动。卖家知道真实的状态，想要将状态信息出售给买家。为了让买家愿意付钱购买，卖家可以先免费透露部分信息给买家，改变其对状态的估计，从而让其购买状态信息。买家和卖家都想最大化自己的收益。论文里讨论了卖家的最优机制设计问题，通过优化的角度，给出了特殊情形下问题的解法，同时证明了一般情形下该问题是 NP 难的。</p>
 <p>由于论文里涉及到较多凸优化的知识，所以只读懂了一部分。希望等之后学了凸优化之后再来补坑。</p>
-<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>在生活中有很多这样的例子：例如电影院通过预告片让一些人对电影产生更大的兴趣。注意到虽然提前透露部分信息会让卖家拥有的私有信息量减少，却能让一些人对信息产品产生兴趣，因此来获得更高的收益。</p>
-<p>跟传统模型的差别：贝叶斯说服（Bayesian persuasion）中，卖家只考虑买家采取的动作；该模型中卖家还需要考虑具体的收益，即买家付的钱。传统的商品拍卖中，透露信息并不会改变商品本身；该模型中，透露信息会减少卖家包含的私有信息量，即商品的品质。</p>
-<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>考虑状态 $\omega\in \Omega=\{1,\cdots,n\}$，其服从概率分布 $\mu(\omega)$，其中 $\mu$ 是公有信息。具体状态只有卖家能看到，买家对状态的概率分布有一个自己的估计 $\theta\in \Theta\subseteq \Delta\Omega$。买家可以选择一个行动 $a\in A$。若选择了行动 $a$ 且状态为 $\omega$，其收益为 $u(\omega,a)$。</p>
-<p>买家必须提前公布自己的广告机制。具体来说，广告机制的定义为</p>
-<h4 id="Definition-2-1-Advertising-Rule"><a href="#Definition-2-1-Advertising-Rule" class="headerlink" title="Definition 2.1 (Advertising Rule)"></a>Definition 2.1 (Advertising Rule)</h4><p>广告机制 $\langle S,\pi,\{p_s:s\in S\}\rangle$ 包括</p>
-<ul>
-<li>有限大小的信号集合 $S$。</li>
-<li>$\pi:\Omega\to \Delta S$ 是信号发送机制，即观测到某一个状态后，以特定的概率分布去发送信号。</li>
-<li>$\{p_s:s\in S\}$ 表示收到信号 $s$ 后，买家可以选择以 $p_s$ 的价格购买具体状态信息。</li>
-</ul>
-<p>那么卖家在观测到状态 $\omega$ 后，先以 $\pi(\omega,s)$ 的概率发送信号 $s$。买家可以选择不买具体的状态信息，也可以选择以 $p_s$ 的价格购买。</p>
-<hr>
-<p>注意到若买家对状态的估计是 $\theta=(\theta_1,\cdots,\theta_n)$，那么在收到信号 $s$ 后，其估计会变为</p>
-<script type="math/tex; mode=display">
-\eta^s(\theta)=\frac{(\theta_1\pi(1,s),\cdots,\theta_n\pi(n,s))}{\sum_{\omega=1}^n\theta_\omega\pi(\omega,s)}</script><p>那么买家愿意为购买真实信息付的钱，不超过他知道真实状态 $\omega$ 后的收益减去估计是 $\eta^s(\theta)$ 时的期望收益。具体来说：</p>
-<h4 id="Definition-2-2-Cost-of-Uncertainty"><a href="#Definition-2-2-Cost-of-Uncertainty" class="headerlink" title="Definition 2.2 (Cost of Uncertainty)"></a>Definition 2.2 (Cost of Uncertainty)</h4><p>假设买家的收益函数为 $u(\omega,a)$，估计为 $\eta=(\eta_1,\cdots,\eta_n)\in \Delta \Omega$，定义不确定花费为买家不知道真实状态带来的期望损失：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-C(\eta)&=E_{\omega\sim \eta}[\max_{a\in A}u(\omega,a)]-\max_{a\in A}E_{\omega\sim \eta}[u(\omega,a)]\\
-&=\sum_{\omega=1}^n\eta_{\omega}\max_{a\in A}u(\omega,a)-\max_{a\in A}\sum_{\omega=1}^n\eta_{\omega}u(\omega,a)\\
-&=\min_aC_a(\eta)
-\end{aligned}</script><p>其中 $C_a(\eta)=\sum_{\omega=1}^n\eta_\omega(\max_{a’\in A}u(\omega,a’)-u(\omega,a))$ 是关于 $\eta$ 的线性函数，表示采取行动 $a$ 后带来的损失。注意到 $C(\eta)$ 是 $|A|$ 个线性函数的 $\min$，那么 $C(\eta)$ 是一个凹函数。</p>
-<hr>
-<p>当买家收到信号 $s$ 后，他愿意购买状态信息当且仅当 $C(\eta^s(\theta))\ge p_s$，即购买后能带来非负的收益。</p>
-<p>我们假设卖家知道买家状态的概率分布 $\mu(\theta|\omega)$，那么选择了广告机制 $\langle S,\pi,\{p_s:s\in S\}\rangle$ 后，其期望收益为</p>
-<script type="math/tex; mode=display">
-\sum_{\omega\in \Omega}\mu(\omega)\sum_{\theta\in \Theta}\mu(\theta|\omega)\sum_{s\in S}\pi(\omega,s)\cdot p_s\cdot 1(C(\eta^2(\theta))\ge p_s)</script><p>卖家的目标是找到广告机制来最大化自身期望收益。</p>
-<h1 id="Single-Buyer-Type"><a href="#Single-Buyer-Type" class="headerlink" title="Single Buyer Type"></a>Single Buyer Type</h1><p>首先考虑买家的状态 $\theta$ 是固定的情况。</p>
-<h2 id="Concave-Closure-Formulation"><a href="#Concave-Closure-Formulation" class="headerlink" title="Concave Closure Formulation"></a>Concave Closure Formulation</h2><h4 id="Definition-3-1-Likelihood-ratio"><a href="#Definition-3-1-Likelihood-ratio" class="headerlink" title="Definition 3.1 (Likelihood ratio)"></a>Definition 3.1 (Likelihood ratio)</h4><p>若买家的估计为 $\theta\in \Delta\Omega$，定义其似然比为</p>
-<script type="math/tex; mode=display">
-R(\eta)=\sum_\omega\frac{\mu_{\omega}\cdot\eta_{\omega}}{\theta_{\omega}}</script><hr>
-<p>注意到我们假设 $\theta_\omega&gt;0$ 对所有 $\omega$ 成立。</p>
-<p>这里可能不太清楚这个定义有什么用，但后面可以看到，我们要优化的函数将会是 $R(\eta)$ 和不确定花费 $C(\eta)$ 的乘积。</p>
-<h4 id="Proposition-3-1"><a href="#Proposition-3-1" class="headerlink" title="Proposition 3.1"></a>Proposition 3.1</h4><p>若买家的类型 $\theta$ 是固定的，那么卖家的最优期望收益等于函数</p>
-<script type="math/tex; mode=display">
-f(\eta)=R(\eta)\cdot C(\eta)</script><p>在点 $\theta$ 处的凹闭包（concave closure）。形式化描述，就是找最优广告机制等价于如下优化问题：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\max_{S,\eta,\phi}&\sum_{s\in S}\phi_s\cdot R(\eta^s)C(\eta^s)\\
-s.t.&\sum_{s\in S}\phi_s\cdot \eta^s=\theta\\
-& \phi_s\ge 0,\eta^s\in \Delta \Omega,\forall s
-\end{aligned}</script><p>这里 $\phi_s$ 可以看成是按照买家的观测 $\theta$ 来计算，其收到信号 $s$ 的概率是多少。即 $\phi_s=\sum_\omega\theta_\omega\pi(\omega,s)$。</p>
-<p><strong>证明</strong> 首先注意到，当 $S$ 和 $\pi$ 都固定时，$p_s=C(\eta^s)$ 必然是最优策略。令 $\phi_\mu(s)=\sum_{\omega}\mu_\omega\pi(\omega,s)$ 表示卖家发送信号 $s$ 的概率，那么寻找最大收益策略可以形式化为</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\max_{S,\pi}&\sum_{s\in S}\phi_\mu(s)\cdot C(\eta^s)\\
-s.t.&\sum_{s\in S}\pi(\omega,s)=1,\quad \forall \omega\\
-& \pi(\omega,s)\ge 0,\quad \quad \forall \omega,s
-\end{aligned}\tag{1}</script><p>令 $\phi_\theta(s)=\sum_{\omega}\pi(\omega,s)$。注意到 $\mu$ 和 $\theta$ 都是已知的，并且 $\pi(\omega,s)/(\sum_\omega\theta_\omega\pi(\omega,s))=\eta^s_{\omega}/\theta_\omega$ 可以定义</p>
-<script type="math/tex; mode=display">
-R(\eta^s)=\frac{\phi_{\mu}(s)}{\phi_{\theta}(s)}=\frac{\sum_{\omega}\mu_{\omega}\pi(\omega,s)}{\sum_\omega\theta_\omega\pi(\omega,s)}=\sum_\omega\mu_\omega\cdot\frac{\eta^s_{\omega}}{\theta_\omega}</script><p>也就是之前提到的似然比函数。因此目标函数就变为</p>
-<script type="math/tex; mode=display">
-\sum_{s\in S}\phi_{\theta}(s)\cdot R(\eta^s)C(\eta^s)</script><p>同时限制 $\sum_{s\in S}\pi(\omega,s)=1,\pi(\omega,s)\ge 0$ 就等价于</p>
-<script type="math/tex; mode=display">
-\sum_{s\in S}\phi_{\theta}(s)\cdot \eta^s=\theta,\quad \phi_\theta(s)\ge 0,\eta^s\in \Delta\Omega,\forall s</script><hr>
-<p>注意到最优策略就是</p>
-<script type="math/tex; mode=display">
-\pi(\omega,s)=\frac{\phi_s\cdot\eta_\omega^s}{\theta_\omega},\quad p_s=C(\eta^s)</script><p>在 $\theta=\mu$ 的特殊情形下，$R(\eta)$ 的值始终是 $1$。因此最优策略的收益就是 $f(\eta)=C(\eta)$ 的凹闭包。由于 $C(\eta)$ 是凹函数，且凹函数的凹闭包等于其本身，因此最优策略满足</p>
-<script type="math/tex; mode=display">
-S=\{s\},\quad \phi_s=1,\quad \eta^s=\theta</script><p>即卖家不透露任何信息。</p>
-<p>但一般情况下 $f(\eta)=C(\eta)R(\eta)$ 并不是一个凹函数，因此求解起来有比较大的困难。具体来说：</p>
-<h4 id="Theorem-3-1"><a href="#Theorem-3-1" class="headerlink" title="Theorem 3.1"></a>Theorem 3.1</h4><p>当买家的类型 $\theta$ 固定时，求解最优的策略是 NP 难问题。</p>
-<p>（这部分证明还没看懂）</p>
-<h2 id="Properties-of-the-Optimal-Mechanism"><a href="#Properties-of-the-Optimal-Mechanism" class="headerlink" title="Properties of the Optimal Mechanism"></a>Properties of the Optimal Mechanism</h2><p>这部分证明了最优策略的一些性质，简化了最优机制的求解问题。由于最优机制中 $p_s$ 可由 $S$ 和 $\pi$ 确定，把机制简化为 $\langle S,\pi\rangle$。</p>
-<h4 id="Lemma-3-1"><a href="#Lemma-3-1" class="headerlink" title="Lemma 3.1"></a>Lemma 3.1</h4><p>存在一个最优策略 $\langle S,\pi\rangle$ 满足 $|S|\le n=|\Omega|$。</p>
-<p><strong>证明</strong> 假设 $\langle S,\pi\rangle$ 是最优机制，其中 $S=\{s_1,\cdots,s_k\}$ 且 $k&gt;n$。简写 $\eta^{(i)}=\eta^{s_i}$ 和 $\phi^{(i)}=\phi_{\theta}(s_i)$。不妨设 $\phi^{(i)}&gt;0$ 对所有 $i$ 成立。由 $k&gt;n$ 可知存在向量 $\alpha$ 满足</p>
-<script type="math/tex; mode=display">
-\alpha_1\eta^{(1)}+\cdots+\alpha_k\eta^{(k)}=0</script><p>不妨设 $\alpha_1\neq 0$，有</p>
-<script type="math/tex; mode=display">
-\eta^{(1)}=-\frac{\alpha_2}{\alpha_1}\eta^{(2)}-\cdots-\frac{\alpha_k}{\alpha_1}\eta^{(k)}</script><p>对于很小的 $\delta$，如果把 $\phi^{(1)}$ 减去 $\delta$，把其他的每个 $\phi^{(i)}$ 加上 $-\frac{\alpha_i}{\alpha_1}\delta$，那么优化问题 $(1)$ 中的限制仍然是满足的。可以通过不断进行该操作直到某个 $\phi^{(i)}$ 变为 $0$，然后把 $s_i$ 扔掉。还需要证明这样操作后不会降低目标函数的值，即证对于 $f(x)=R(x)C(x)$，有</p>
-<script type="math/tex; mode=display">
-f(\eta^{(1)})=-\frac{\alpha_2}{\alpha_1}f(\eta^{(2)})-\cdots-\frac{\alpha_k}{\alpha_1}f(\eta^{(k)})</script><p>若不成立，假如等式左边小于右边，考虑用 $-\frac{\alpha_2}{\alpha_1}\eta^{(2)}-\cdots-\frac{\alpha_k}{\alpha_1}\eta^{(k)}$ 替换 $\eta^{(1)}$，即让 $\phi^{(i)’}=\phi^{(i)}-\frac{\alpha_i}{\alpha_1}\phi^{(1)}$，得到的策略仍然能够满足限制，并使得目标函数变得更大，就跟原来策略的最优性矛盾。大于的情况同理。</p>
-<hr>
-<p>定义</p>
-<script type="math/tex; mode=display">
-\mathcal{P}_a=\{\eta\in\Delta\Omega:C_a(\eta)\le C_{a'}(\eta),\forall a'\}</script><p>当买家的观测在 $\mathcal{P}_a$ 中时，$C(\eta)=C_a(\eta)$，即选择动作 $a$ 是其最优策略。</p>
-<p>考虑函数 $g(x,y)=xy$ 和沿着某个方向 $d=(d_x,d_y)$ 得到的函数 $h(t)=g(x_0+td_x,y_0+td_y)$，注意到 $h(t)$ 在任意点 $(x_0,y_0)$ 处的二阶导都等于 $2d_xd_y$。当方向的斜率为正时 $d_xd_y&gt;0$，此时 $h(t)$ 是严格凸函数；同理方向斜率为负时 $h(t)$ 是严格凹函数。</p>
-<p>有如下定理：</p>
-<h4 id="Lemma-3-2"><a href="#Lemma-3-2" class="headerlink" title="Lemma 3.2"></a>Lemma 3.2</h4><p>令 $\langle S,\pi\rangle$ 是最优广告机制。对于 $s\in S$ 满足 $\phi_s&gt;0$ 且 $\eta^s\in \mathcal{P}_a$，定义 $\mathcal{Q}_a=\{(R(\eta),C(\eta)):\eta\in \mathcal{P}_a\}$。那么 $(R(\eta^s),C(\eta^s))$ 在 $\mathcal{Q}_a$ 中必定不能被沿着正斜率方向分解，即不存在 $\eta^{(1)},\eta^{(2)}\in \mathcal{P}_a$ 满足</p>
-<script type="math/tex; mode=display">
-\eta^s=\alpha\eta^{(1)}+(1-\alpha)\eta^{(2)},\quad \alpha\in (0,1)</script><p>并且</p>
-<script type="math/tex; mode=display">
-(R(\eta^s)-R(\eta^{(1)}))(C(\eta^{s})-C(\eta^{(1)}))>0</script><p>即最优机制中的 $(R(\eta^s),C(\eta^s))$ 一定位于 $\mathcal{Q}_a$ 的边界上。</p>
-<p><strong>证明</strong> 假设存在 $\eta^{(1)},\eta^{(2)}\in \mathcal{P}_a$ 满足条件，由于 $R(\eta)$ 和 $C(\eta)$ 在 $\mathcal{P}_a$ 上都是线性函数，必然有</p>
-<script type="math/tex; mode=display">
-(R(\eta^s),C(\eta^s))=\alpha(R(\eta^{(1)}),C(\eta^{(1)}))+(1-\alpha)(R(\eta^{(2)}),C(\eta^{(2)}))</script><p>由于 $(R(\eta^s),C(\eta^s)),(R(\eta^{(1)}),C(\eta^{(1)})),(R(\eta^{(2)}),C(\eta^{(2)}))$ 在斜率为正的直线上，且 $g(x,y)=xy$ 在该方向上为严格图函数，可知把 $\eta^s$ 用 $\eta^{(1)}$ 和 $\eta^{(2)}$ 替换后，能够使目标函数 $f(\eta)=R(\eta)C(\eta)$ 增加，与最优性矛盾。</p>
-<h4 id="Lemma-3-3"><a href="#Lemma-3-3" class="headerlink" title="Lemma 3.3"></a>Lemma 3.3</h4><p>最优广告机制 $\langle S,\pi\rangle$ 不会发送两个信号 $s,t\in S$ 满足 $\phi_s,\phi_t&gt;0$ 且</p>
-<script type="math/tex; mode=display">
-(R(\eta^s)-R(\eta^t))(C(\eta^s)-C(\eta^t))<0</script><p><strong>证明</strong> 否则若将 $s$ 和 $t$ 合并成一个信号 $v$ 满足</p>
-<script type="math/tex; mode=display">
-\pi(\omega,v)=\pi(\omega,s)+\pi(\omega,t),\quad\forall \omega</script><p>容易验证</p>
-<script type="math/tex; mode=display">
-\phi_\theta(v)=\phi_\theta(s)+\phi_\theta(t)\\
-\eta^v=\frac{\phi_\theta(s)}{\phi_\theta(v)}\cdot\eta^s+\frac{\phi_\theta(t)}{\phi_\theta(v)}\cdot\eta^t\\
-R(\eta^v)=\frac{\phi_\theta(s)}{\phi_\theta(v)}\cdot R(\eta^s)+\frac{\phi_\theta(t)}{\phi_\theta(v)}\cdot R(\eta^t)</script><p>卖家期望收益的增量为</p>
-<script type="math/tex; mode=display">
-\phi_\theta(v)R(\eta^v)C(\eta^v)-\phi_\theta(s)R(\eta^s)C(\eta^s)-\phi_\theta(t)R(\eta^t)C(\eta^t)</script><p>根据 $R$ 为线性函数，$C$ 为凹函数将 $R(\eta^v)$ 和 $C(\eta^v)$ 分别展开，计算可知等于</p>
-<script type="math/tex; mode=display">
--\frac{\phi_\theta(s)\phi_\theta(t)}{\phi_\theta(v)}\cdot(R(\eta^s)-R(\eta^t))(C(\eta^s)-C(\eta^t))>0</script><p>与最优性矛盾。</p>
-<h2 id="Optimal-Mechanism-by-Convex-Program"><a href="#Optimal-Mechanism-by-Convex-Program" class="headerlink" title="Optimal Mechanism by Convex Program"></a>Optimal Mechanism by Convex Program</h2><p>我们知道了在最优机制中，$(R(\eta^s),C(\eta^s))$ 一定在 $\mathcal{Q}_q$ 的边界上。一个猜测是 $\eta^s$ 位于 $\mathcal{P}_a$ 的边界上。接下来考虑 $\eta^s$ 跟 $\mathcal{P}_a$ 的关系。定义 $\mathcal{H}_a$ 是多面体 $\mathcal{P}_a$ 的顶点集合。</p>
-<h4 id="Lemma-3-4"><a href="#Lemma-3-4" class="headerlink" title="Lemma 3.4"></a>Lemma 3.4</h4><p>存在一个最优广告机制 $\langle S,\pi\rangle$ 满足每个 $\eta^s$ 都在某个 $\mathcal{H}_a$ 中的两个点之间的线段上。即对于任意 $s\in S$，存在 $\beta\in [0,1]$ 和 $i,j\in \mathcal{H}_a$，使得</p>
-<script type="math/tex; mode=display">
-\eta^s=\beta\cdot i+(1-\beta)\cdot j</script><p>且有</p>
-<script type="math/tex; mode=display">
-(R(i)-R(j))(C(i)-C(j))\le 0</script><p>且对于每一对 $i,j$，仅有唯一个 $\eta^s$ 位于 $i,j$ 之间的线段上。</p>
-<hr>
-<p>该引理的证明较为复杂。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/09/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Optimal%20Advertising%20for%20Information%20Products/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
