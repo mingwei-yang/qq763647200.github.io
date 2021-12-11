@@ -1,128 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>【论文阅读】Optimal Advertising for Information Products</title>
-    <url>/2021/12/09/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Optimal%20Advertising%20for%20Information%20Products/</url>
-    <content><![CDATA[<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>这篇是发表在 EC21 上的文章。考虑的情形是有一个不可知的状态，买家能够选择一个行动，其收益取决于状态和行动。卖家知道真实的状态，想要将状态信息出售给买家。为了让买家愿意付钱购买，卖家可以先免费透露部分信息给买家，改变其对状态的估计，从而让其购买状态信息。买家和卖家都想最大化自己的收益。论文里讨论了卖家的最优机制设计问题，通过优化的角度，给出了特殊情形下问题的解法，同时证明了一般情形下该问题是 NP 难的。</p>
-<p>由于论文里涉及到较多凸优化的知识，所以只读懂了一部分。希望等之后学了凸优化之后再来补坑。</p>
-<span id="more"></span>
-<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>在生活中有很多这样的例子：例如电影院通过预告片让一些人对电影产生更大的兴趣。注意到虽然提前透露部分信息会让卖家拥有的私有信息量减少，却能让一些人对信息产品产生兴趣，因此来获得更高的收益。</p>
-<p>跟传统模型的差别：贝叶斯说服（Bayesian persuasion）中，卖家只考虑买家采取的动作；该模型中卖家还需要考虑具体的收益，即买家付的钱。传统的商品拍卖中，透露信息并不会改变商品本身；该模型中，透露信息会减少卖家包含的私有信息量，即商品的品质。</p>
-<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>考虑状态 $\omega\in \Omega=\{1,\cdots,n\}$，其服从概率分布 $\mu(\omega)$，其中 $\mu$ 是公有信息。具体状态只有卖家能看到，买家对状态的概率分布有一个自己的估计 $\theta\in \Theta\subseteq \Delta\Omega$。买家可以选择一个行动 $a\in A$。若选择了行动 $a$ 且状态为 $\omega$，其收益为 $u(\omega,a)$。</p>
-<p>买家必须提前公布自己的广告机制。具体来说，广告机制的定义为</p>
-<h4 id="Definition-2-1-Advertising-Rule"><a href="#Definition-2-1-Advertising-Rule" class="headerlink" title="Definition 2.1 (Advertising Rule)"></a>Definition 2.1 (Advertising Rule)</h4><p>广告机制 $\langle S,\pi,\{p_s:s\in S\}\rangle$ 包括</p>
-<ul>
-<li>有限大小的信号集合 $S$。</li>
-<li>$\pi:\Omega\to \Delta S$ 是信号发送机制，即观测到某一个状态后，以特定的概率分布去发送信号。</li>
-<li>$\{p_s:s\in S\}$ 表示收到信号 $s$ 后，买家可以选择以 $p_s$ 的价格购买具体状态信息。</li>
-</ul>
-<p>那么卖家在观测到状态 $\omega$ 后，先以 $\pi(\omega,s)$ 的概率发送信号 $s$。买家可以选择不买具体的状态信息，也可以选择以 $p_s$ 的价格购买。</p>
-<hr>
-<p>注意到若买家对状态的估计是 $\theta=(\theta_1,\cdots,\theta_n)$，那么在收到信号 $s$ 后，其估计会变为</p>
-<script type="math/tex; mode=display">
-\eta^s(\theta)=\frac{(\theta_1\pi(1,s),\cdots,\theta_n\pi(n,s))}{\sum_{\omega=1}^n\theta_\omega\pi(\omega,s)}</script><p>那么买家愿意为购买真实信息付的钱，不超过他知道真实状态 $\omega$ 后的收益减去估计是 $\eta^s(\theta)$ 时的期望收益。具体来说：</p>
-<h4 id="Definition-2-2-Cost-of-Uncertainty"><a href="#Definition-2-2-Cost-of-Uncertainty" class="headerlink" title="Definition 2.2 (Cost of Uncertainty)"></a>Definition 2.2 (Cost of Uncertainty)</h4><p>假设买家的收益函数为 $u(\omega,a)$，估计为 $\eta=(\eta_1,\cdots,\eta_n)\in \Delta \Omega$，定义不确定花费为买家不知道真实状态带来的期望损失：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-C(\eta)&=E_{\omega\sim \eta}[\max_{a\in A}u(\omega,a)]-\max_{a\in A}E_{\omega\sim \eta}[u(\omega,a)]\\
-&=\sum_{\omega=1}^n\eta_{\omega}\max_{a\in A}u(\omega,a)-\max_{a\in A}\sum_{\omega=1}^n\eta_{\omega}u(\omega,a)\\
-&=\min_aC_a(\eta)
-\end{aligned}</script><p>其中 $C_a(\eta)=\sum_{\omega=1}^n\eta_\omega(\max_{a’\in A}u(\omega,a’)-u(\omega,a))$ 是关于 $\eta$ 的线性函数，表示采取行动 $a$ 后带来的损失。注意到 $C(\eta)$ 是 $|A|$ 个线性函数的 $\min$，那么 $C(\eta)$ 是一个凹函数。</p>
-<hr>
-<p>当买家收到信号 $s$ 后，他愿意购买状态信息当且仅当 $C(\eta^s(\theta))\ge p_s$，即购买后能带来非负的收益。</p>
-<p>我们假设卖家知道买家状态的概率分布 $\mu(\theta|\omega)$，那么选择了广告机制 $\langle S,\pi,\{p_s:s\in S\}\rangle$ 后，其期望收益为</p>
-<script type="math/tex; mode=display">
-\sum_{\omega\in \Omega}\mu(\omega)\sum_{\theta\in \Theta}\mu(\theta|\omega)\sum_{s\in S}\pi(\omega,s)\cdot p_s\cdot 1(C(\eta^2(\theta))\ge p_s)</script><p>卖家的目标是找到广告机制来最大化自身期望收益。</p>
-<h1 id="Single-Buyer-Type"><a href="#Single-Buyer-Type" class="headerlink" title="Single Buyer Type"></a>Single Buyer Type</h1><p>首先考虑买家的状态 $\theta$ 是固定的情况。</p>
-<h2 id="Concave-Closure-Formulation"><a href="#Concave-Closure-Formulation" class="headerlink" title="Concave Closure Formulation"></a>Concave Closure Formulation</h2><h4 id="Definition-3-1-Likelihood-ratio"><a href="#Definition-3-1-Likelihood-ratio" class="headerlink" title="Definition 3.1 (Likelihood ratio)"></a>Definition 3.1 (Likelihood ratio)</h4><p>若买家的估计为 $\theta\in \Delta\Omega$，定义其似然比为</p>
-<script type="math/tex; mode=display">
-R(\eta)=\sum_\omega\frac{\mu_{\omega}\cdot\eta_{\omega}}{\theta_{\omega}}</script><hr>
-<p>注意到我们假设 $\theta_\omega&gt;0$ 对所有 $\omega$ 成立。</p>
-<p>这里可能不太清楚这个定义有什么用，但后面可以看到，我们要优化的函数将会是 $R(\eta)$ 和不确定花费 $C(\eta)$ 的乘积。</p>
-<h4 id="Proposition-3-1"><a href="#Proposition-3-1" class="headerlink" title="Proposition 3.1"></a>Proposition 3.1</h4><p>若买家的类型 $\theta$ 是固定的，那么卖家的最优期望收益等于函数</p>
-<script type="math/tex; mode=display">
-f(\eta)=R(\eta)\cdot C(\eta)</script><p>在点 $\theta$ 处的凹闭包（concave closure）。形式化描述，就是找最优广告机制等价于如下优化问题：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\max_{S,\eta,\phi}&\sum_{s\in S}\phi_s\cdot R(\eta^s)C(\eta^s)\\
-s.t.&\sum_{s\in S}\phi_s\cdot \eta^s=\theta\\
-& \phi_s\ge 0,\eta^s\in \Delta \Omega,\forall s
-\end{aligned}</script><p>这里 $\phi_s$ 可以看成是按照买家的观测 $\theta$ 来计算，其收到信号 $s$ 的概率是多少。即 $\phi_s=\sum_\omega\theta_\omega\pi(\omega,s)$。</p>
-<p><strong>证明</strong> 首先注意到，当 $S$ 和 $\pi$ 都固定时，$p_s=C(\eta^s)$ 必然是最优策略。令 $\phi_\mu(s)=\sum_{\omega}\mu_\omega\pi(\omega,s)$ 表示卖家发送信号 $s$ 的概率，那么寻找最大收益策略可以形式化为</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\max_{S,\pi}&\sum_{s\in S}\phi_\mu(s)\cdot C(\eta^s)\\
-s.t.&\sum_{s\in S}\pi(\omega,s)=1,\quad \forall \omega\\
-& \pi(\omega,s)\ge 0,\quad \quad \forall \omega,s
-\end{aligned}\tag{1}</script><p>令 $\phi_\theta(s)=\sum_{\omega}\pi(\omega,s)$。注意到 $\mu$ 和 $\theta$ 都是已知的，并且 $\pi(\omega,s)/(\sum_\omega\theta_\omega\pi(\omega,s))=\eta^s_{\omega}/\theta_\omega$ 可以定义</p>
-<script type="math/tex; mode=display">
-R(\eta^s)=\frac{\phi_{\mu}(s)}{\phi_{\theta}(s)}=\frac{\sum_{\omega}\mu_{\omega}\pi(\omega,s)}{\sum_\omega\theta_\omega\pi(\omega,s)}=\sum_\omega\mu_\omega\cdot\frac{\eta^s_{\omega}}{\theta_\omega}</script><p>也就是之前提到的似然比函数。因此目标函数就变为</p>
-<script type="math/tex; mode=display">
-\sum_{s\in S}\phi_{\theta}(s)\cdot R(\eta^s)C(\eta^s)</script><p>同时限制 $\sum_{s\in S}\pi(\omega,s)=1,\pi(\omega,s)\ge 0$ 就等价于</p>
-<script type="math/tex; mode=display">
-\sum_{s\in S}\phi_{\theta}(s)\cdot \eta^s=\theta,\quad \phi_\theta(s)\ge 0,\eta^s\in \Delta\Omega,\forall s</script><hr>
-<p>注意到最优策略就是</p>
-<script type="math/tex; mode=display">
-\pi(\omega,s)=\frac{\phi_s\cdot\eta_\omega^s}{\theta_\omega},\quad p_s=C(\eta^s)</script><p>在 $\theta=\mu$ 的特殊情形下，$R(\eta)$ 的值始终是 $1$。因此最优策略的收益就是 $f(\eta)=C(\eta)$ 的凹闭包。由于 $C(\eta)$ 是凹函数，且凹函数的凹闭包等于其本身，因此最优策略满足</p>
-<script type="math/tex; mode=display">
-S=\{s\},\quad \phi_s=1,\quad \eta^s=\theta</script><p>即卖家不透露任何信息。</p>
-<p>但一般情况下 $f(\eta)=C(\eta)R(\eta)$ 并不是一个凹函数，因此求解起来有比较大的困难。具体来说：</p>
-<h4 id="Theorem-3-1"><a href="#Theorem-3-1" class="headerlink" title="Theorem 3.1"></a>Theorem 3.1</h4><p>当买家的类型 $\theta$ 固定时，求解最优的策略是 NP 难问题。</p>
-<p>（这部分证明还没看懂）</p>
-<h2 id="Properties-of-the-Optimal-Mechanism"><a href="#Properties-of-the-Optimal-Mechanism" class="headerlink" title="Properties of the Optimal Mechanism"></a>Properties of the Optimal Mechanism</h2><p>这部分证明了最优策略的一些性质，简化了最优机制的求解问题。由于最优机制中 $p_s$ 可由 $S$ 和 $\pi$ 确定，把机制简化为 $\langle S,\pi\rangle$。</p>
-<h4 id="Lemma-3-1"><a href="#Lemma-3-1" class="headerlink" title="Lemma 3.1"></a>Lemma 3.1</h4><p>存在一个最优策略 $\langle S,\pi\rangle$ 满足 $|S|\le n=|\Omega|$。</p>
-<p><strong>证明</strong> 假设 $\langle S,\pi\rangle$ 是最优机制，其中 $S=\{s_1,\cdots,s_k\}$ 且 $k&gt;n$。简写 $\eta^{(i)}=\eta^{s_i}$ 和 $\phi^{(i)}=\phi_{\theta}(s_i)$。不妨设 $\phi^{(i)}&gt;0$ 对所有 $i$ 成立。由 $k&gt;n$ 可知存在向量 $\alpha$ 满足</p>
-<script type="math/tex; mode=display">
-\alpha_1\eta^{(1)}+\cdots+\alpha_k\eta^{(k)}=0</script><p>不妨设 $\alpha_1\neq 0$，有</p>
-<script type="math/tex; mode=display">
-\eta^{(1)}=-\frac{\alpha_2}{\alpha_1}\eta^{(2)}-\cdots-\frac{\alpha_k}{\alpha_1}\eta^{(k)}</script><p>对于很小的 $\delta$，如果把 $\phi^{(1)}$ 减去 $\delta$，把其他的每个 $\phi^{(i)}$ 加上 $-\frac{\alpha_i}{\alpha_1}\delta$，那么优化问题 $(1)$ 中的限制仍然是满足的。可以通过不断进行该操作直到某个 $\phi^{(i)}$ 变为 $0$，然后把 $s_i$ 扔掉。还需要证明这样操作后不会降低目标函数的值，即证对于 $f(x)=R(x)C(x)$，有</p>
-<script type="math/tex; mode=display">
-f(\eta^{(1)})=-\frac{\alpha_2}{\alpha_1}f(\eta^{(2)})-\cdots-\frac{\alpha_k}{\alpha_1}f(\eta^{(k)})</script><p>若不成立，假如等式左边小于右边，考虑用 $-\frac{\alpha_2}{\alpha_1}\eta^{(2)}-\cdots-\frac{\alpha_k}{\alpha_1}\eta^{(k)}$ 替换 $\eta^{(1)}$，即让 $\phi^{(i)’}=\phi^{(i)}-\frac{\alpha_i}{\alpha_1}\phi^{(1)}$，得到的策略仍然能够满足限制，并使得目标函数变得更大，就跟原来策略的最优性矛盾。大于的情况同理。</p>
-<hr>
-<p>定义</p>
-<script type="math/tex; mode=display">
-\mathcal{P}_a=\{\eta\in\Delta\Omega:C_a(\eta)\le C_{a'}(\eta),\forall a'\}</script><p>当买家的观测在 $\mathcal{P}_a$ 中时，$C(\eta)=C_a(\eta)$，即选择动作 $a$ 是其最优策略。</p>
-<p>考虑函数 $g(x,y)=xy$ 和沿着某个方向 $d=(d_x,d_y)$ 得到的函数 $h(t)=g(x_0+td_x,y_0+td_y)$，注意到 $h(t)$ 在任意点 $(x_0,y_0)$ 处的二阶导都等于 $2d_xd_y$。当方向的斜率为正时 $d_xd_y&gt;0$，此时 $h(t)$ 是严格凸函数；同理方向斜率为负时 $h(t)$ 是严格凹函数。</p>
-<p>有如下定理：</p>
-<h4 id="Lemma-3-2"><a href="#Lemma-3-2" class="headerlink" title="Lemma 3.2"></a>Lemma 3.2</h4><p>令 $\langle S,\pi\rangle$ 是最优广告机制。对于 $s\in S$ 满足 $\phi_s&gt;0$ 且 $\eta^s\in \mathcal{P}_a$，定义 $\mathcal{Q}_a=\{(R(\eta),C(\eta)):\eta\in \mathcal{P}_a\}$。那么 $(R(\eta^s),C(\eta^s))$ 在 $\mathcal{Q}_a$ 中必定不能被沿着正斜率方向分解，即不存在 $\eta^{(1)},\eta^{(2)}\in \mathcal{P}_a$ 满足</p>
-<script type="math/tex; mode=display">
-\eta^s=\alpha\eta^{(1)}+(1-\alpha)\eta^{(2)},\quad \alpha\in (0,1)</script><p>并且</p>
-<script type="math/tex; mode=display">
-(R(\eta^s)-R(\eta^{(1)}))(C(\eta^{s})-C(\eta^{(1)}))>0</script><p>即最优机制中的 $(R(\eta^s),C(\eta^s))$ 一定位于 $\mathcal{Q}_a$ 的边界上。</p>
-<p><strong>证明</strong> 假设存在 $\eta^{(1)},\eta^{(2)}\in \mathcal{P}_a$ 满足条件，由于 $R(\eta)$ 和 $C(\eta)$ 在 $\mathcal{P}_a$ 上都是线性函数，必然有</p>
-<script type="math/tex; mode=display">
-(R(\eta^s),C(\eta^s))=\alpha(R(\eta^{(1)}),C(\eta^{(1)}))+(1-\alpha)(R(\eta^{(2)}),C(\eta^{(2)}))</script><p>由于 $(R(\eta^s),C(\eta^s)),(R(\eta^{(1)}),C(\eta^{(1)})),(R(\eta^{(2)}),C(\eta^{(2)}))$ 在斜率为正的直线上，且 $g(x,y)=xy$ 在该方向上为严格图函数，可知把 $\eta^s$ 用 $\eta^{(1)}$ 和 $\eta^{(2)}$ 替换后，能够使目标函数 $f(\eta)=R(\eta)C(\eta)$ 增加，与最优性矛盾。</p>
-<h4 id="Lemma-3-3"><a href="#Lemma-3-3" class="headerlink" title="Lemma 3.3"></a>Lemma 3.3</h4><p>最优广告机制 $\langle S,\pi\rangle$ 不会发送两个信号 $s,t\in S$ 满足 $\phi_s,\phi_t&gt;0$ 且</p>
-<script type="math/tex; mode=display">
-(R(\eta^s)-R(\eta^t))(C(\eta^s)-C(\eta^t))<0</script><p><strong>证明</strong> 否则若将 $s$ 和 $t$ 合并成一个信号 $v$ 满足</p>
-<script type="math/tex; mode=display">
-\pi(\omega,v)=\pi(\omega,s)+\pi(\omega,t),\quad\forall \omega</script><p>容易验证</p>
-<script type="math/tex; mode=display">
-\phi_\theta(v)=\phi_\theta(s)+\phi_\theta(t)\\
-\eta^v=\frac{\phi_\theta(s)}{\phi_\theta(v)}\cdot\eta^s+\frac{\phi_\theta(t)}{\phi_\theta(v)}\cdot\eta^t\\
-R(\eta^v)=\frac{\phi_\theta(s)}{\phi_\theta(v)}\cdot R(\eta^s)+\frac{\phi_\theta(t)}{\phi_\theta(v)}\cdot R(\eta^t)</script><p>卖家期望收益的增量为</p>
-<script type="math/tex; mode=display">
-\phi_\theta(v)R(\eta^v)C(\eta^v)-\phi_\theta(s)R(\eta^s)C(\eta^s)-\phi_\theta(t)R(\eta^t)C(\eta^t)</script><p>根据 $R$ 为线性函数，$C$ 为凹函数将 $R(\eta^v)$ 和 $C(\eta^v)$ 分别展开，计算可知等于</p>
-<script type="math/tex; mode=display">
--\frac{\phi_\theta(s)\phi_\theta(t)}{\phi_\theta(v)}\cdot(R(\eta^s)-R(\eta^t))(C(\eta^s)-C(\eta^t))>0</script><p>与最优性矛盾。</p>
-<h2 id="Optimal-Mechanism-by-Convex-Program"><a href="#Optimal-Mechanism-by-Convex-Program" class="headerlink" title="Optimal Mechanism by Convex Program"></a>Optimal Mechanism by Convex Program</h2><p>我们知道了在最优机制中，$(R(\eta^s),C(\eta^s))$ 一定在 $\mathcal{Q}_q$ 的边界上。一个猜测是 $\eta^s$ 位于 $\mathcal{P}_a$ 的边界上。接下来考虑 $\eta^s$ 跟 $\mathcal{P}_a$ 的关系。定义 $\mathcal{H}_a$ 是多面体 $\mathcal{P}_a$ 的顶点集合。</p>
-<h4 id="Lemma-3-4"><a href="#Lemma-3-4" class="headerlink" title="Lemma 3.4"></a>Lemma 3.4</h4><p>存在一个最优广告机制 $\langle S,\pi\rangle$ 满足每个 $\eta^s$ 都在某个 $\mathcal{H}_a$ 中的两个点之间的线段上。即对于任意 $s\in S$，存在 $\beta\in [0,1]$ 和 $i,j\in \mathcal{H}_a$，使得</p>
-<script type="math/tex; mode=display">
-\eta^s=\beta\cdot i+(1-\beta)\cdot j</script><p>且有</p>
-<script type="math/tex; mode=display">
-(R(i)-R(j))(C(i)-C(j))\le 0</script><p>且对于每一对 $i,j$，仅有唯一个 $\eta^s$ 位于 $i,j$ 之间的线段上。</p>
-<hr>
-<p>该引理的证明较为复杂。</p>
-]]></content>
-      <categories>
-        <category>Paper Reading</category>
-      </categories>
-      <tags>
-        <tag>Information Design</tag>
-        <tag>Convex Optimization</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/1970/01/01/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is yur very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -224,6 +102,262 @@ n\ge\frac{2}{\epsilon}\left[\log(2\pi_{\mathcal{H}}(2n))+\log\frac{1}{\delta}\ri
       <tags>
         <tag>Machine Learning</tag>
         <tag>Test</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【论文阅读】Optimal Advertising for Information Products</title>
+    <url>/2021/12/09/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Optimal%20Advertising%20for%20Information%20Products/</url>
+    <content><![CDATA[<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>这篇是发表在 EC21 上的文章。考虑的情形是有一个不可知的状态，买家能够选择一个行动，其收益取决于状态和行动。卖家知道真实的状态，想要将状态信息出售给买家。为了让买家愿意付钱购买，卖家可以先免费透露部分信息给买家，改变其对状态的估计，从而让其购买状态信息。买家和卖家都想最大化自己的收益。论文里讨论了卖家的最优机制设计问题，通过优化的角度，给出了特殊情形下问题的解法，同时证明了一般情形下该问题是 NP 难的。</p>
+<p>由于论文里涉及到较多凸优化的知识，所以只读懂了一部分。希望等之后学了凸优化之后再来补坑。</p>
+<span id="more"></span>
+<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>在生活中有很多这样的例子：例如电影院通过预告片让一些人对电影产生更大的兴趣。注意到虽然提前透露部分信息会让卖家拥有的私有信息量减少，却能让一些人对信息产品产生兴趣，因此来获得更高的收益。</p>
+<p>跟传统模型的差别：贝叶斯说服（Bayesian persuasion）中，卖家只考虑买家采取的动作；该模型中卖家还需要考虑具体的收益，即买家付的钱。传统的商品拍卖中，透露信息并不会改变商品本身；该模型中，透露信息会减少卖家包含的私有信息量，即商品的品质。</p>
+<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>考虑状态 $\omega\in \Omega=\{1,\cdots,n\}$，其服从概率分布 $\mu(\omega)$，其中 $\mu$ 是公有信息。具体状态只有卖家能看到，买家对状态的概率分布有一个自己的估计 $\theta\in \Theta\subseteq \Delta\Omega$。买家可以选择一个行动 $a\in A$。若选择了行动 $a$ 且状态为 $\omega$，其收益为 $u(\omega,a)$。</p>
+<p>买家必须提前公布自己的广告机制。具体来说，广告机制的定义为</p>
+<h4 id="Definition-2-1-Advertising-Rule"><a href="#Definition-2-1-Advertising-Rule" class="headerlink" title="Definition 2.1 (Advertising Rule)"></a>Definition 2.1 (Advertising Rule)</h4><p>广告机制 $\langle S,\pi,\{p_s:s\in S\}\rangle$ 包括</p>
+<ul>
+<li>有限大小的信号集合 $S$。</li>
+<li>$\pi:\Omega\to \Delta S$ 是信号发送机制，即观测到某一个状态后，以特定的概率分布去发送信号。</li>
+<li>$\{p_s:s\in S\}$ 表示收到信号 $s$ 后，买家可以选择以 $p_s$ 的价格购买具体状态信息。</li>
+</ul>
+<p>那么卖家在观测到状态 $\omega$ 后，先以 $\pi(\omega,s)$ 的概率发送信号 $s$。买家可以选择不买具体的状态信息，也可以选择以 $p_s$ 的价格购买。</p>
+<hr>
+<p>注意到若买家对状态的估计是 $\theta=(\theta_1,\cdots,\theta_n)$，那么在收到信号 $s$ 后，其估计会变为</p>
+<script type="math/tex; mode=display">
+\eta^s(\theta)=\frac{(\theta_1\pi(1,s),\cdots,\theta_n\pi(n,s))}{\sum_{\omega=1}^n\theta_\omega\pi(\omega,s)}</script><p>那么买家愿意为购买真实信息付的钱，不超过他知道真实状态 $\omega$ 后的收益减去估计是 $\eta^s(\theta)$ 时的期望收益。具体来说：</p>
+<h4 id="Definition-2-2-Cost-of-Uncertainty"><a href="#Definition-2-2-Cost-of-Uncertainty" class="headerlink" title="Definition 2.2 (Cost of Uncertainty)"></a>Definition 2.2 (Cost of Uncertainty)</h4><p>假设买家的收益函数为 $u(\omega,a)$，估计为 $\eta=(\eta_1,\cdots,\eta_n)\in \Delta \Omega$，定义不确定花费为买家不知道真实状态带来的期望损失：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+C(\eta)&=E_{\omega\sim \eta}[\max_{a\in A}u(\omega,a)]-\max_{a\in A}E_{\omega\sim \eta}[u(\omega,a)]\\
+&=\sum_{\omega=1}^n\eta_{\omega}\max_{a\in A}u(\omega,a)-\max_{a\in A}\sum_{\omega=1}^n\eta_{\omega}u(\omega,a)\\
+&=\min_aC_a(\eta)
+\end{aligned}</script><p>其中 $C_a(\eta)=\sum_{\omega=1}^n\eta_\omega(\max_{a’\in A}u(\omega,a’)-u(\omega,a))$ 是关于 $\eta$ 的线性函数，表示采取行动 $a$ 后带来的损失。注意到 $C(\eta)$ 是 $|A|$ 个线性函数的 $\min$，那么 $C(\eta)$ 是一个凹函数。</p>
+<hr>
+<p>当买家收到信号 $s$ 后，他愿意购买状态信息当且仅当 $C(\eta^s(\theta))\ge p_s$，即购买后能带来非负的收益。</p>
+<p>我们假设卖家知道买家状态的概率分布 $\mu(\theta|\omega)$，那么选择了广告机制 $\langle S,\pi,\{p_s:s\in S\}\rangle$ 后，其期望收益为</p>
+<script type="math/tex; mode=display">
+\sum_{\omega\in \Omega}\mu(\omega)\sum_{\theta\in \Theta}\mu(\theta|\omega)\sum_{s\in S}\pi(\omega,s)\cdot p_s\cdot 1(C(\eta^2(\theta))\ge p_s)</script><p>卖家的目标是找到广告机制来最大化自身期望收益。</p>
+<h1 id="Single-Buyer-Type"><a href="#Single-Buyer-Type" class="headerlink" title="Single Buyer Type"></a>Single Buyer Type</h1><p>首先考虑买家的状态 $\theta$ 是固定的情况。</p>
+<h2 id="Concave-Closure-Formulation"><a href="#Concave-Closure-Formulation" class="headerlink" title="Concave Closure Formulation"></a>Concave Closure Formulation</h2><h4 id="Definition-3-1-Likelihood-ratio"><a href="#Definition-3-1-Likelihood-ratio" class="headerlink" title="Definition 3.1 (Likelihood ratio)"></a>Definition 3.1 (Likelihood ratio)</h4><p>若买家的估计为 $\theta\in \Delta\Omega$，定义其似然比为</p>
+<script type="math/tex; mode=display">
+R(\eta)=\sum_\omega\frac{\mu_{\omega}\cdot\eta_{\omega}}{\theta_{\omega}}</script><hr>
+<p>注意到我们假设 $\theta_\omega&gt;0$ 对所有 $\omega$ 成立。</p>
+<p>这里可能不太清楚这个定义有什么用，但后面可以看到，我们要优化的函数将会是 $R(\eta)$ 和不确定花费 $C(\eta)$ 的乘积。</p>
+<h4 id="Proposition-3-1"><a href="#Proposition-3-1" class="headerlink" title="Proposition 3.1"></a>Proposition 3.1</h4><p>若买家的类型 $\theta$ 是固定的，那么卖家的最优期望收益等于函数</p>
+<script type="math/tex; mode=display">
+f(\eta)=R(\eta)\cdot C(\eta)</script><p>在点 $\theta$ 处的凹闭包（concave closure）。形式化描述，就是找最优广告机制等价于如下优化问题：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\max_{S,\eta,\phi}&\sum_{s\in S}\phi_s\cdot R(\eta^s)C(\eta^s)\\
+s.t.&\sum_{s\in S}\phi_s\cdot \eta^s=\theta\\
+& \phi_s\ge 0,\eta^s\in \Delta \Omega,\forall s
+\end{aligned}</script><p>这里 $\phi_s$ 可以看成是按照买家的观测 $\theta$ 来计算，其收到信号 $s$ 的概率是多少。即 $\phi_s=\sum_\omega\theta_\omega\pi(\omega,s)$。</p>
+<p><strong>证明</strong> 首先注意到，当 $S$ 和 $\pi$ 都固定时，$p_s=C(\eta^s)$ 必然是最优策略。令 $\phi_\mu(s)=\sum_{\omega}\mu_\omega\pi(\omega,s)$ 表示卖家发送信号 $s$ 的概率，那么寻找最大收益策略可以形式化为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\max_{S,\pi}&\sum_{s\in S}\phi_\mu(s)\cdot C(\eta^s)\\
+s.t.&\sum_{s\in S}\pi(\omega,s)=1,\quad \forall \omega\\
+& \pi(\omega,s)\ge 0,\quad \quad \forall \omega,s
+\end{aligned}\tag{1}</script><p>令 $\phi_\theta(s)=\sum_{\omega}\pi(\omega,s)$。注意到 $\mu$ 和 $\theta$ 都是已知的，并且 $\pi(\omega,s)/(\sum_\omega\theta_\omega\pi(\omega,s))=\eta^s_{\omega}/\theta_\omega$ 可以定义</p>
+<script type="math/tex; mode=display">
+R(\eta^s)=\frac{\phi_{\mu}(s)}{\phi_{\theta}(s)}=\frac{\sum_{\omega}\mu_{\omega}\pi(\omega,s)}{\sum_\omega\theta_\omega\pi(\omega,s)}=\sum_\omega\mu_\omega\cdot\frac{\eta^s_{\omega}}{\theta_\omega}</script><p>也就是之前提到的似然比函数。因此目标函数就变为</p>
+<script type="math/tex; mode=display">
+\sum_{s\in S}\phi_{\theta}(s)\cdot R(\eta^s)C(\eta^s)</script><p>同时限制 $\sum_{s\in S}\pi(\omega,s)=1,\pi(\omega,s)\ge 0$ 就等价于</p>
+<script type="math/tex; mode=display">
+\sum_{s\in S}\phi_{\theta}(s)\cdot \eta^s=\theta,\quad \phi_\theta(s)\ge 0,\eta^s\in \Delta\Omega,\forall s</script><hr>
+<p>注意到最优策略就是</p>
+<script type="math/tex; mode=display">
+\pi(\omega,s)=\frac{\phi_s\cdot\eta_\omega^s}{\theta_\omega},\quad p_s=C(\eta^s)</script><p>在 $\theta=\mu$ 的特殊情形下，$R(\eta)$ 的值始终是 $1$。因此最优策略的收益就是 $f(\eta)=C(\eta)$ 的凹闭包。由于 $C(\eta)$ 是凹函数，且凹函数的凹闭包等于其本身，因此最优策略满足</p>
+<script type="math/tex; mode=display">
+S=\{s\},\quad \phi_s=1,\quad \eta^s=\theta</script><p>即卖家不透露任何信息。</p>
+<p>但一般情况下 $f(\eta)=C(\eta)R(\eta)$ 并不是一个凹函数，因此求解起来有比较大的困难。具体来说：</p>
+<h4 id="Theorem-3-1"><a href="#Theorem-3-1" class="headerlink" title="Theorem 3.1"></a>Theorem 3.1</h4><p>当买家的类型 $\theta$ 固定时，求解最优的策略是 NP 难问题。</p>
+<p>（这部分证明还没看懂）</p>
+<h2 id="Properties-of-the-Optimal-Mechanism"><a href="#Properties-of-the-Optimal-Mechanism" class="headerlink" title="Properties of the Optimal Mechanism"></a>Properties of the Optimal Mechanism</h2><p>这部分证明了最优策略的一些性质，简化了最优机制的求解问题。由于最优机制中 $p_s$ 可由 $S$ 和 $\pi$ 确定，把机制简化为 $\langle S,\pi\rangle$。</p>
+<h4 id="Lemma-3-1"><a href="#Lemma-3-1" class="headerlink" title="Lemma 3.1"></a>Lemma 3.1</h4><p>存在一个最优策略 $\langle S,\pi\rangle$ 满足 $|S|\le n=|\Omega|$。</p>
+<p><strong>证明</strong> 假设 $\langle S,\pi\rangle$ 是最优机制，其中 $S=\{s_1,\cdots,s_k\}$ 且 $k&gt;n$。简写 $\eta^{(i)}=\eta^{s_i}$ 和 $\phi^{(i)}=\phi_{\theta}(s_i)$。不妨设 $\phi^{(i)}&gt;0$ 对所有 $i$ 成立。由 $k&gt;n$ 可知存在向量 $\alpha$ 满足</p>
+<script type="math/tex; mode=display">
+\alpha_1\eta^{(1)}+\cdots+\alpha_k\eta^{(k)}=0</script><p>不妨设 $\alpha_1\neq 0$，有</p>
+<script type="math/tex; mode=display">
+\eta^{(1)}=-\frac{\alpha_2}{\alpha_1}\eta^{(2)}-\cdots-\frac{\alpha_k}{\alpha_1}\eta^{(k)}</script><p>对于很小的 $\delta$，如果把 $\phi^{(1)}$ 减去 $\delta$，把其他的每个 $\phi^{(i)}$ 加上 $-\frac{\alpha_i}{\alpha_1}\delta$，那么优化问题 $(1)$ 中的限制仍然是满足的。可以通过不断进行该操作直到某个 $\phi^{(i)}$ 变为 $0$，然后把 $s_i$ 扔掉。还需要证明这样操作后不会降低目标函数的值，即证对于 $f(x)=R(x)C(x)$，有</p>
+<script type="math/tex; mode=display">
+f(\eta^{(1)})=-\frac{\alpha_2}{\alpha_1}f(\eta^{(2)})-\cdots-\frac{\alpha_k}{\alpha_1}f(\eta^{(k)})</script><p>若不成立，假如等式左边小于右边，考虑用 $-\frac{\alpha_2}{\alpha_1}\eta^{(2)}-\cdots-\frac{\alpha_k}{\alpha_1}\eta^{(k)}$ 替换 $\eta^{(1)}$，即让 $\phi^{(i)’}=\phi^{(i)}-\frac{\alpha_i}{\alpha_1}\phi^{(1)}$，得到的策略仍然能够满足限制，并使得目标函数变得更大，就跟原来策略的最优性矛盾。大于的情况同理。</p>
+<hr>
+<p>定义</p>
+<script type="math/tex; mode=display">
+\mathcal{P}_a=\{\eta\in\Delta\Omega:C_a(\eta)\le C_{a'}(\eta),\forall a'\}</script><p>当买家的观测在 $\mathcal{P}_a$ 中时，$C(\eta)=C_a(\eta)$，即选择动作 $a$ 是其最优策略。</p>
+<p>考虑函数 $g(x,y)=xy$ 和沿着某个方向 $d=(d_x,d_y)$ 得到的函数 $h(t)=g(x_0+td_x,y_0+td_y)$，注意到 $h(t)$ 在任意点 $(x_0,y_0)$ 处的二阶导都等于 $2d_xd_y$。当方向的斜率为正时 $d_xd_y&gt;0$，此时 $h(t)$ 是严格凸函数；同理方向斜率为负时 $h(t)$ 是严格凹函数。</p>
+<p>有如下定理：</p>
+<h4 id="Lemma-3-2"><a href="#Lemma-3-2" class="headerlink" title="Lemma 3.2"></a>Lemma 3.2</h4><p>令 $\langle S,\pi\rangle$ 是最优广告机制。对于 $s\in S$ 满足 $\phi_s&gt;0$ 且 $\eta^s\in \mathcal{P}_a$，定义 $\mathcal{Q}_a=\{(R(\eta),C(\eta)):\eta\in \mathcal{P}_a\}$。那么 $(R(\eta^s),C(\eta^s))$ 在 $\mathcal{Q}_a$ 中必定不能被沿着正斜率方向分解，即不存在 $\eta^{(1)},\eta^{(2)}\in \mathcal{P}_a$ 满足</p>
+<script type="math/tex; mode=display">
+\eta^s=\alpha\eta^{(1)}+(1-\alpha)\eta^{(2)},\quad \alpha\in (0,1)</script><p>并且</p>
+<script type="math/tex; mode=display">
+(R(\eta^s)-R(\eta^{(1)}))(C(\eta^{s})-C(\eta^{(1)}))>0</script><p>即最优机制中的 $(R(\eta^s),C(\eta^s))$ 一定位于 $\mathcal{Q}_a$ 的边界上。</p>
+<p><strong>证明</strong> 假设存在 $\eta^{(1)},\eta^{(2)}\in \mathcal{P}_a$ 满足条件，由于 $R(\eta)$ 和 $C(\eta)$ 在 $\mathcal{P}_a$ 上都是线性函数，必然有</p>
+<script type="math/tex; mode=display">
+(R(\eta^s),C(\eta^s))=\alpha(R(\eta^{(1)}),C(\eta^{(1)}))+(1-\alpha)(R(\eta^{(2)}),C(\eta^{(2)}))</script><p>由于 $(R(\eta^s),C(\eta^s)),(R(\eta^{(1)}),C(\eta^{(1)})),(R(\eta^{(2)}),C(\eta^{(2)}))$ 在斜率为正的直线上，且 $g(x,y)=xy$ 在该方向上为严格图函数，可知把 $\eta^s$ 用 $\eta^{(1)}$ 和 $\eta^{(2)}$ 替换后，能够使目标函数 $f(\eta)=R(\eta)C(\eta)$ 增加，与最优性矛盾。</p>
+<h4 id="Lemma-3-3"><a href="#Lemma-3-3" class="headerlink" title="Lemma 3.3"></a>Lemma 3.3</h4><p>最优广告机制 $\langle S,\pi\rangle$ 不会发送两个信号 $s,t\in S$ 满足 $\phi_s,\phi_t&gt;0$ 且</p>
+<script type="math/tex; mode=display">
+(R(\eta^s)-R(\eta^t))(C(\eta^s)-C(\eta^t))<0</script><p><strong>证明</strong> 否则若将 $s$ 和 $t$ 合并成一个信号 $v$ 满足</p>
+<script type="math/tex; mode=display">
+\pi(\omega,v)=\pi(\omega,s)+\pi(\omega,t),\quad\forall \omega</script><p>容易验证</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\phi_\theta(v)=\phi_\theta(s)+\phi_\theta(t)\\
+&\eta^v=\frac{\phi_\theta(s)}{\phi_\theta(v)}\cdot\eta^s+\frac{\phi_\theta(t)}{\phi_\theta(v)}\cdot\eta^t\\
+&R(\eta^v)=\frac{\phi_\theta(s)}{\phi_\theta(v)}\cdot R(\eta^s)+\frac{\phi_\theta(t)}{\phi_\theta(v)}\cdot R(\eta^t)
+\end{aligned}</script><p>卖家期望收益的增量为</p>
+<script type="math/tex; mode=display">
+\phi_\theta(v)R(\eta^v)C(\eta^v)-\phi_\theta(s)R(\eta^s)C(\eta^s)-\phi_\theta(t)R(\eta^t)C(\eta^t)</script><p>根据 $R$ 为线性函数，$C$ 为凹函数将 $R(\eta^v)$ 和 $C(\eta^v)$ 分别展开，计算可知等于</p>
+<script type="math/tex; mode=display">
+-\frac{\phi_\theta(s)\phi_\theta(t)}{\phi_\theta(v)}\cdot(R(\eta^s)-R(\eta^t))(C(\eta^s)-C(\eta^t))>0</script><p>与最优性矛盾。</p>
+<h2 id="Optimal-Mechanism-by-Convex-Program"><a href="#Optimal-Mechanism-by-Convex-Program" class="headerlink" title="Optimal Mechanism by Convex Program"></a>Optimal Mechanism by Convex Program</h2><p>我们知道了在最优机制中，$(R(\eta^s),C(\eta^s))$ 一定在 $\mathcal{Q}_q$ 的边界上。一个猜测是 $\eta^s$ 位于 $\mathcal{P}_a$ 的边界上。接下来考虑 $\eta^s$ 跟 $\mathcal{P}_a$ 的关系。定义 $\mathcal{H}_a$ 是多面体 $\mathcal{P}_a$ 的顶点集合。</p>
+<h4 id="Lemma-3-4"><a href="#Lemma-3-4" class="headerlink" title="Lemma 3.4"></a>Lemma 3.4</h4><p>存在一个最优广告机制 $\langle S,\pi\rangle$ 满足每个 $\eta^s$ 都在某个 $\mathcal{H}_a$ 中的两个点之间的线段上。即对于任意 $s\in S$，存在 $\beta\in [0,1]$ 和 $i,j\in \mathcal{H}_a$，使得</p>
+<script type="math/tex; mode=display">
+\eta^s=\beta\cdot i+(1-\beta)\cdot j</script><p>且有</p>
+<script type="math/tex; mode=display">
+(R(i)-R(j))(C(i)-C(j))\le 0</script><p>且对于每一对 $i,j$，仅有唯一个 $\eta^s$ 位于 $i,j$ 之间的线段上。</p>
+<hr>
+<p>该引理的证明较为复杂。</p>
+]]></content>
+      <categories>
+        <category>Paper Reading</category>
+      </categories>
+      <tags>
+        <tag>Information Design</tag>
+        <tag>Convex Optimization</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【笔记】凸优化1</title>
+    <url>/2021/12/11/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E5%87%B8%E4%BC%98%E5%8C%961/</url>
+    <content><![CDATA[<p>b站凌青老师凸优化课程1-6课笔记。</p>
+<span id="more"></span>
+<h1 id="什么是优化"><a href="#什么是优化" class="headerlink" title="什么是优化"></a>什么是优化</h1><p>优化就是从一个可行解的集合中，寻找出最优的元素。写成数学形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\text{minimize }f_0(x)\\
+&\text{subject to }f_i(x)\le b_i\quad i=1,\cdots,M
+\end{aligned}</script><p>其中 $x=[x_1,\cdots,x_n]^T$ 称为优化变量，$f_0:\R^n\to \R$ 称为目标函数，$f_i:\R^n\to \R$ 称为不等式约束。</p>
+<h1 id="优化问题的分类"><a href="#优化问题的分类" class="headerlink" title="优化问题的分类"></a>优化问题的分类</h1><p>优化问题一般有如下分类，其中前者通常较简单，后者通常较难。</p>
+<h4 id="线性规划-非线性规划"><a href="#线性规划-非线性规划" class="headerlink" title="线性规划 / 非线性规划"></a>线性规划 / 非线性规划</h4><p>称 $f$ 为线性函数如果 $f(\alpha x+\beta y)=\alpha f(x)+\beta f(y)$。</p>
+<p>若限制函数和目标函数均为线性函数，则称该问题为线性规划，否则称其为非线性规划。</p>
+<h4 id="凸规划-非凸规划"><a href="#凸规划-非凸规划" class="headerlink" title="凸规划 / 非凸规划"></a>凸规划 / 非凸规划</h4><p>称 $f$ 是凸函数如果 $f(\alpha x+\beta y)\le \alpha f(x)+\beta f(y)$。</p>
+<p>若限制函数和目标函数均为凸函数，则称该问题为凸规划，否则称其为非凸规划。</p>
+<hr>
+<p>通常还有光滑 / 非光滑，连续 / 离散，单目标 / 多目标等分类。</p>
+<h1 id="凸集"><a href="#凸集" class="headerlink" title="凸集"></a>凸集</h1><h4 id="直线和线段"><a href="#直线和线段" class="headerlink" title="直线和线段"></a>直线和线段</h4><p>对于 $x_1\neq x_2\in \R^n$，定义过 $x_1,x_2$ 的直线为</p>
+<script type="math/tex; mode=display">
+\{\theta x_1+(1-\theta)x_2|\theta\in \R\}</script><p>定义 $x_1,x_2$ 构成的线段为</p>
+<script type="math/tex; mode=display">
+\{\theta x_1+(1-\theta)x_2|\theta\in [0,1]\}</script><h2 id="仿射集"><a href="#仿射集" class="headerlink" title="仿射集"></a>仿射集</h2><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p><strong>定义1</strong> 称集合 $C$ 是仿射集，若 $\forall x_1,x_2\in C$，连接 $x_1$ 与 $x_2$ 的直线都在 $C$ 内。</p>
+<p><strong>仿射组合</strong> 设 $x_1,\cdots,x_k$，称 $\theta_1x_1+\cdots+\theta_kx_k$ 为其仿射组合，其中 $\theta_1,\cdots,\theta_k\in \R$，且 $\theta_1+\cdots+\theta_k=1$。</p>
+<p><strong>定义2</strong> 称集合 $C$ 是仿射集，若 $\forall x_1,\cdots,x_k\in c$，它们的所有仿射组合都在 $C$ 内。</p>
+<h4 id="定理"><a href="#定理" class="headerlink" title="定理"></a>定理</h4><p>上述两个定义等价。</p>
+<p><strong>证明</strong> 由定义2显然可以推出定义1。往证由定义1可推出定义2。</p>
+<p>假设有仿射集 $C$，先证任意三个元素的仿射组合都在 $C$ 中。取 $x_1,x_2,x_3\in c$，$\theta_1,\theta_2,\theta_3\in \R$ 且 $\theta_1+\theta_2+\theta_3=1$，根据定义1可知</p>
+<script type="math/tex; mode=display">
+\frac{\theta_1}{\theta_1+\theta_2}x_1+\frac{\theta_2}{\theta_1+\theta_2}x_2\in C</script><p>那么有</p>
+<script type="math/tex; mode=display">
+(\theta_1+\theta_2)\left(\frac{\theta_1}{\theta_1+\theta_2}x_1+\frac{\theta_2}{\theta_1+\theta_2}x_2\right)+(1-\theta_1-\theta_2)x_3\in C</script><p>展开即可得到 $\theta_1x_1+\theta_2x_2+\theta_3x_3\in C$。由归纳法可知两个定义等价。</p>
+<h4 id="关于仿射集的子空间"><a href="#关于仿射集的子空间" class="headerlink" title="关于仿射集的子空间"></a>关于仿射集的子空间</h4><p>假设 $C$ 是仿射集，$x_1,x_2\in C$。把 令 $\gamma=\alpha x_1+\beta x_2$，则当 $\alpha+\beta\neq 1$ 时 $\gamma$ 未必在 $C$ 中。构造新集合：</p>
+<script type="math/tex; mode=display">
+V=c-x_0=\{x-x_0|x\in c\}\quad \forall x_0\in c</script><p>称 $V$ 为与 $C$ 相关的子空间。那么对于 $\forall v_1,v_2\in V$，$\forall \alpha,\beta\in \R$，都有 $\alpha v_1+\beta v_2\in V$。因为</p>
+<script type="math/tex; mode=display">
+\alpha(v_1+x_0)+\beta(v_2+x_0)+(1-\alpha-\beta)x_0\in C</script><p>从而</p>
+<script type="math/tex; mode=display">
+\alpha v_1+\beta v_2+x_0\in C</script><p>注意到子空间必须经过原点。</p>
+<h4 id="仿射包"><a href="#仿射包" class="headerlink" title="仿射包"></a>仿射包</h4><p>定义集合 $C$ 的仿射包为</p>
+<script type="math/tex; mode=display">
+\text{aff }C=\{\theta x_1+\cdots+\theta_kx_k|\forall x_1,\cdots,x_k\in C,\forall \theta_1+\cdots+\theta_k=1\}</script><p>那么 $\text{aff }C$ 为包含 $C$ 的最小仿射集。</p>
+<h2 id="凸集-1"><a href="#凸集-1" class="headerlink" title="凸集"></a>凸集</h2><h4 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h4><p><strong>定义1</strong> 称集合 $C$ 是凸集，如果任意两点之间的线段都在 $C$ 内。形式化描述：对于 $\forall x_1,x_2\in C$，$\forall\theta\in [0,1]$，都有 $\theta x_1+(1-\theta)x_2\in C$。</p>
+<p>注意到仿射集是凸集的特例。</p>
+<p><strong>凸组合</strong> 对于 $x_1,\cdots,x_k$，称 $\theta_1x_1+\cdots+\theta_kx_k$ 为其凸组合，其中 $\theta_1,\cdots,\theta_k\in [0,1]$ 且 $\theta_1+\cdots+\theta_k=1$。</p>
+<p><strong>定义2</strong> 称集合 $C$ 是凸集，如果 $C$ 中任意元素的凸组合都在 $C$ 内。</p>
+<p>用跟仿射集相同的方法可证两个定义等价。</p>
+<h4 id="凸包"><a href="#凸包" class="headerlink" title="凸包"></a>凸包</h4><p>对于集合 $C$，定义其凸包为</p>
+<script type="math/tex; mode=display">
+\text{Conv }C=\{\theta_1x_1+\cdots+\theta_kx_k|\forall x_1,\cdots,x_k\in C,\forall \theta_1,\cdots,\theta_k\in [0,1],\theta_1+\cdots+\theta_k=1\}</script><p>$C$ 的凸包为包含 $C$ 的最小凸集。</p>
+<h2 id="凸锥"><a href="#凸锥" class="headerlink" title="凸锥"></a>凸锥</h2><h4 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h4><p>称集合 $C$ 是锥，如果 $\forall x\in C$，$\forall\theta\ge 0$，有 $\theta x\in C$。</p>
+<p><strong>定义1</strong> 称集合 $C$ 是凸锥，如果 $\forall x_1,x_2\in C$，$\forall\theta_1,\theta_2\ge 0$，有 $x_1\theta_1+x_2\theta_2\in C$。</p>
+<p>凸锥的定义等价于凸的锥。首先凸锥必然是凸的。反过来，若锥 $C$ 是凸的，那么 $\forall x_1,x_2\in C$，$\forall \theta_1,\theta_2\ge 0$，由凸性可知</p>
+<script type="math/tex; mode=display">
+\frac{\theta_1}{\theta_1+\theta_2}x_1+\frac{\theta_2}{\theta_1+\theta_2}x_2\in C</script><p>由锥性可知 $\theta_1x_1+\theta_2x_2\in C$。</p>
+<p><strong>凸锥组合</strong> 对于 $x_1,\cdots,x_k$，称 $\theta_1x_1+\cdots+\theta_kx_k$ 为其凸锥组合，其中 $\theta_1,\cdots,\theta_k\ge 0$。</p>
+<p><strong>定义2</strong> 称集合 $C$ 是凸锥，如果 $C$ 中任意元素的凸锥组合都在 $C$ 内。</p>
+<hr>
+<h4 id="单点和空集"><a href="#单点和空集" class="headerlink" title="单点和空集"></a>单点和空集</h4><p>对于一个点的集合 $C=\{x\}$，其必然是仿射集或凸集，但未必是凸锥。空集既是仿射集，又是凸集，也是凸锥。</p>
+<h2 id="一些重要的凸集"><a href="#一些重要的凸集" class="headerlink" title="一些重要的凸集"></a>一些重要的凸集</h2><p>$\R^n$ 空间，$\R^n$ 空间的子空间，任意直线，任意线段。</p>
+<p><strong>超平面</strong> $\{x|a^Tx=b\}$，其中 $x,a\in \R^n$，$b\in \R$，$a\neq 0$。</p>
+<p><strong>半空间</strong> $\{x|a^Tx\ge b\}$，其中 $x,a\in \R^n$，$b\in \R$，$a\neq 0$。</p>
+<h4 id="球和椭球"><a href="#球和椭球" class="headerlink" title="球和椭球"></a>球和椭球</h4><p><strong>球</strong> $B(x_c,r)=\{x\big|\Vert x-x_c\Vert_2\le r\}$。</p>
+<p>证明球是凸集：对于 $\forall x_1,x_2\in B$，$\Vert x_1-x_c\Vert_2\le r$，$\Vert x_2-x_c\Vert\le r$，$\forall 0\le\theta\le 1$，有</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\Vert \theta x_1+(1-\theta)x_2-x_c\Vert_2\\
+=&\Vert \theta(x_1-x_c)+(1-\theta)(x_2-x_c)\Vert_2\\
+\le &\Vert\theta(x_1-x_c)\Vert_2+\Vert(1-\theta)(x_2-x_c)\Vert_2\\
+=&\theta\Vert x_1-x_c\Vert_2+(1-\theta)\Vert x_2-x_c\Vert_2\\
+\le &r
+\end{aligned}</script><hr>
+<p><strong>椭球</strong> $\epsilon(x_c,P)=\{x|(x-x_c)^TP^{-1}(x-x_c)\le 1\}$。其中 $x_c\in \R^n$，$P\in S^n_{++}$ 是一个 $n$ 维正定对称矩阵。这里 $(x-x_c)^TP^{-1}(x-x_c)$ 可以看成是一个加权二范数。</p>
+<h4 id="多面体和单纯形"><a href="#多面体和单纯形" class="headerlink" title="多面体和单纯形"></a>多面体和单纯形</h4><p><strong>多面体</strong> $P=\{x|a_j^Tx\le b_j(j=1,\cdots,m),c_j^Tx=d_j(j=1,\cdots,p)\}$。即若干个半空间和超平面的交集。多面体可能是无界的。</p>
+<p><strong>单纯形</strong> $\R^n$ 空间中选择 $v_0,\cdots,v_k$ 共 $k+1$ 个点，$v_1-v_0,\cdots,v_k-v_0$ 线性无关，则与上述点相关的单纯形为</p>
+<script type="math/tex; mode=display">
+C=\text{Conv}\{v_0,\cdots,v_k\}=\{\theta_0v_0+\cdots+\theta_kv_k|\theta\ge 0,1^T\theta=1\}</script><p>证明单纯形是多面体的一种：</p>
+<p>对于 $x\in C\subseteq \R^n$，$C$ 是单纯形等价于 $x=\theta_0v_0+\cdots+\theta_kv_k\in C$，其中 $1^T\theta=1$，$\theta\ge 0$ 且 $v_1-v_0,\cdots,v_k-v_0$ 线性无关。</p>
+<p>定义 $[\theta_1,\cdots,\theta_k]^T=y$，那么 $y\ge 0$，$1^Ty=1$。$[v_1-v_0,\cdots,v_k-v_0]=B\in \R^{n\times k}$。那么 $x\in C$ 等价于</p>
+<script type="math/tex; mode=display">
+x=\theta_0v_0+\cdots+\theta_kv_k=v_0+\theta_1(v_1-v_0)+\cdots+\theta_k(v_k-v_0)=v_0+By</script><p>由于 $B$ 中列向量线性无关，有 $rank(B)=k$。则存在线性变换 $A=\begin{bmatrix}A_1\\ A_2\end{bmatrix}\in \R^{n\times n}$ 将其变为</p>
+<script type="math/tex; mode=display">
+AB=\begin{bmatrix}
+A_1\\
+A_2
+\end{bmatrix}B
+=\begin{bmatrix}
+I_k\\
+0
+\end{bmatrix}</script><p>$A$ 满足为非奇异矩阵，即所有奇异值非零。在 $x=v_0+By$ 两侧同乘 $A$，得到</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&x=v_0+By\\
+\Leftrightarrow &Ax=Ax_0+ABy\\
+\Leftrightarrow &\begin{bmatrix}
+A_1\\
+A_2
+\end{bmatrix}x=
+\begin{bmatrix}
+A_1\\
+A_2
+\end{bmatrix}v_0+
+\begin{bmatrix}
+A_1B\\
+A_2B
+\end{bmatrix}y\\
+\Leftrightarrow & \begin{cases}
+A_1x=A_1v_0+y\\A_2x=A_2v_0
+\end{cases}\\
+\Leftrightarrow &\begin{cases}
+A_1x\ge A_1v_0\\
+1^TA_1x=1+1^TA_1v_0\\
+A_2x=A_2v_0
+\end{cases}
+\end{aligned}</script><p>其中第三个等价是因为 $A_2v_0=0$，第四个等价是代入了 $y\ge 0,1^Ty=1$ 的两个限制。表明单纯性可由上述若干个等式和不等式约束来描述。</p>
+<h4 id="矩阵凸集"><a href="#矩阵凸集" class="headerlink" title="矩阵凸集"></a>矩阵凸集</h4><p>对称矩阵集合 $S^n=\{x\in \R^{n\times n}|x=x^T\}$。</p>
+<p>对称半正定矩阵集合 $S^n_+=\{x\in \R^{n\times n}|x=x^T,x\succeq 0\}$，其中 $X\succeq 0$ 表示 $X$ 的所有奇异值均非负。</p>
+<p>对称正定矩阵集合 $S_{++}^n=\{x\in \R^{n\times n}|x=x^T,x\succ 0\}$。</p>
+<hr>
+<p>证明 $S_+^n$ 是凸锥：$\forall \theta_1,\theta_2\ge 0$，$\forall A,B\in S_+^n$，往证 $\theta_1A+\theta_2B\in S_+^n$。由于 $\forall x\in \R^n$，$x^TAx\ge 0,x^TBx\ge 0$，有</p>
+<script type="math/tex; mode=display">
+x^T(\theta_1A+\theta_2B)x=x^T\theta_1Ax+x^T\theta_2Bx\ge 0</script><p>因此 $S_+^n$ 是凸锥。</p>
+<p>显然对称矩阵集合是凸锥。</p>
+<p>但 $S_{++}^n$ 不是凸锥。当 $n=1$ 时，$S_+^n=\R_+$，$S_{++}^n=\R_{++}$，$S^n=\R$。显然 $R_{++}$ 不是凸锥。考虑 $n$ 更大的时候，在 $S_n^=$ 是凸锥的证明中最后一步不能用大于号，因为 $\theta_1,\theta_2$ 可以同时为 $0$。</p>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Convex Optimization</tag>
       </tags>
   </entry>
 </search>
