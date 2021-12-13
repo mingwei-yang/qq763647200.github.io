@@ -1,234 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>test_markdown</title>
-    <url>/2021/12/02/test-markdown/</url>
-    <content><![CDATA[<h1 id="Chapter-5-Machine-Learning"><a href="#Chapter-5-Machine-Learning" class="headerlink" title="Chapter 5. Machine Learning"></a>Chapter 5. Machine Learning</h1><h1 id="The-Perceptron-Algorithm"><a href="#The-Perceptron-Algorithm" class="headerlink" title="The Perceptron Algorithm"></a>The Perceptron Algorithm</h1><span id="more"></span>
-<p>The problem of fitting a half-space or a linear separator consists of $n$ labeled examples $x_1,\cdots,x_n$ in $d$-dimensional space. Each example has label $+1$ or $-1$. The task is to find a $d$-dimensional vector $w$, if one exists and a threshold $t$ s.t.</p>
-<script type="math/tex; mode=display">
-w\cdot x_i>t\text{ for each }x_i\text{ labelled }+1\\
-w\cdot x_i<t\text{ for each }x_i\text{ labelled }-1</script><p>A vector-threshold pair, $(w, t)$, satisfying the inequalities is called a “linear separator”.</p>
-<p>Add an extra coordinate to each $x_i$ and $w$, writing $\hat{x}_i=(x_i,1)$ and $\hat{w}=(w,-t)$. Suppose $l_i$ is the $\pm 1$ label on $x_i$. Then, the above inequalities can be rewritten as</p>
-<script type="math/tex; mode=display">
-(\hat{w}\cdot \hat{x}_i)l_i>1</script><h4 id="The-Perceptron-Algorithm-1"><a href="#The-Perceptron-Algorithm-1" class="headerlink" title="The Perceptron Algorithm"></a>The Perceptron Algorithm</h4><p>$w\leftarrow 0$</p>
-<p>while there exists $x_i$ with $x_il_i\cdot w\le 0$, update $w\leftarrow w+x_il_i$</p>
-<hr>
-<p>The intuition is that correcting $w$ by adding $x_il_i$ cause the new $(w\cdot x_i)l_i$ to be higher by $x_i\cdot x_il_i^2=|x_i|^2$. If a weight vector $w^<em>$ satisfies $(w\cdot x_i)l_i&gt;0$ for $1\le i\le n$, the minimum distance of any example $x_i$ to the linear separator $w^</em>\cdot x=0$ is called the <em>margin</em> of the separator. Scale $w^<em>$ so that $(w^</em>\cdot x_i)l_i\ge 1$ for all $i$. Then the margin of the separator is at least $1/|w^<em>|$. If all points lie inside a ball of radius $r$, then $r|w^</em>|$ is the ratio of the radius of the ball to the margin. Theorem below shows that the number of update steps of the Perceptron Algorithm is at most<br>the square of this quantity.</p>
-<h4 id="Theorem-5-1"><a href="#Theorem-5-1" class="headerlink" title="Theorem 5.1"></a>Theorem 5.1</h4><p>If there is a $w^<em>$ satisfying $(w^</em>\cdot x_i)l_i\ge 1$ for all $i$, then the Perceptron Algorithm finds a solution $w$ with $(w\cdot x_i)l_i&gt;0$ for all $i$ in at most $r^2|w^*|^2$ updates where $r=\max_i|x_i|$.</p>
-<p><strong>Proof</strong> Let $w^<em>$ satisfy the “if” condition of the theorem. Each update increases $w^Tw^</em>$ by at least one.</p>
-<script type="math/tex; mode=display">
-(w+x_il_i)^Tw^*=w^Tw^*+x_i^Tl_iw^*\ge w^Tw^*+1</script><p>On each update, $|w|^2$ increases by at most $r^2$.</p>
-<script type="math/tex; mode=display">
-(w+x_il_i)^T(w+x_il_i)=|w|^2+2x_i^Tl_iw+|x_il_i|^2\le |w|^2+|x_i|^2\le |w|^2+r^2</script><p>since $x_i^Tl_iw\le 0$.</p>
-<p>If the Perceptron Algorithm makes $m$ updates, then $w^Tw^*\ge m$, and $|w|^2\le mr^2$. Then</p>
-<script type="math/tex; mode=display">
-m\le |w||w^*|\le\sqrt{m}r|w^*|\implies m\le r^2|w^*|^2</script><p>as desired.</p>
-<h1 id="Kernel-Functions-and-Non-linearly-Separable-Data"><a href="#Kernel-Functions-and-Non-linearly-Separable-Data" class="headerlink" title="Kernel Functions and Non-linearly Separable Data"></a>Kernel Functions and Non-linearly Separable Data</h1><p>If the data is not linearly separable, then perhaps one can map the data to a higher dimensional space where it is linearly separable.</p>
-<p>If a function $\varphi$ maps the data to another space, one can run the Perceptron Algorithm in the new space. The weight vector will be a linear function $\sum_{i=1}^nc_i\varphi(x_i)$ of the new input data. To determine if a pattern $x_j$ is correctly classified compute</p>
-<script type="math/tex; mode=display">
-w^T\varphi(x_j)=\sum_{i=1}^nc_i\varphi(x_i)^T\varphi(x_j)</script><p>We do not need to explicitly compute $\varphi$ if we have a function</p>
-<script type="math/tex; mode=display">
-k(x_i,x_j)=\varphi(x_i)^T\varphi(x_j)</script><p>called a <em>kernel function</em> and <em>kernel matrix</em> $K$ is defined as $k_{ij}=\varphi(x_i)^T\varphi(x_j)$.</p>
-<h1 id="Generalizing-to-New-Data"><a href="#Generalizing-to-New-Data" class="headerlink" title="Generalizing to New Data"></a>Generalizing to New Data</h1><h4 id="Formalizing-the-problem"><a href="#Formalizing-the-problem" class="headerlink" title="Formalizing the problem"></a>Formalizing the problem</h4><p>To formalize the learning problem, assume there is some probability distribution $D$ over the instance space $X$, such that</p>
-<ol>
-<li>our training set $S$ consists of points drawn independently at random from $D$.</li>
-<li>our objective is to predict well on new points that are also drawn from $D$.</li>
-</ol>
-<hr>
-<p>Let $c^<em>$, called the </em>target concept<em>, denote the subset of $X$ corresponding to the positive class for a desired binary classification. Our goal is to produce a set $h\subseteq X$, called our </em>hypothesis<em>. The </em>true error<em> of $h$, $err_D(h)$, is the probability it incorrectly classifies a data point drawn at random from $D$. The </em>training error<em> of $h$, $err_S(h)$, is the fraction of points in $S$ on which $h$ and $c^</em>$ disagree.</p>
-<p>An hypothesis class $\mathcal{H}$ over $X$ is a collection of subsets of $X$. Given an hypothesis class $\mathcal{H}$ and training set $S$, we aim to find an hypothesis in $\mathcal{H}$ that closely agrees with $c^*$ over $S$.</p>
-<h2 id="Overfitting-and-Uniform-Convergence"><a href="#Overfitting-and-Uniform-Convergence" class="headerlink" title="Overfitting and Uniform Convergence"></a>Overfitting and Uniform Convergence</h2><h4 id="Theorem-5-4"><a href="#Theorem-5-4" class="headerlink" title="Theorem 5.4"></a>Theorem 5.4</h4><p>Let $\mathcal{H}$ be an hypothesis class and let $\epsilon$ and $\delta$ be greater than zero. If a training set $S$ of size</p>
-<script type="math/tex; mode=display">
-n\ge \frac{1}{\epsilon}(\ln|\mathcal{H}|+\ln(1/\delta))</script><p>is drawn from distribution $D$, then with probability greater than or equal to $1-\delta$, every $h\in \mathcal{H}$ with training error zero has true error less than $\epsilon$.</p>
-<p><strong>Proof</strong> Let $h_1,h_2,\cdots$ be the hypotheses in $\mathcal{H}$ with true error greater than or equal to $\epsilon$. Consider drawing the sample $S$ of size $n$ and let $A_i$ be the event that $h_i$ has zero training error. Since every $h_i$ has true error greater than or equal to $\epsilon$</p>
-<script type="math/tex; mode=display">
-\Pr[A_i]\le (1-\epsilon)^n</script><p>By the union bound over all $i$, the probability that any of these $h_i$ is consistent with $S$ is given by</p>
-<script type="math/tex; mode=display">
-\Pr\left[\bigcup_iA_i\right]\le |\mathcal{H}|(1-\epsilon)^n</script><p>Using the fact that $1-\epsilon\le e^{-\epsilon}$ and replacing $n$ by the sample size bound from the theorem statement, this is at most $\mathcal{H}e^{-\ln|\mathcal{H}|-\ln(1-\delta)}=\delta$ as desired.</p>
-<h1 id="VC-Dimension"><a href="#VC-Dimension" class="headerlink" title="VC-Dimension"></a>VC-Dimension</h1><h2 id="Definitions-and-Key-Theorems"><a href="#Definitions-and-Key-Theorems" class="headerlink" title="Definitions and Key Theorems"></a>Definitions and Key Theorems</h2><h4 id="Definition-5-1"><a href="#Definition-5-1" class="headerlink" title="Definition 5.1"></a>Definition 5.1</h4><p>A set system $(X, \mathcal{H})$ consists of a set $X$ and a class $\mathcal{H}$ of subsets of $X$.</p>
-<hr>
-<p>$\mathcal{H}$ is the class of potential hypothesis, where a hypothesis $h$ is a subset of $X$.</p>
-<h4 id="Definition-5-2"><a href="#Definition-5-2" class="headerlink" title="Definition 5.2"></a>Definition 5.2</h4><p>A set system $(X, \mathcal{H})$ shatters a set $A$ if each subset of $A$ can be expressed as $A\cap H$ for some $h$ in $\mathcal{H}$.</p>
-<h4 id="Definition-5-3"><a href="#Definition-5-3" class="headerlink" title="Definition 5.3"></a>Definition 5.3</h4><p>The <strong>VC-dimension</strong> of $\mathcal{H}$ is the size of the largest set shattered by $\mathcal{H}$.</p>
-<h2 id="VD-Dimension-of-Some-Set-System"><a href="#VD-Dimension-of-Some-Set-System" class="headerlink" title="VD-Dimension of Some Set System"></a>VD-Dimension of Some Set System</h2><h4 id="Intervals-of-the-reals"><a href="#Intervals-of-the-reals" class="headerlink" title="Intervals of the reals"></a>Intervals of the reals</h4><p>Intervals on the real line can shatter any set of two points but no set of three points since the subset of the first and last points cannot be isolated. Thus, the VC-dimension of intervals is two.</p>
-<h4 id="Pairs-of-intervals-of-the-reals"><a href="#Pairs-of-intervals-of-the-reals" class="headerlink" title="Pairs of intervals of the reals"></a>Pairs of intervals of the reals</h4><p>Consider the family of pairs of intervals, where a pair of intervals is viewed as the set of points that are in at least one of the intervals. There exists a set of size four that can be shattered but no set of size five since the subset of first, third, and last point cannot be isolated. Thus, the VC-dimension of pairs of intervals is four.</p>
-<h4 id="Convex-polygons"><a href="#Convex-polygons" class="headerlink" title="Convex polygons"></a>Convex polygons</h4><p>For any positive integer $n$, place $n$ points on the unit circle. Any subset of the points are the vertices of a convex polygon. Clearly that polygon does not contain any of the points not in the subset. This shows that convex polygons can shatter arbitrarily large sets, so the VC-dimension is infinite.</p>
-<h4 id="Halfspace-in-d-dimensions"><a href="#Halfspace-in-d-dimensions" class="headerlink" title="Halfspace in $d$-dimensions"></a>Halfspace in $d$-dimensions</h4><p>The VC-dimension of halfspaces in $d$-dimensions is $d+1$.</p>
-<p>There exists a set of size $d + 1$ that can be shattered by halfspaces. Select the $d$ unit coordinate vectors plus the origin to be the $d+1$ points. Suppose $A$ is any subset of these $d+1$ points. Without loss of generality assume that the origin is in $A$. Take a 0-1 vector $w$ which has $1$’s precisely in the coordinates corresponding to vectors not in $A$. Clearly $A$ lies in the half-space $w^Tx\le 0$ and the complement of $A$ lies in the complementary halfspace.</p>
-<p>We now show that no set of $d + 2$ points in $d$-dimensions can be shattered by halfspaces. This is done by proving that any set of $d + 2$ points can be partitioned into two disjoint subsets $A$ and $B$ whose convex hulls intersect. This establishes the claim since any linear separator with $A$ on one side must have its entire convex hull on that side, so it is not possible to have a linear separator with $A$ on one side and $B$ on the other.</p>
-<h4 id="Theorem-5-9-Radon"><a href="#Theorem-5-9-Radon" class="headerlink" title="Theorem 5.9 (Radon)"></a>Theorem 5.9 (Radon)</h4><p>Any set $S\subseteq R^d$ with $|S|\ge d+2$, can be partitioned into two disjoint subsets $A$ and $B$ such that $convex(A)\cap convex(B)\neq \empty$.</p>
-<p><strong>Proof</strong> Assume $|S|=d+2$. Form a $d\times (d+2)$ matrix $A$ with one column for each point of $S$. Add an extra row of all 1’s to construct a $(d+1)\times (d+2)$ matrix $B$. Say $x=(x_1,\cdots,x_{d+2})$ is a non-zero vector with $Bx=0$. Reorder the columns so that $x_1,\cdots,x_s\ge 0$ and $x_{s+1},\cdots,x_{d+2}&lt;0$. Normalize $x$ so $\sum_{i=1}^s|x_i|=1$. Let $a_i$ be the $i^{th}$ column of $A$. Then, $\sum_{i=1}^s|x_i|a_i=\sum_{i=s+1}^{d+2}|x_i|a_i$ and $\sum_{i=1}^s|x_i|=\sum_{i=s+1}^{d+2}|x_i|$. Since $\sum_{i=1}^s|x_i|=\sum_{i=s+1}^{d+2}|x_i|=1$, each side of $\sum_{i=1}^s|x_i|a_i=\sum_{i=s+1}^{d+2}|x_i|a_i$ is a convex combination of columns of $A$, which proves the theorem.</p>
-<h2 id="Shatter-Function-for-Set-Systems-of-Bounded-VC-Dimension"><a href="#Shatter-Function-for-Set-Systems-of-Bounded-VC-Dimension" class="headerlink" title="Shatter Function for Set Systems of Bounded VC-Dimension"></a>Shatter Function for Set Systems of Bounded VC-Dimension</h2><p>For a set system $(X,\mathcal{H})$, the shatter function $\pi_{\mathcal{H}}(n)$ is the maximum number of subsets of any set $A$ of size $n$ that can be expressed as $A\cap h$ for $h$ in $\mathcal{H}$. The function $\pi_{\mathcal{H}}(n)$ equals $2^n$ for $n$ less than or equal to the VC-dimension of $\mathcal{H}$. Define</p>
-<script type="math/tex; mode=display">
-\binom{n}{\le d}=\binom{n}{0}+\cdots+\binom{n}{d}\le n^d+1</script><p>The inequality holds because to choose between $1$ and $d$ elements out of $n$, for each position there are $n$ possible items if we allow duplicates. The $1$ is for $\binom{n}{0}$.</p>
-<h4 id="Lemma-5-10-Sauer"><a href="#Lemma-5-10-Sauer" class="headerlink" title="Lemma 5.10 (Sauer)"></a>Lemma 5.10 (Sauer)</h4><p>For any set system $(X,\mathcal{H})$ of VC-dimension at most $d$, $\pi_{\mathcal{H}}(n)\le \binom{n}{\le d}$ for all $n$.</p>
-<h2 id="VC-Dimension-of-Combinations-of-Concepts"><a href="#VC-Dimension-of-Combinations-of-Concepts" class="headerlink" title="VC-Dimension of Combinations of Concepts"></a>VC-Dimension of Combinations of Concepts</h2><p>Let $(X,\mathcal{H}_1)$ and $(X,\mathcal{H}_2)$ be two set systems. Define intersection system $(X,\mathcal{H}_1\cap \mathcal{H}_2)$, where $\mathcal{H}_1\cap \mathcal{H}_2=\{h_1\cap h_2|h_1\in \mathcal{H}_1,h_2\in\mathcal{H}_2\}$.</p>
-<h4 id="Lemma-5-11"><a href="#Lemma-5-11" class="headerlink" title="Lemma 5.11"></a>Lemma 5.11</h4><p>Suppose $(X,\mathcal{H}_1)$ and $(X,\mathcal{H}_2)$ are two set systems on the same set $X$. Then</p>
-<script type="math/tex; mode=display">
-\pi_{\mathcal{H}_1\cap \mathcal{H}_2}(n)\le \pi_{\mathcal{H}_1}(n)\pi_{\mathcal{H}_2}(n)</script><p><strong>Proof</strong> Let $A\subset X$ and $\mathcal{S}=\{A\cap h|h\in \mathcal{H}_1\cap\mathcal{H}_2\}$. Let $h=h_1\cap h_2$. Then $A\cap h=(A\cap h_1)\cap (A\cap h_2)$. Therefore, $|S|\le |\{A\cap h_1|h_1\in \mathcal{H}_1\}|\cdot |\{A\cap h_2|h_2\in \mathcal{H}_2\}|$, as desired.</p>
-<h2 id="The-Key-Theorem"><a href="#The-Key-Theorem" class="headerlink" title="The Key Theorem"></a>The Key Theorem</h2><h4 id="Theorem-5-14"><a href="#Theorem-5-14" class="headerlink" title="Theorem 5.14"></a>Theorem 5.14</h4><p>Let $(X,\mathcal{H})$ be a set system, $D$ a probability distribution over $X$, and let $n$ be an integer satisfying</p>
-<script type="math/tex; mode=display">
-n\ge \frac{2}{\epsilon}\left[\log_22\pi_{\mathcal{H}}(2n)+\log_2\frac{1}{\delta}\right]</script><p>Let $S_1$ consists of $n$ points drawn from $D$. With probability greater than or equal to $1-\delta$, every set in $\mathcal{H}$ of probability mass greater than $\epsilon$ intersects $S_1$.</p>
-<p><strong>Proof</strong> Let $A$ be the event that there exists a set $h$ in $\mathcal{H}$ of probability mass greater than or equal to $\epsilon$ that is disjoint from $S_1$. Draw a second set $S_2$ of $n$ points from $D$. Let $B$ be the event that there exists $h$ in $\mathcal{H}$ that is disjoint from $S_1$ but that contains at least $\frac{\epsilon}{2}n$ points in $S_2$. </p>
-<p>By Chebyshev, $\Pr[B|A]\ge\frac{1}{2}$. This means that</p>
-<script type="math/tex; mode=display">
-\Pr[B]\ge\Pr[A,B]=\Pr[B|A]\Pr[A]\ge\frac{1}{2}\Pr[A]</script><p>Therefore, it suffices to prove that $\Pr[B]\le\frac{\delta}{2}$. Consider a second way of picking $S_1$ and $S_2$. Draw a random set $S_3$ of $2n$ points from $D$, and then randomly partition $S_3$ into two equal pieces $S_1$ and $S_2$. </p>
-<p>Consider the point in time after $S_3$ has been drawn but before it has been randomly partitioned. $\mathcal{H}$ has at most $\pi_{\mathcal{H}}(2n)$ distinct intersections with $S_3$. To prove that $\Pr[B]\le\frac{\delta}{2}$, it is sufficient to prove that for any $h’\subseteq S_3$, the probability that $|S_1\cap h’|=0$ but $|S_2\cap h’|\ge\frac{\epsilon}{2}n$ is at most $\frac{\delta}{2\pi_{\mathcal{H}}(2n)}$.</p>
-<p>Note that if $h’$ contains fewer than $\frac{\epsilon}{2}n$ points, it is impossible to have $S_2\cap h’\ge\frac{\epsilon}{2}n$. For $h’$ larger than $\frac{\epsilon}{2}n$, the probability that none of the points in $h’$ fall into $S_1$ is at most $(\frac{1}{2})^{\epsilon n/2}$ (negative correlation). Plugging in our bound on $n$ get the desired result.</p>
-<h1 id="VC-dimension-and-Machine-Learning"><a href="#VC-dimension-and-Machine-Learning" class="headerlink" title="VC-dimension and Machine Learning"></a>VC-dimension and Machine Learning</h1><p>We have a target concept $c^<em>$ and a set of hypotheses $\mathcal{H}$. Let $\mathcal{H}’=\{h\Delta c^</em>|h\in \mathcal{H}\}$ be the collection of error regions of hypotheses in $\mathcal{H}$, where $\Delta$ refers to symmetry difference. Note that $\mathcal{H}’$ and $\mathcal{H}$ have the same VC-dimension and shatter function.</p>
-<h4 id="Theorem-5-15-sample-bound"><a href="#Theorem-5-15-sample-bound" class="headerlink" title="Theorem 5.15 (sample bound)"></a>Theorem 5.15 (sample bound)</h4><p>For any class $\mathcal{H}$ and distribution $D$, if a training sample $S$ is drawn from $D$ of size</p>
-<script type="math/tex; mode=display">
-n\ge\frac{2}{\epsilon}\left[\log(2\pi_{\mathcal{H}}(2n))+\log\frac{1}{\delta}\right]</script><p>then with probability greater than or equal to $1-\delta$, every $h\in\mathcal{H}$ with true error $err_D(h)\ge\epsilon$ has $err_S(h)&gt;0$.</p>
-<p><strong>Proof</strong> The proof follows from Theorem 5.14 applied to $\mathcal{H}’$.</p>
-<h1 id="Online-Learning"><a href="#Online-Learning" class="headerlink" title="Online Learning"></a>Online Learning</h1>]]></content>
-      <categories>
-        <category>Algorithm</category>
-      </categories>
-      <tags>
-        <tag>Machine Learning</tag>
-        <tag>Test</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/1970/01/01/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is yur very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><p>$haha$.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>【论文阅读】Optimal Advertising for Information Products</title>
-    <url>/2021/12/09/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Optimal%20Advertising%20for%20Information%20Products/</url>
-    <content><![CDATA[<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>这篇是发表在 EC21 上的文章。考虑的情形是有一个不可知的状态，买家能够选择一个行动，其收益取决于状态和行动。卖家知道真实的状态，想要将状态信息出售给买家。为了让买家愿意付钱购买，卖家可以先免费透露部分信息给买家，改变其对状态的估计，从而让其购买状态信息。买家和卖家都想最大化自己的收益。论文里讨论了卖家的最优机制设计问题，通过优化的角度，给出了特殊情形下问题的解法，同时证明了一般情形下该问题是 NP 难的。</p>
-<p>由于论文里涉及到较多凸优化的知识，所以只读懂了一部分。希望等之后学了凸优化之后再来补坑。</p>
-<span id="more"></span>
-<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>在生活中有很多这样的例子：例如电影院通过预告片让一些人对电影产生更大的兴趣。注意到虽然提前透露部分信息会让卖家拥有的私有信息量减少，却能让一些人对信息产品产生兴趣，因此来获得更高的收益。</p>
-<p>跟传统模型的差别：贝叶斯说服（Bayesian persuasion）中，卖家只考虑买家采取的动作；该模型中卖家还需要考虑具体的收益，即买家付的钱。传统的商品拍卖中，透露信息并不会改变商品本身；该模型中，透露信息会减少卖家包含的私有信息量，即商品的品质。</p>
-<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>考虑状态 $\omega\in \Omega=\{1,\cdots,n\}$，其服从概率分布 $\mu(\omega)$，其中 $\mu$ 是公有信息。具体状态只有卖家能看到，买家对状态的概率分布有一个自己的估计 $\theta\in \Theta\subseteq \Delta\Omega$。买家可以选择一个行动 $a\in A$。若选择了行动 $a$ 且状态为 $\omega$，其收益为 $u(\omega,a)$。</p>
-<p>买家必须提前公布自己的广告机制。具体来说，广告机制的定义为</p>
-<h4 id="Definition-2-1-Advertising-Rule"><a href="#Definition-2-1-Advertising-Rule" class="headerlink" title="Definition 2.1 (Advertising Rule)"></a>Definition 2.1 (Advertising Rule)</h4><p>广告机制 $\langle S,\pi,\{p_s:s\in S\}\rangle$ 包括</p>
-<ul>
-<li>有限大小的信号集合 $S$。</li>
-<li>$\pi:\Omega\to \Delta S$ 是信号发送机制，即观测到某一个状态后，以特定的概率分布去发送信号。</li>
-<li>$\{p_s:s\in S\}$ 表示收到信号 $s$ 后，买家可以选择以 $p_s$ 的价格购买具体状态信息。</li>
-</ul>
-<p>那么卖家在观测到状态 $\omega$ 后，先以 $\pi(\omega,s)$ 的概率发送信号 $s$。买家可以选择不买具体的状态信息，也可以选择以 $p_s$ 的价格购买。</p>
-<hr>
-<p>注意到若买家对状态的估计是 $\theta=(\theta_1,\cdots,\theta_n)$，那么在收到信号 $s$ 后，其估计会变为</p>
-<script type="math/tex; mode=display">
-\eta^s(\theta)=\frac{(\theta_1\pi(1,s),\cdots,\theta_n\pi(n,s))}{\sum_{\omega=1}^n\theta_\omega\pi(\omega,s)}</script><p>那么买家愿意为购买真实信息付的钱，不超过他知道真实状态 $\omega$ 后的收益减去估计是 $\eta^s(\theta)$ 时的期望收益。具体来说：</p>
-<h4 id="Definition-2-2-Cost-of-Uncertainty"><a href="#Definition-2-2-Cost-of-Uncertainty" class="headerlink" title="Definition 2.2 (Cost of Uncertainty)"></a>Definition 2.2 (Cost of Uncertainty)</h4><p>假设买家的收益函数为 $u(\omega,a)$，估计为 $\eta=(\eta_1,\cdots,\eta_n)\in \Delta \Omega$，定义不确定花费为买家不知道真实状态带来的期望损失：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-C(\eta)&=E_{\omega\sim \eta}[\max_{a\in A}u(\omega,a)]-\max_{a\in A}E_{\omega\sim \eta}[u(\omega,a)]\\
-&=\sum_{\omega=1}^n\eta_{\omega}\max_{a\in A}u(\omega,a)-\max_{a\in A}\sum_{\omega=1}^n\eta_{\omega}u(\omega,a)\\
-&=\min_aC_a(\eta)
-\end{aligned}</script><p>其中 $C_a(\eta)=\sum_{\omega=1}^n\eta_\omega(\max_{a’\in A}u(\omega,a’)-u(\omega,a))$ 是关于 $\eta$ 的线性函数，表示采取行动 $a$ 后带来的损失。注意到 $C(\eta)$ 是 $|A|$ 个线性函数的 $\min$，那么 $C(\eta)$ 是一个凹函数。</p>
-<hr>
-<p>当买家收到信号 $s$ 后，他愿意购买状态信息当且仅当 $C(\eta^s(\theta))\ge p_s$，即购买后能带来非负的收益。</p>
-<p>我们假设卖家知道买家状态的概率分布 $\mu(\theta|\omega)$，那么选择了广告机制 $\langle S,\pi,\{p_s:s\in S\}\rangle$ 后，其期望收益为</p>
-<script type="math/tex; mode=display">
-\sum_{\omega\in \Omega}\mu(\omega)\sum_{\theta\in \Theta}\mu(\theta|\omega)\sum_{s\in S}\pi(\omega,s)\cdot p_s\cdot 1(C(\eta^2(\theta))\ge p_s)</script><p>卖家的目标是找到广告机制来最大化自身期望收益。</p>
-<h1 id="Single-Buyer-Type"><a href="#Single-Buyer-Type" class="headerlink" title="Single Buyer Type"></a>Single Buyer Type</h1><p>首先考虑买家的状态 $\theta$ 是固定的情况。</p>
-<h2 id="Concave-Closure-Formulation"><a href="#Concave-Closure-Formulation" class="headerlink" title="Concave Closure Formulation"></a>Concave Closure Formulation</h2><h4 id="Definition-3-1-Likelihood-ratio"><a href="#Definition-3-1-Likelihood-ratio" class="headerlink" title="Definition 3.1 (Likelihood ratio)"></a>Definition 3.1 (Likelihood ratio)</h4><p>若买家的估计为 $\theta\in \Delta\Omega$，定义其似然比为</p>
-<script type="math/tex; mode=display">
-R(\eta)=\sum_\omega\frac{\mu_{\omega}\cdot\eta_{\omega}}{\theta_{\omega}}</script><hr>
-<p>注意到我们假设 $\theta_\omega&gt;0$ 对所有 $\omega$ 成立。</p>
-<p>这里可能不太清楚这个定义有什么用，但后面可以看到，我们要优化的函数将会是 $R(\eta)$ 和不确定花费 $C(\eta)$ 的乘积。</p>
-<h4 id="Proposition-3-1"><a href="#Proposition-3-1" class="headerlink" title="Proposition 3.1"></a>Proposition 3.1</h4><p>若买家的类型 $\theta$ 是固定的，那么卖家的最优期望收益等于函数</p>
-<script type="math/tex; mode=display">
-f(\eta)=R(\eta)\cdot C(\eta)</script><p>在点 $\theta$ 处的凹闭包（concave closure）。形式化描述，就是找最优广告机制等价于如下优化问题：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\max_{S,\eta,\phi}&\sum_{s\in S}\phi_s\cdot R(\eta^s)C(\eta^s)\\
-s.t.&\sum_{s\in S}\phi_s\cdot \eta^s=\theta\\
-& \phi_s\ge 0,\eta^s\in \Delta \Omega,\forall s
-\end{aligned}</script><p>这里 $\phi_s$ 可以看成是按照买家的观测 $\theta$ 来计算，其收到信号 $s$ 的概率是多少。即 $\phi_s=\sum_\omega\theta_\omega\pi(\omega,s)$。</p>
-<p><strong>证明</strong> 首先注意到，当 $S$ 和 $\pi$ 都固定时，$p_s=C(\eta^s)$ 必然是最优策略。令 $\phi_\mu(s)=\sum_{\omega}\mu_\omega\pi(\omega,s)$ 表示卖家发送信号 $s$ 的概率，那么寻找最大收益策略可以形式化为</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\max_{S,\pi}&\sum_{s\in S}\phi_\mu(s)\cdot C(\eta^s)\\
-s.t.&\sum_{s\in S}\pi(\omega,s)=1,\quad \forall \omega\\
-& \pi(\omega,s)\ge 0,\quad \quad \forall \omega,s
-\end{aligned}\tag{1}</script><p>令 $\phi_\theta(s)=\sum_{\omega}\pi(\omega,s)$。注意到 $\mu$ 和 $\theta$ 都是已知的，并且 $\pi(\omega,s)/(\sum_\omega\theta_\omega\pi(\omega,s))=\eta^s_{\omega}/\theta_\omega$ 可以定义</p>
-<script type="math/tex; mode=display">
-R(\eta^s)=\frac{\phi_{\mu}(s)}{\phi_{\theta}(s)}=\frac{\sum_{\omega}\mu_{\omega}\pi(\omega,s)}{\sum_\omega\theta_\omega\pi(\omega,s)}=\sum_\omega\mu_\omega\cdot\frac{\eta^s_{\omega}}{\theta_\omega}</script><p>也就是之前提到的似然比函数。因此目标函数就变为</p>
-<script type="math/tex; mode=display">
-\sum_{s\in S}\phi_{\theta}(s)\cdot R(\eta^s)C(\eta^s)</script><p>同时限制 $\sum_{s\in S}\pi(\omega,s)=1,\pi(\omega,s)\ge 0$ 就等价于</p>
-<script type="math/tex; mode=display">
-\sum_{s\in S}\phi_{\theta}(s)\cdot \eta^s=\theta,\quad \phi_\theta(s)\ge 0,\eta^s\in \Delta\Omega,\forall s</script><hr>
-<p>注意到最优策略就是</p>
-<script type="math/tex; mode=display">
-\pi(\omega,s)=\frac{\phi_s\cdot\eta_\omega^s}{\theta_\omega},\quad p_s=C(\eta^s)</script><p>在 $\theta=\mu$ 的特殊情形下，$R(\eta)$ 的值始终是 $1$。因此最优策略的收益就是 $f(\eta)=C(\eta)$ 的凹闭包。由于 $C(\eta)$ 是凹函数，且凹函数的凹闭包等于其本身，因此最优策略满足</p>
-<script type="math/tex; mode=display">
-S=\{s\},\quad \phi_s=1,\quad \eta^s=\theta</script><p>即卖家不透露任何信息。</p>
-<p>但一般情况下 $f(\eta)=C(\eta)R(\eta)$ 并不是一个凹函数，因此求解起来有比较大的困难。具体来说：</p>
-<h4 id="Theorem-3-1"><a href="#Theorem-3-1" class="headerlink" title="Theorem 3.1"></a>Theorem 3.1</h4><p>当买家的类型 $\theta$ 固定时，求解最优的策略是 NP 难问题。</p>
-<p>（这部分证明还没看懂）</p>
-<h2 id="Properties-of-the-Optimal-Mechanism"><a href="#Properties-of-the-Optimal-Mechanism" class="headerlink" title="Properties of the Optimal Mechanism"></a>Properties of the Optimal Mechanism</h2><p>这部分证明了最优策略的一些性质，简化了最优机制的求解问题。由于最优机制中 $p_s$ 可由 $S$ 和 $\pi$ 确定，把机制简化为 $\langle S,\pi\rangle$。</p>
-<h4 id="Lemma-3-1"><a href="#Lemma-3-1" class="headerlink" title="Lemma 3.1"></a>Lemma 3.1</h4><p>存在一个最优策略 $\langle S,\pi\rangle$ 满足 $|S|\le n=|\Omega|$。</p>
-<p><strong>证明</strong> 假设 $\langle S,\pi\rangle$ 是最优机制，其中 $S=\{s_1,\cdots,s_k\}$ 且 $k&gt;n$。简写 $\eta^{(i)}=\eta^{s_i}$ 和 $\phi^{(i)}=\phi_{\theta}(s_i)$。不妨设 $\phi^{(i)}&gt;0$ 对所有 $i$ 成立。由 $k&gt;n$ 可知存在向量 $\alpha$ 满足</p>
-<script type="math/tex; mode=display">
-\alpha_1\eta^{(1)}+\cdots+\alpha_k\eta^{(k)}=0</script><p>不妨设 $\alpha_1\neq 0$，有</p>
-<script type="math/tex; mode=display">
-\eta^{(1)}=-\frac{\alpha_2}{\alpha_1}\eta^{(2)}-\cdots-\frac{\alpha_k}{\alpha_1}\eta^{(k)}</script><p>对于很小的 $\delta$，如果把 $\phi^{(1)}$ 减去 $\delta$，把其他的每个 $\phi^{(i)}$ 加上 $-\frac{\alpha_i}{\alpha_1}\delta$，那么优化问题 $(1)$ 中的限制仍然是满足的。可以通过不断进行该操作直到某个 $\phi^{(i)}$ 变为 $0$，然后把 $s_i$ 扔掉。还需要证明这样操作后不会降低目标函数的值，即证对于 $f(x)=R(x)C(x)$，有</p>
-<script type="math/tex; mode=display">
-f(\eta^{(1)})=-\frac{\alpha_2}{\alpha_1}f(\eta^{(2)})-\cdots-\frac{\alpha_k}{\alpha_1}f(\eta^{(k)})</script><p>若不成立，假如等式左边小于右边，考虑用 $-\frac{\alpha_2}{\alpha_1}\eta^{(2)}-\cdots-\frac{\alpha_k}{\alpha_1}\eta^{(k)}$ 替换 $\eta^{(1)}$，即让 $\phi^{(i)’}=\phi^{(i)}-\frac{\alpha_i}{\alpha_1}\phi^{(1)}$，得到的策略仍然能够满足限制，并使得目标函数变得更大，就跟原来策略的最优性矛盾。大于的情况同理。</p>
-<hr>
-<p>定义</p>
-<script type="math/tex; mode=display">
-\mathcal{P}_a=\{\eta\in\Delta\Omega:C_a(\eta)\le C_{a'}(\eta),\forall a'\}</script><p>当买家的观测在 $\mathcal{P}_a$ 中时，$C(\eta)=C_a(\eta)$，即选择动作 $a$ 是其最优策略。</p>
-<p>考虑函数 $g(x,y)=xy$ 和沿着某个方向 $d=(d_x,d_y)$ 得到的函数 $h(t)=g(x_0+td_x,y_0+td_y)$，注意到 $h(t)$ 在任意点 $(x_0,y_0)$ 处的二阶导都等于 $2d_xd_y$。当方向的斜率为正时 $d_xd_y&gt;0$，此时 $h(t)$ 是严格凸函数；同理方向斜率为负时 $h(t)$ 是严格凹函数。</p>
-<p>有如下定理：</p>
-<h4 id="Lemma-3-2"><a href="#Lemma-3-2" class="headerlink" title="Lemma 3.2"></a>Lemma 3.2</h4><p>令 $\langle S,\pi\rangle$ 是最优广告机制。对于 $s\in S$ 满足 $\phi_s&gt;0$ 且 $\eta^s\in \mathcal{P}_a$，定义 $\mathcal{Q}_a=\{(R(\eta),C(\eta)):\eta\in \mathcal{P}_a\}$。那么 $(R(\eta^s),C(\eta^s))$ 在 $\mathcal{Q}_a$ 中必定不能被沿着正斜率方向分解，即不存在 $\eta^{(1)},\eta^{(2)}\in \mathcal{P}_a$ 满足</p>
-<script type="math/tex; mode=display">
-\eta^s=\alpha\eta^{(1)}+(1-\alpha)\eta^{(2)},\quad \alpha\in (0,1)</script><p>并且</p>
-<script type="math/tex; mode=display">
-(R(\eta^s)-R(\eta^{(1)}))(C(\eta^{s})-C(\eta^{(1)}))>0</script><p>即最优机制中的 $(R(\eta^s),C(\eta^s))$ 一定位于 $\mathcal{Q}_a$ 的边界上。</p>
-<p><strong>证明</strong> 假设存在 $\eta^{(1)},\eta^{(2)}\in \mathcal{P}_a$ 满足条件，由于 $R(\eta)$ 和 $C(\eta)$ 在 $\mathcal{P}_a$ 上都是线性函数，必然有</p>
-<script type="math/tex; mode=display">
-(R(\eta^s),C(\eta^s))=\alpha(R(\eta^{(1)}),C(\eta^{(1)}))+(1-\alpha)(R(\eta^{(2)}),C(\eta^{(2)}))</script><p>由于 $(R(\eta^s),C(\eta^s)),(R(\eta^{(1)}),C(\eta^{(1)})),(R(\eta^{(2)}),C(\eta^{(2)}))$ 在斜率为正的直线上，且 $g(x,y)=xy$ 在该方向上为严格图函数，可知把 $\eta^s$ 用 $\eta^{(1)}$ 和 $\eta^{(2)}$ 替换后，能够使目标函数 $f(\eta)=R(\eta)C(\eta)$ 增加，与最优性矛盾。</p>
-<h4 id="Lemma-3-3"><a href="#Lemma-3-3" class="headerlink" title="Lemma 3.3"></a>Lemma 3.3</h4><p>最优广告机制 $\langle S,\pi\rangle$ 不会发送两个信号 $s,t\in S$ 满足 $\phi_s,\phi_t&gt;0$ 且</p>
-<script type="math/tex; mode=display">
-(R(\eta^s)-R(\eta^t))(C(\eta^s)-C(\eta^t))<0</script><p><strong>证明</strong> 否则若将 $s$ 和 $t$ 合并成一个信号 $v$ 满足</p>
-<script type="math/tex; mode=display">
-\pi(\omega,v)=\pi(\omega,s)+\pi(\omega,t),\quad\forall \omega</script><p>容易验证</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-&\phi_\theta(v)=\phi_\theta(s)+\phi_\theta(t)\\
-&\eta^v=\frac{\phi_\theta(s)}{\phi_\theta(v)}\cdot\eta^s+\frac{\phi_\theta(t)}{\phi_\theta(v)}\cdot\eta^t\\
-&R(\eta^v)=\frac{\phi_\theta(s)}{\phi_\theta(v)}\cdot R(\eta^s)+\frac{\phi_\theta(t)}{\phi_\theta(v)}\cdot R(\eta^t)
-\end{aligned}</script><p>卖家期望收益的增量为</p>
-<script type="math/tex; mode=display">
-\phi_\theta(v)R(\eta^v)C(\eta^v)-\phi_\theta(s)R(\eta^s)C(\eta^s)-\phi_\theta(t)R(\eta^t)C(\eta^t)</script><p>根据 $R$ 为线性函数，$C$ 为凹函数将 $R(\eta^v)$ 和 $C(\eta^v)$ 分别展开，计算可知等于</p>
-<script type="math/tex; mode=display">
--\frac{\phi_\theta(s)\phi_\theta(t)}{\phi_\theta(v)}\cdot(R(\eta^s)-R(\eta^t))(C(\eta^s)-C(\eta^t))>0</script><p>与最优性矛盾。</p>
-<h2 id="Optimal-Mechanism-by-Convex-Program"><a href="#Optimal-Mechanism-by-Convex-Program" class="headerlink" title="Optimal Mechanism by Convex Program"></a>Optimal Mechanism by Convex Program</h2><p>我们知道了在最优机制中，$(R(\eta^s),C(\eta^s))$ 一定在 $\mathcal{Q}_q$ 的边界上。一个猜测是 $\eta^s$ 位于 $\mathcal{P}_a$ 的边界上。接下来考虑 $\eta^s$ 跟 $\mathcal{P}_a$ 的关系。定义 $\mathcal{H}_a$ 是多面体 $\mathcal{P}_a$ 的顶点集合。</p>
-<h4 id="Lemma-3-4"><a href="#Lemma-3-4" class="headerlink" title="Lemma 3.4"></a>Lemma 3.4</h4><p>存在一个最优广告机制 $\langle S,\pi\rangle$ 满足每个 $\eta^s$ 都在某个 $\mathcal{H}_a$ 中的两个点之间的线段上。即对于任意 $s\in S$，存在 $\beta\in [0,1]$ 和 $i,j\in \mathcal{H}_a$，使得</p>
-<script type="math/tex; mode=display">
-\eta^s=\beta\cdot i+(1-\beta)\cdot j</script><p>且有</p>
-<script type="math/tex; mode=display">
-(R(i)-R(j))(C(i)-C(j))\le 0</script><p>且对于每一对 $i,j$，仅有唯一个 $\eta^s$ 位于 $i,j$ 之间的线段上。</p>
-<hr>
-<p>该引理的证明较为复杂。</p>
-]]></content>
-      <categories>
-        <category>Paper Reading</category>
-      </categories>
-      <tags>
-        <tag>Information Design</tag>
-        <tag>Convex Optimization</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【笔记】凸优化1</title>
     <url>/2021/12/11/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E5%87%B8%E4%BC%98%E5%8C%961/</url>
     <content><![CDATA[<p>b站凌青老师凸优化课程1-6课笔记。</p>
@@ -361,6 +133,130 @@ x^T(\theta_1A+\theta_2B)x=x^T\theta_1Ax+x^T\theta_2Bx\ge 0</script><p>因此 $S_
       </tags>
   </entry>
   <entry>
+    <title>【论文阅读】Optimal Advertising for Information Products</title>
+    <url>/2021/12/09/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Optimal%20Advertising%20for%20Information%20Products/</url>
+    <content><![CDATA[<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>这篇是发表在 EC21 上的文章。考虑的情形是有一个不可知的状态，买家能够选择一个行动，其收益取决于状态和行动。卖家知道真实的状态，想要将状态信息出售给买家。为了让买家愿意付钱购买，卖家可以先免费透露部分信息给买家，改变其对状态的估计，从而让其购买状态信息。买家和卖家都想最大化自己的收益。论文里讨论了卖家的最优机制设计问题，通过优化的角度，给出了特殊情形下问题的解法，同时证明了一般情形下该问题是 NP 难的。</p>
+<p>由于论文里涉及到较多凸优化的知识，所以只读懂了一部分。希望等之后学了凸优化之后再来补坑。</p>
+<span id="more"></span>
+<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>在生活中有很多这样的例子：例如电影院通过预告片让一些人对电影产生更大的兴趣。注意到虽然提前透露部分信息会让卖家拥有的私有信息量减少，却能让一些人对信息产品产生兴趣，因此来获得更高的收益。</p>
+<p>跟传统模型的差别：贝叶斯说服（Bayesian persuasion）中，卖家只考虑买家采取的动作；该模型中卖家还需要考虑具体的收益，即买家付的钱。传统的商品拍卖中，透露信息并不会改变商品本身；该模型中，透露信息会减少卖家包含的私有信息量，即商品的品质。</p>
+<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>考虑状态 $\omega\in \Omega=\{1,\cdots,n\}$，其服从概率分布 $\mu(\omega)$，其中 $\mu$ 是公有信息。具体状态只有卖家能看到，买家对状态的概率分布有一个自己的估计 $\theta\in \Theta\subseteq \Delta\Omega$。买家可以选择一个行动 $a\in A$。若选择了行动 $a$ 且状态为 $\omega$，其收益为 $u(\omega,a)$。</p>
+<p>买家必须提前公布自己的广告机制。具体来说，广告机制的定义为</p>
+<h4 id="Definition-2-1-Advertising-Rule"><a href="#Definition-2-1-Advertising-Rule" class="headerlink" title="Definition 2.1 (Advertising Rule)"></a>Definition 2.1 (Advertising Rule)</h4><p>广告机制 $\langle S,\pi,\{p_s:s\in S\}\rangle$ 包括</p>
+<ul>
+<li>有限大小的信号集合 $S$。</li>
+<li>$\pi:\Omega\to \Delta S$ 是信号发送机制，即观测到某一个状态后，以特定的概率分布去发送信号。</li>
+<li>$\{p_s:s\in S\}$ 表示收到信号 $s$ 后，买家可以选择以 $p_s$ 的价格购买具体状态信息。</li>
+</ul>
+<p>那么卖家在观测到状态 $\omega$ 后，先以 $\pi(\omega,s)$ 的概率发送信号 $s$。买家可以选择不买具体的状态信息，也可以选择以 $p_s$ 的价格购买。</p>
+<hr>
+<p>注意到若买家对状态的估计是 $\theta=(\theta_1,\cdots,\theta_n)$，那么在收到信号 $s$ 后，其估计会变为</p>
+<script type="math/tex; mode=display">
+\eta^s(\theta)=\frac{(\theta_1\pi(1,s),\cdots,\theta_n\pi(n,s))}{\sum_{\omega=1}^n\theta_\omega\pi(\omega,s)}</script><p>那么买家愿意为购买真实信息付的钱，不超过他知道真实状态 $\omega$ 后的收益减去估计是 $\eta^s(\theta)$ 时的期望收益。具体来说：</p>
+<h4 id="Definition-2-2-Cost-of-Uncertainty"><a href="#Definition-2-2-Cost-of-Uncertainty" class="headerlink" title="Definition 2.2 (Cost of Uncertainty)"></a>Definition 2.2 (Cost of Uncertainty)</h4><p>假设买家的收益函数为 $u(\omega,a)$，估计为 $\eta=(\eta_1,\cdots,\eta_n)\in \Delta \Omega$，定义不确定花费为买家不知道真实状态带来的期望损失：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+C(\eta)&=E_{\omega\sim \eta}[\max_{a\in A}u(\omega,a)]-\max_{a\in A}E_{\omega\sim \eta}[u(\omega,a)]\\
+&=\sum_{\omega=1}^n\eta_{\omega}\max_{a\in A}u(\omega,a)-\max_{a\in A}\sum_{\omega=1}^n\eta_{\omega}u(\omega,a)\\
+&=\min_aC_a(\eta)
+\end{aligned}</script><p>其中 $C_a(\eta)=\sum_{\omega=1}^n\eta_\omega(\max_{a’\in A}u(\omega,a’)-u(\omega,a))$ 是关于 $\eta$ 的线性函数，表示采取行动 $a$ 后带来的损失。注意到 $C(\eta)$ 是 $|A|$ 个线性函数的 $\min$，那么 $C(\eta)$ 是一个凹函数。</p>
+<hr>
+<p>当买家收到信号 $s$ 后，他愿意购买状态信息当且仅当 $C(\eta^s(\theta))\ge p_s$，即购买后能带来非负的收益。</p>
+<p>我们假设卖家知道买家状态的概率分布 $\mu(\theta|\omega)$，那么选择了广告机制 $\langle S,\pi,\{p_s:s\in S\}\rangle$ 后，其期望收益为</p>
+<script type="math/tex; mode=display">
+\sum_{\omega\in \Omega}\mu(\omega)\sum_{\theta\in \Theta}\mu(\theta|\omega)\sum_{s\in S}\pi(\omega,s)\cdot p_s\cdot 1(C(\eta^2(\theta))\ge p_s)</script><p>卖家的目标是找到广告机制来最大化自身期望收益。</p>
+<h1 id="Single-Buyer-Type"><a href="#Single-Buyer-Type" class="headerlink" title="Single Buyer Type"></a>Single Buyer Type</h1><p>首先考虑买家的状态 $\theta$ 是固定的情况。</p>
+<h2 id="Concave-Closure-Formulation"><a href="#Concave-Closure-Formulation" class="headerlink" title="Concave Closure Formulation"></a>Concave Closure Formulation</h2><h4 id="Definition-3-1-Likelihood-ratio"><a href="#Definition-3-1-Likelihood-ratio" class="headerlink" title="Definition 3.1 (Likelihood ratio)"></a>Definition 3.1 (Likelihood ratio)</h4><p>若买家的估计为 $\theta\in \Delta\Omega$，定义其似然比为</p>
+<script type="math/tex; mode=display">
+R(\eta)=\sum_\omega\frac{\mu_{\omega}\cdot\eta_{\omega}}{\theta_{\omega}}</script><hr>
+<p>注意到我们假设 $\theta_\omega&gt;0$ 对所有 $\omega$ 成立。</p>
+<p>这里可能不太清楚这个定义有什么用，但后面可以看到，我们要优化的函数将会是 $R(\eta)$ 和不确定花费 $C(\eta)$ 的乘积。</p>
+<h4 id="Proposition-3-1"><a href="#Proposition-3-1" class="headerlink" title="Proposition 3.1"></a>Proposition 3.1</h4><p>若买家的类型 $\theta$ 是固定的，那么卖家的最优期望收益等于函数</p>
+<script type="math/tex; mode=display">
+f(\eta)=R(\eta)\cdot C(\eta)</script><p>在点 $\theta$ 处的凹闭包（concave closure）。形式化描述，就是找最优广告机制等价于如下优化问题：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\max_{S,\eta,\phi}&\sum_{s\in S}\phi_s\cdot R(\eta^s)C(\eta^s)\\
+s.t.&\sum_{s\in S}\phi_s\cdot \eta^s=\theta\\
+& \phi_s\ge 0,\eta^s\in \Delta \Omega,\forall s
+\end{aligned}</script><p>这里 $\phi_s$ 可以看成是按照买家的观测 $\theta$ 来计算，其收到信号 $s$ 的概率是多少。即 $\phi_s=\sum_\omega\theta_\omega\pi(\omega,s)$。</p>
+<p><strong>证明</strong> 首先注意到，当 $S$ 和 $\pi$ 都固定时，$p_s=C(\eta^s)$ 必然是最优策略。令 $\phi_\mu(s)=\sum_{\omega}\mu_\omega\pi(\omega,s)$ 表示卖家发送信号 $s$ 的概率，那么寻找最大收益策略可以形式化为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\max_{S,\pi}&\sum_{s\in S}\phi_\mu(s)\cdot C(\eta^s)\\
+s.t.&\sum_{s\in S}\pi(\omega,s)=1,\quad \forall \omega\\
+& \pi(\omega,s)\ge 0,\quad \quad \forall \omega,s
+\end{aligned}\tag{1}</script><p>令 $\phi_\theta(s)=\sum_{\omega}\pi(\omega,s)$。注意到 $\mu$ 和 $\theta$ 都是已知的，并且 $\pi(\omega,s)/(\sum_\omega\theta_\omega\pi(\omega,s))=\eta^s_{\omega}/\theta_\omega$ 可以定义</p>
+<script type="math/tex; mode=display">
+R(\eta^s)=\frac{\phi_{\mu}(s)}{\phi_{\theta}(s)}=\frac{\sum_{\omega}\mu_{\omega}\pi(\omega,s)}{\sum_\omega\theta_\omega\pi(\omega,s)}=\sum_\omega\mu_\omega\cdot\frac{\eta^s_{\omega}}{\theta_\omega}</script><p>也就是之前提到的似然比函数。因此目标函数就变为</p>
+<script type="math/tex; mode=display">
+\sum_{s\in S}\phi_{\theta}(s)\cdot R(\eta^s)C(\eta^s)</script><p>同时限制 $\sum_{s\in S}\pi(\omega,s)=1,\pi(\omega,s)\ge 0$ 就等价于</p>
+<script type="math/tex; mode=display">
+\sum_{s\in S}\phi_{\theta}(s)\cdot \eta^s=\theta,\quad \phi_\theta(s)\ge 0,\eta^s\in \Delta\Omega,\forall s</script><hr>
+<p>注意到最优策略就是</p>
+<script type="math/tex; mode=display">
+\pi(\omega,s)=\frac{\phi_s\cdot\eta_\omega^s}{\theta_\omega},\quad p_s=C(\eta^s)</script><p>在 $\theta=\mu$ 的特殊情形下，$R(\eta)$ 的值始终是 $1$。因此最优策略的收益就是 $f(\eta)=C(\eta)$ 的凹闭包。由于 $C(\eta)$ 是凹函数，且凹函数的凹闭包等于其本身，因此最优策略满足</p>
+<script type="math/tex; mode=display">
+S=\{s\},\quad \phi_s=1,\quad \eta^s=\theta</script><p>即卖家不透露任何信息。</p>
+<p>但一般情况下 $f(\eta)=C(\eta)R(\eta)$ 并不是一个凹函数，因此求解起来有比较大的困难。具体来说：</p>
+<h4 id="Theorem-3-1"><a href="#Theorem-3-1" class="headerlink" title="Theorem 3.1"></a>Theorem 3.1</h4><p>当买家的类型 $\theta$ 固定时，求解最优的策略是 NP 难问题。</p>
+<p>（这部分证明还没看懂）</p>
+<h2 id="Properties-of-the-Optimal-Mechanism"><a href="#Properties-of-the-Optimal-Mechanism" class="headerlink" title="Properties of the Optimal Mechanism"></a>Properties of the Optimal Mechanism</h2><p>这部分证明了最优策略的一些性质，简化了最优机制的求解问题。由于最优机制中 $p_s$ 可由 $S$ 和 $\pi$ 确定，把机制简化为 $\langle S,\pi\rangle$。</p>
+<h4 id="Lemma-3-1"><a href="#Lemma-3-1" class="headerlink" title="Lemma 3.1"></a>Lemma 3.1</h4><p>存在一个最优策略 $\langle S,\pi\rangle$ 满足 $|S|\le n=|\Omega|$。</p>
+<p><strong>证明</strong> 假设 $\langle S,\pi\rangle$ 是最优机制，其中 $S=\{s_1,\cdots,s_k\}$ 且 $k&gt;n$。简写 $\eta^{(i)}=\eta^{s_i}$ 和 $\phi^{(i)}=\phi_{\theta}(s_i)$。不妨设 $\phi^{(i)}&gt;0$ 对所有 $i$ 成立。由 $k&gt;n$ 可知存在向量 $\alpha$ 满足</p>
+<script type="math/tex; mode=display">
+\alpha_1\eta^{(1)}+\cdots+\alpha_k\eta^{(k)}=0</script><p>不妨设 $\alpha_1\neq 0$，有</p>
+<script type="math/tex; mode=display">
+\eta^{(1)}=-\frac{\alpha_2}{\alpha_1}\eta^{(2)}-\cdots-\frac{\alpha_k}{\alpha_1}\eta^{(k)}</script><p>对于很小的 $\delta$，如果把 $\phi^{(1)}$ 减去 $\delta$，把其他的每个 $\phi^{(i)}$ 加上 $-\frac{\alpha_i}{\alpha_1}\delta$，那么优化问题 $(1)$ 中的限制仍然是满足的。可以通过不断进行该操作直到某个 $\phi^{(i)}$ 变为 $0$，然后把 $s_i$ 扔掉。还需要证明这样操作后不会降低目标函数的值，即证对于 $f(x)=R(x)C(x)$，有</p>
+<script type="math/tex; mode=display">
+f(\eta^{(1)})=-\frac{\alpha_2}{\alpha_1}f(\eta^{(2)})-\cdots-\frac{\alpha_k}{\alpha_1}f(\eta^{(k)})</script><p>若不成立，假如等式左边小于右边，考虑用 $-\frac{\alpha_2}{\alpha_1}\eta^{(2)}-\cdots-\frac{\alpha_k}{\alpha_1}\eta^{(k)}$ 替换 $\eta^{(1)}$，即让 $\phi^{(i)’}=\phi^{(i)}-\frac{\alpha_i}{\alpha_1}\phi^{(1)}$，得到的策略仍然能够满足限制，并使得目标函数变得更大，就跟原来策略的最优性矛盾。大于的情况同理。</p>
+<hr>
+<p>定义</p>
+<script type="math/tex; mode=display">
+\mathcal{P}_a=\{\eta\in\Delta\Omega:C_a(\eta)\le C_{a'}(\eta),\forall a'\}</script><p>当买家的观测在 $\mathcal{P}_a$ 中时，$C(\eta)=C_a(\eta)$，即选择动作 $a$ 是其最优策略。</p>
+<p>考虑函数 $g(x,y)=xy$ 和沿着某个方向 $d=(d_x,d_y)$ 得到的函数 $h(t)=g(x_0+td_x,y_0+td_y)$，注意到 $h(t)$ 在任意点 $(x_0,y_0)$ 处的二阶导都等于 $2d_xd_y$。当方向的斜率为正时 $d_xd_y&gt;0$，此时 $h(t)$ 是严格凸函数；同理方向斜率为负时 $h(t)$ 是严格凹函数。</p>
+<p>有如下定理：</p>
+<h4 id="Lemma-3-2"><a href="#Lemma-3-2" class="headerlink" title="Lemma 3.2"></a>Lemma 3.2</h4><p>令 $\langle S,\pi\rangle$ 是最优广告机制。对于 $s\in S$ 满足 $\phi_s&gt;0$ 且 $\eta^s\in \mathcal{P}_a$，定义 $\mathcal{Q}_a=\{(R(\eta),C(\eta)):\eta\in \mathcal{P}_a\}$。那么 $(R(\eta^s),C(\eta^s))$ 在 $\mathcal{Q}_a$ 中必定不能被沿着正斜率方向分解，即不存在 $\eta^{(1)},\eta^{(2)}\in \mathcal{P}_a$ 满足</p>
+<script type="math/tex; mode=display">
+\eta^s=\alpha\eta^{(1)}+(1-\alpha)\eta^{(2)},\quad \alpha\in (0,1)</script><p>并且</p>
+<script type="math/tex; mode=display">
+(R(\eta^s)-R(\eta^{(1)}))(C(\eta^{s})-C(\eta^{(1)}))>0</script><p>即最优机制中的 $(R(\eta^s),C(\eta^s))$ 一定位于 $\mathcal{Q}_a$ 的边界上。</p>
+<p><strong>证明</strong> 假设存在 $\eta^{(1)},\eta^{(2)}\in \mathcal{P}_a$ 满足条件，由于 $R(\eta)$ 和 $C(\eta)$ 在 $\mathcal{P}_a$ 上都是线性函数，必然有</p>
+<script type="math/tex; mode=display">
+(R(\eta^s),C(\eta^s))=\alpha(R(\eta^{(1)}),C(\eta^{(1)}))+(1-\alpha)(R(\eta^{(2)}),C(\eta^{(2)}))</script><p>由于 $(R(\eta^s),C(\eta^s)),(R(\eta^{(1)}),C(\eta^{(1)})),(R(\eta^{(2)}),C(\eta^{(2)}))$ 在斜率为正的直线上，且 $g(x,y)=xy$ 在该方向上为严格图函数，可知把 $\eta^s$ 用 $\eta^{(1)}$ 和 $\eta^{(2)}$ 替换后，能够使目标函数 $f(\eta)=R(\eta)C(\eta)$ 增加，与最优性矛盾。</p>
+<h4 id="Lemma-3-3"><a href="#Lemma-3-3" class="headerlink" title="Lemma 3.3"></a>Lemma 3.3</h4><p>最优广告机制 $\langle S,\pi\rangle$ 不会发送两个信号 $s,t\in S$ 满足 $\phi_s,\phi_t&gt;0$ 且</p>
+<script type="math/tex; mode=display">
+(R(\eta^s)-R(\eta^t))(C(\eta^s)-C(\eta^t))<0</script><p><strong>证明</strong> 否则若将 $s$ 和 $t$ 合并成一个信号 $v$ 满足</p>
+<script type="math/tex; mode=display">
+\pi(\omega,v)=\pi(\omega,s)+\pi(\omega,t),\quad\forall \omega</script><p>容易验证</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\phi_\theta(v)=\phi_\theta(s)+\phi_\theta(t)\\
+&\eta^v=\frac{\phi_\theta(s)}{\phi_\theta(v)}\cdot\eta^s+\frac{\phi_\theta(t)}{\phi_\theta(v)}\cdot\eta^t\\
+&R(\eta^v)=\frac{\phi_\theta(s)}{\phi_\theta(v)}\cdot R(\eta^s)+\frac{\phi_\theta(t)}{\phi_\theta(v)}\cdot R(\eta^t)
+\end{aligned}</script><p>卖家期望收益的增量为</p>
+<script type="math/tex; mode=display">
+\phi_\theta(v)R(\eta^v)C(\eta^v)-\phi_\theta(s)R(\eta^s)C(\eta^s)-\phi_\theta(t)R(\eta^t)C(\eta^t)</script><p>根据 $R$ 为线性函数，$C$ 为凹函数将 $R(\eta^v)$ 和 $C(\eta^v)$ 分别展开，计算可知等于</p>
+<script type="math/tex; mode=display">
+-\frac{\phi_\theta(s)\phi_\theta(t)}{\phi_\theta(v)}\cdot(R(\eta^s)-R(\eta^t))(C(\eta^s)-C(\eta^t))>0</script><p>与最优性矛盾。</p>
+<h2 id="Optimal-Mechanism-by-Convex-Program"><a href="#Optimal-Mechanism-by-Convex-Program" class="headerlink" title="Optimal Mechanism by Convex Program"></a>Optimal Mechanism by Convex Program</h2><p>我们知道了在最优机制中，$(R(\eta^s),C(\eta^s))$ 一定在 $\mathcal{Q}_q$ 的边界上。一个猜测是 $\eta^s$ 位于 $\mathcal{P}_a$ 的边界上。接下来考虑 $\eta^s$ 跟 $\mathcal{P}_a$ 的关系。定义 $\mathcal{H}_a$ 是多面体 $\mathcal{P}_a$ 的顶点集合。</p>
+<h4 id="Lemma-3-4"><a href="#Lemma-3-4" class="headerlink" title="Lemma 3.4"></a>Lemma 3.4</h4><p>存在一个最优广告机制 $\langle S,\pi\rangle$ 满足每个 $\eta^s$ 都在某个 $\mathcal{H}_a$ 中的两个点之间的线段上。即对于任意 $s\in S$，存在 $\beta\in [0,1]$ 和 $i,j\in \mathcal{H}_a$，使得</p>
+<script type="math/tex; mode=display">
+\eta^s=\beta\cdot i+(1-\beta)\cdot j</script><p>且有</p>
+<script type="math/tex; mode=display">
+(R(i)-R(j))(C(i)-C(j))\le 0</script><p>且对于每一对 $i,j$，仅有唯一个 $\eta^s$ 位于 $i,j$ 之间的线段上。</p>
+<hr>
+<p>该引理的证明较为复杂。</p>
+]]></content>
+      <categories>
+        <category>Paper Reading</category>
+      </categories>
+      <tags>
+        <tag>Convex Optimization</tag>
+        <tag>Information Design</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【论文阅读】Send Mixed Signals – Earn More, Work Less</title>
     <url>/2021/12/13/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Send%20Mixed%20Signals%20%E2%80%93%20Earn%20More,%20Work%20Less/</url>
     <content><![CDATA[<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>考虑多类型的单物品拍卖，且所有买家的价值已知，并假定使用二价拍卖。文章说明了混合信号策略比纯信号策略收益更高，给出了计算最优混合信号策略的线性规划，并将其变量数降至多项式级别，因此能在多项式时间内求解。同时证明了使用最优信号策略的收益对某个指标有很好的近似比。证明中利用了混合信号策略等价于多个可分割物品拍卖的性质。</p>
@@ -440,8 +336,8 @@ g\sum_{j\in S_1}\varphi(j,S)\psi_{1,j}+\sum_{j\in S_2}\varphi(j,S)\psi_{1,j},\qu
         <category>Paper Reading</category>
       </categories>
       <tags>
-        <tag>Information Design</tag>
         <tag>Convex Optimization</tag>
+        <tag>Information Design</tag>
       </tags>
   </entry>
 </search>
