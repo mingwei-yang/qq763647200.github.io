@@ -133,6 +133,90 @@ x^T(\theta_1A+\theta_2B)x=x^T\theta_1Ax+x^T\theta_2Bx\ge 0</script><p>因此 $S_
       </tags>
   </entry>
   <entry>
+    <title>【论文阅读】Send Mixed Signals – Earn More, Work Less</title>
+    <url>/2021/12/13/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Send%20Mixed%20Signals%20%E2%80%93%20Earn%20More,%20Work%20Less/</url>
+    <content><![CDATA[<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>考虑多类型的单物品拍卖，且所有买家的价值已知，并假定使用二价拍卖。文章说明了混合信号策略比纯信号策略收益更高，给出了计算最优混合信号策略的线性规划，并将其变量数降至多项式级别，因此能在多项式时间内求解。同时证明了使用最优信号策略的收益对某个指标有很好的近似比。证明中利用了混合信号策略等价于多个可分割物品拍卖的性质。</p>
+<span id="more"></span>
+<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>在信息不对称的情形下，即卖家拥有私有信息，为了最大化自己的收益，卖家通过信号的形式透露部分信息是很合理的方式。相较于纯信号策略，显然使用混合的信号策略效果不会更差。</p>
+<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>有一个物品和 $n$ 个买家。物品有 $m$ 种类型，服从概率分布 $(p_1,\cdots,p_m)$。买家 $i$ 对类型 $j$ 的价值是 $v_{i,j}$，其中 $v$ 和 $p$ 都是公有信息。卖家要预先提供一个信号策略 $\varphi:[m]\times \mathbb{N}\to [0,1]$ 并告知买家，其中 $\varphi(j,S)$ 表示当卖家观测到物品类型为 $j$ 时发送信号 $S$ 的概率。后文中 $S$ 也可以表示所有可能发送信号 $S$ 的类型集合，即 $\{j:\varphi(j,S)&gt;0\}$。令 $\mathcal{S}_\varphi$ 表示有效的信号集合，即 $\{S:\exists j,\varphi(j,S)&gt;0\}$。默认使用二价拍卖。</p>
+<p>纯信号策略是指卖家观测到物品类型 $j$ 后，发送的信号固定，即 $\varphi(j,S)\in\{0,1\}$。纯信号策略等价于对类型进行二次分类，并告知买家属于哪一个类。混合信号策略是指以某个概率分布发送信号。那么买家收到信号 $S$ 的概率为 $\sum_jp_j\varphi(j,S)$。收到信号 $S$ 后，物品类型为 $j$ 的概率</p>
+<script type="math/tex; mode=display">
+\Pr[j|S]=\frac{p_j\varphi(j,S)}{\sum_{j'}p_{j'}\varphi(j',S)}</script><p>因此收到信号 $S$ 后，买家 $i$ 的期望收益变为</p>
+<script type="math/tex; mode=display">
+E[v_i|S]=\sum_j\Pr[j|S]v_{i,j}=\frac{\sum_jv_{i,j}p_j\varphi(j,S)}{\sum_{j'}p_{j'}\varphi(j',S)}</script><p>由于二价拍卖中，买家的最优策略为采取真实报价，因此收到信号 $S$ 后，卖家的收益为</p>
+<script type="math/tex; mode=display">
+\max_i2\{E[v_i|S]\}=\max_i2\left\{\frac{\sum_jv_{i,j}p_j\varphi(j,S)}{\sum_{j}p_{j}\varphi(j,S)}\right\}</script><p>我们想要找到 $\varphi$ 来最大化卖家的总收益</p>
+<script type="math/tex; mode=display">
+\sum_{S\in\mathcal{S}_\varphi}\Pr[S]\max_i2\{E[v_i|S]\}=\sum_{S\in\mathcal{S}\varphi}\left\{\sum_jv_{i,j}p_j\varphi(j,S)\right\}=\sum_{S\in\mathcal{S}\varphi}\left\{\sum_j\psi_{i,j}\varphi(j,S)\right\}</script><p>其中 $\psi_{i,j}=v_{i,j}p_j$。</p>
+<h2 id="可分割多物品拍卖的等价模型"><a href="#可分割多物品拍卖的等价模型" class="headerlink" title="可分割多物品拍卖的等价模型"></a>可分割多物品拍卖的等价模型</h2><p>对于按照混合信号策略 $\varphi$ 来发送信号，考虑如下等价模型：有 $m$ 个物品和 $n$ 个买家，物品是可分割的（例如蛋糕）。第 $i$ 个买家对第 $j$ 个物品的价值为 $\psi_{i,j}$。对于任意 $S\in \mathcal{S}_\varphi$，将其看成包含了多个物品的混合，其中 $S$ 包含了第 $j$ 个物品的 $\varphi_{j,S}$ 比例。然后对每个混合 $S$ 分别进行二价拍卖。</p>
+<p>容易看出混合信号策略和多物品拍卖中的物品划分方案一一对应，且卖家的收益相同。因此计算最优混合信号策略等价于寻找多物品拍卖的最优划分方案。</p>
+<h1 id="混合信号策略收益大于纯信号策略"><a href="#混合信号策略收益大于纯信号策略" class="headerlink" title="混合信号策略收益大于纯信号策略"></a>混合信号策略收益大于纯信号策略</h1><p>下面的构造可以说明：对任意偶数 $k$，存在一个有 $n=k+1$ 个买家和 $m=k+1$ 种物品类型的拍卖，使得混合信号策略的收益至少是纯信号策略收益的两倍。</p>
+<p>将买家和信号均按照 $0,\cdots,k$ 编号，所有物品类型等概率出现，价值函数为</p>
+<script type="math/tex; mode=display">
+v_{i,j}=\begin{cases}
+m & i=j=0\\
+1 & i=j\neq 0\\
+0 & otherwise
+\end{cases}</script><p>则最优的纯信号策略必然是将物品类型两两捆绑。因为若某个物品不捆绑，则其收益为 $0$；将 $s$ 个物品捆绑后，其中每个物品收益为 $1/s$。注意到 $k$ 是偶数，那么有 $\frac{k}{k+1}$ 的概率，卖家的收益是 $1/2$，即期望收益为 $\frac{k}{2(k+1)}$。</p>
+<p>考虑如下混合信号策略：信号集合为 $\{0,j\}_{j=1,\cdots,k}$。对于任意 $j$，$\Pr[\{0,j\}|\text{type }0]=\frac{1}{k}$ 并且 $\Pr[\{0,j\}|\text{type }j]=1$。容易计算得到卖家对每个信号的收益都是 $\frac{k}{k+1}$。</p>
+<h1 id="最优混合策略的计算"><a href="#最优混合策略的计算" class="headerlink" title="最优混合策略的计算"></a>最优混合策略的计算</h1><h2 id="一些记号"><a href="#一些记号" class="headerlink" title="一些记号"></a>一些记号</h2><p>对于信号 $S$，令 $w_1(S)$ 表示在多个可分割物品拍卖中赢得了混合 $S$ 的买家编号，$w_2(S)$ 表示对 $S$ 估价第二高的买家编号。具体来说：</p>
+<script type="math/tex; mode=display">
+w_1(S)=\arg\max_i\{\sum_{j\in S}\psi_{i,j}\varphi_{j,S}\}</script><script type="math/tex; mode=display">
+w_2(S)=\arg\max_i2\{\sum_{j\in S}\psi_{i,j}\varphi_{j,S}\}</script><p>称 $S$ 是单独的如果 $|S|=1$。记 $w_1(j)=w_1(\{j\}),w_2(j)=w_2(\{j\})$。令 $d(i)$ 表示所有 $i$ 估价最高的物品类型的集合，即 $d(i)=\{j:w_1(j)=i\}$。记 $rev(S)$ 表示混合 $S$ 的收益，即 $rev(S)=\sum_{j\in S}\varphi_{j,S}\psi_{w_2(S),j}$。同样令 $rev(j)=rev(\{j\})$。卖家采取信号策略 $\varphi$ 的收益为 $rev(\varphi)=\sum_{S\in\mathcal{S}_{\varphi}}rev(S)$。</p>
+<h2 id="最优混合信号策略的性质"><a href="#最优混合信号策略的性质" class="headerlink" title="最优混合信号策略的性质"></a>最优混合信号策略的性质</h2><p>注意到对于两个信号 $S$ 和 $T$，如果 $w_1(S)=w_1(T)$ 且 $w_2(S)=w_2(T)$，那么把这两个信号合并成一个后，卖家的收益并不会发生改变。因此必然存在一种最优混合信号策略，使得使用信号的数量不超过 $n(n-1)$。</p>
+<p>下面考虑更多的性质。</p>
+<h4 id="Definition-4-2"><a href="#Definition-4-2" class="headerlink" title="Definition 4.2"></a>Definition 4.2</h4><p>给定信号策略 $\varphi$ 后，称信号 $S$ 是可分如果存在划分 $S=S_1\cup S_2\cup\cdots\cup S_t$，使得 $\sum_{k=1}^trev(S_k)\ge rev(S)$。称 $S$ 是单独可分的如果 $\sum_{j\in S}rev(j)\ge rev(S)$。</p>
+<h4 id="Claim-4-3"><a href="#Claim-4-3" class="headerlink" title="Claim 4.3"></a>Claim 4.3</h4><p>令 $S$ 是在最优混合信号策略中的一个单独不可分的信号，即 $rev(S)&gt;\sum_{j\in S}\varphi_{j,S}rev(j)$。那么 $w_1(S)$ 和 $w_2(S)$ 在那些赢得了 $S$ 中某个物品的买家集合中，即 $\{w_1(j):j\in S\}$。</p>
+<p><strong>证明</strong> 假设 $w_1(S)$ 不属于 $\{w_1(j):j\in S\}$，那么对于任意 $j\in S$，对它的第二高的估价至少是 $w_1(S)$ 对它的估价。因此</p>
+<script type="math/tex; mode=display">
+\sum_{j\in S}\varphi_{j,S}rev(j)\ge\sum_{j\in S}\varphi_{j,S}\psi_{w_1(S),j}\ge\sum_{j\in S}\varphi_{j,S}\psi_{w_2(S),j}=rev(S)</script><p>矛盾。同理可证 $w_2(S)$ 也满足。</p>
+<h4 id="Corollary-4-4"><a href="#Corollary-4-4" class="headerlink" title="Corollary 4.4"></a>Corollary 4.4</h4><p>对于信号 $S$，若 $|\{w_1(j):j\in S\}|=1$，那么 $S$ 是单独可分的。</p>
+<hr>
+<p>那么不可分的信号 $S$ 满足 $\{w_1(s):j\in S\}$ 大小至少为 $2$。接下来再证明不存在不可分的信号 $S$ 满足 $|\{w_1(j):j\in S\}|\ge 3$。</p>
+<h4 id="Claim-4-5"><a href="#Claim-4-5" class="headerlink" title="Claim 4.5"></a>Claim 4.5</h4><p>不存在不可分的信号 $S$ 满足 $|\{w_1(j):j\in S\}|\ge 3$。</p>
+<p><strong>证明</strong> 反证。不妨设 $1=w_1(S),2=w_2(S)$，可知 $1,2\in \{w_1(j):j\in S\}$，且 $rev(S)=\sum_{j\in S}\psi_{2,j}\varphi(j,S)$。往证 $S$ 是可分的。</p>
+<p>令 $S_1=S\cap d(1),S_2=S\cap d(2)$。由假设可知 $S_1\cup S_2\neq S$。将 $S$ 划分成 $(S_1\cup S_2)$ 以及 $|S\backslash (S_1\cup S_2)|$ 个单独的信号，总共是 $|S\backslash (S_1\cup S_2)|+1$ 个信号。</p>
+<p>首先考虑那些单独的信号带来的收益。由于买家 $1$ 和买家 $2$ 对这些物品的估价都不是最高的，那么这些信号的收益至少是买家 $1$ 或买家 $2$ 对这些信号的估价之和，即</p>
+<script type="math/tex; mode=display">
+\sum_{j\neq S_1\cup S_2}rev(j)\ge\max\{\sum_{j\in S\backslash (S_1\cup S_2)}\varphi_{j,S}\psi_{1,j},\sum_{j\in S\backslash (S_1\cup S_2)}\varphi_{j,S}\psi_{2,j}\}</script><p>对于 $S_1\cup S_2$ 的信号收益，买家 $1$ 和 $2$ 中至少有一人对该信号的估价不是最大的。无论是哪种，结合上面的不等式都可以得到，进行上述划分后，卖家的收益不会变得更低。</p>
+<hr>
+<p>结合上面两个 Claim，我们有如下推论：</p>
+<h4 id="Corollary-4-6"><a href="#Corollary-4-6" class="headerlink" title="Corollary 4.6"></a>Corollary 4.6</h4><p>若 $S$ 是不可分的信号，那么 $\{w_1(j):j\in S\}=\{w_1(S),w_2(S)\}$。换句话说，$supp(S)\subseteq d(w_1(S))\cup d(w_2(S))$。</p>
+<h4 id="Observation-4-7"><a href="#Observation-4-7" class="headerlink" title="Observation 4.7"></a>Observation 4.7</h4><p>存在一个最优混合信号策略，使得对于任意非单独的信号 $S$，$w_1(S)$ 和 $w_2(S)$ 对 $S$ 的估价是相等的。</p>
+<p><strong>证明</strong> 假设对于信号 $S$，$w_1(S)$ 对 $S$ 的估价大于 $w_2(S)$ 对 $S$ 的估价。令 $S_1=S\cup d(1),S_2=S\cup d(2)$。由之前的结论可知 $S=S_1\cup S_2$ 且 $S_1$ 和 $S_2$ 均非空。令</p>
+<script type="math/tex; mode=display">
+g=\frac{\sum_{j\in S_2}\varphi_{j,S}(\psi_{2,j}-\psi_{1,j})}{\sum_{j\in S_1}\varphi_{j,S}(\psi_{1,j}-\psi_{2,j})}</script><p>由假设</p>
+<script type="math/tex; mode=display">
+\sum_{j\in S}\varphi(j,S)\psi_{1,j}>\sum_{j\in S}\varphi(j,S)\psi_{2,j}</script><p>可知 $g&lt;1$。构造新信号策略 $\varphi’$ 如下：对于 $j\in S_1$，降低观测到 $j$ 后发送 $S$ 的概率：$\varphi’(j,S)=g\cdot \varphi_{j,S}$；相应地则增加发送信号 $\{j\}$ 的概率：$\varphi’(j,\{j\})=\varphi_{j,\{j\}}+(1-g)\cdot\varphi_{j,S}$。注意到在 $\varphi’$ 中，买家 $1$ 和买家 $2$ 对 $S$ 的估价分别为</p>
+<script type="math/tex; mode=display">
+g\sum_{j\in S_1}\varphi(j,S)\psi_{1,j}+\sum_{j\in S_2}\varphi(j,S)\psi_{1,j},\quad g\sum_{j\in S_1}\varphi(j,S)\psi_{2,j}+\sum_{j\in S_2}\varphi(j,S)\psi_{2,j}</script><p>由相减为 $0$ 可知买家 $1$ 和 $2$ 对 $S$ 的估价相等</p>
+<p>再证卖家在 $\varphi’$ 下的收益不会降低：信号 $\{j\}$ 的收益改变量为</p>
+<script type="math/tex; mode=display">
+(1-g)\varphi_{j,S}rev(j)=(1-g)\varphi_{j,S}\psi_{1,j}\ge(1-g)\varphi_{j,S}\psi_{2,j}</script><p>信号 $S$ 的收益至少是买家 $1$ 和买家 $2$ 对 $S$ 的估价取 $\min$。可知卖家的收益并不会降低。</p>
+<h2 id="线性规划求解最优混合信号策略"><a href="#线性规划求解最优混合信号策略" class="headerlink" title="线性规划求解最优混合信号策略"></a>线性规划求解最优混合信号策略</h2><p>因此可以用如下线性规划求解最优混合信号策略：</p>
+<script type="math/tex; mode=display">
+\max \sum_jx_j\psi_{w_2(j),j}+\sum_{i_1}\sum_{i_2<i_1}\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_2,j}</script><p>限制为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\forall i_1,\forall i_2<i_1 & \sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_1,j}\ge\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_2,j}\\
+& \forall i_1,\forall i_2<i_1\text{, and }i\neq i_1,i_2 & \sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_1,j}\ge\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i,j}\\
+& & \sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_2,j}\ge\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i,j}\\
+& \forall j & x_j+\sum_{i_1}\sum_{i_2<i_1}[j \in d(i_1)\cup d(i_2)]y_j(i_1.i_2)\le 1\\
+& \forall j,\forall i_1,\forall i_2<i_1 & x_j\ge 0,\quad y_j(i_1,i_2)\ge 0
+\end{aligned}</script><p>其中 $y_j(i_1,i_2)$ 表示 $\varphi(j,S)$，其中 $w_1(S)=i_1,w_2(S)=i_2$。$x_j$ 表示 $\varphi(j,\{j\})$。只需要考虑 $i_2&lt;i_1$ 是因为存在最优策略，满足 $i_2$ 和 $i_1$ 对 $S$ 的估价相等。</p>
+<h1 id="最优混合信号策略收益的近似"><a href="#最优混合信号策略收益的近似" class="headerlink" title="最优混合信号策略收益的近似"></a>最优混合信号策略收益的近似</h1><p>文章中考虑了这样一个 benchmark：</p>
+<script type="math/tex; mode=display">
+\mathcal{B}=\min_{i'}\left(\sum_j\max_{i\neq i'}\psi_{i,j}\right)</script><p>并证明了最优策略的收益至少是 $\mathcal{B}/2$。由于证明是没什么意思且比较复杂，这里就不赘述了。</p>
+]]></content>
+      <categories>
+        <category>Paper Reading</category>
+      </categories>
+      <tags>
+        <tag>Convex Optimization</tag>
+        <tag>Information Design</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【论文阅读】Optimal Advertising for Information Products</title>
     <url>/2021/12/09/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Optimal%20Advertising%20for%20Information%20Products/</url>
     <content><![CDATA[<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>这篇是发表在 EC21 上的文章。考虑的情形是有一个不可知的状态，买家能够选择一个行动，其收益取决于状态和行动。卖家知道真实的状态，想要将状态信息出售给买家。为了让买家愿意付钱购买，卖家可以先免费透露部分信息给买家，改变其对状态的估计，从而让其购买状态信息。买家和卖家都想最大化自己的收益。论文里讨论了卖家的最优机制设计问题，通过优化的角度，给出了特殊情形下问题的解法，同时证明了一般情形下该问题是 NP 难的。</p>
@@ -247,90 +331,6 @@ f(\eta^{(1)})=-\frac{\alpha_2}{\alpha_1}f(\eta^{(2)})-\cdots-\frac{\alpha_k}{\al
 (R(i)-R(j))(C(i)-C(j))\le 0</script><p>且对于每一对 $i,j$，仅有唯一个 $\eta^s$ 位于 $i,j$ 之间的线段上。</p>
 <hr>
 <p>该引理的证明较为复杂。</p>
-]]></content>
-      <categories>
-        <category>Paper Reading</category>
-      </categories>
-      <tags>
-        <tag>Convex Optimization</tag>
-        <tag>Information Design</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【论文阅读】Send Mixed Signals – Earn More, Work Less</title>
-    <url>/2021/12/13/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Send%20Mixed%20Signals%20%E2%80%93%20Earn%20More,%20Work%20Less/</url>
-    <content><![CDATA[<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>考虑多类型的单物品拍卖，且所有买家的价值已知，并假定使用二价拍卖。文章说明了混合信号策略比纯信号策略收益更高，给出了计算最优混合信号策略的线性规划，并将其变量数降至多项式级别，因此能在多项式时间内求解。同时证明了使用最优信号策略的收益对某个指标有很好的近似比。证明中利用了混合信号策略等价于多个可分割物品拍卖的性质。</p>
-<span id="more"></span>
-<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>在信息不对称的情形下，即卖家拥有私有信息，为了最大化自己的收益，卖家通过信号的形式透露部分信息是很合理的方式。相较于纯信号策略，显然使用混合的信号策略效果不会更差。</p>
-<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>有一个物品和 $n$ 个买家。物品有 $m$ 种类型，服从概率分布 $(p_1,\cdots,p_m)$。买家 $i$ 对类型 $j$ 的价值是 $v_{i,j}$，其中 $v$ 和 $p$ 都是公有信息。卖家要预先提供一个信号策略 $\varphi:[m]\times \mathbb{N}\to [0,1]$ 并告知买家，其中 $\varphi(j,S)$ 表示当卖家观测到物品类型为 $j$ 时发送信号 $S$ 的概率。后文中 $S$ 也可以表示所有可能发送信号 $S$ 的类型集合，即 $\{j:\varphi(j,S)&gt;0\}$。令 $\mathcal{S}_\varphi$ 表示有效的信号集合，即 $\{S:\exist j,\varphi(j,S)&gt;0\}$。默认使用二价拍卖。</p>
-<p>纯信号策略是指卖家观测到物品类型 $j$ 后，发送的信号固定，即 $\varphi(j,S)\in\{0,1\}$。纯信号策略等价于对类型进行二次分类，并告知买家属于哪一个类。混合信号策略是指以某个概率分布发送信号。那么买家收到信号 $S$ 的概率为 $\sum_jp_j\varphi(j,S)$。收到信号 $S$ 后，物品类型为 $j$ 的概率</p>
-<script type="math/tex; mode=display">
-\Pr[j|S]=\frac{p_j\varphi(j,S)}{\sum_{j'}p_{j'}\varphi(j',S)}</script><p>因此收到信号 $S$ 后，买家 $i$ 的期望收益变为</p>
-<script type="math/tex; mode=display">
-E[v_i|S]=\sum_j\Pr[j|S]v_{i,j}=\frac{\sum_jv_{i,j}p_j\varphi(j,S)}{\sum_{j'}p_{j'}\varphi(j',S)}</script><p>由于二价拍卖中，买家的最优策略为采取真实报价，因此收到信号 $S$ 后，卖家的收益为</p>
-<script type="math/tex; mode=display">
-\max_i2\{E[v_i|S]\}=\max_i2\left\{\frac{\sum_jv_{i,j}p_j\varphi(j,S)}{\sum_{j}p_{j}\varphi(j,S)}\right\}</script><p>我们想要找到 $\varphi$ 来最大化卖家的总收益</p>
-<script type="math/tex; mode=display">
-\sum_{S\in\mathcal{S}_\varphi}\Pr[S]\max_i2\{E[v_i|S]\}=\sum_{S\in\mathcal{S}\varphi}\left\{\sum_jv_{i,j}p_j\varphi(j,S)\right\}=\sum_{S\in\mathcal{S}\varphi}\left\{\sum_j\psi_{i,j}\varphi(j,S)\right\}</script><p>其中 $\psi_{i,j}=v_{i,j}p_j$。</p>
-<h2 id="可分割多物品拍卖的等价模型"><a href="#可分割多物品拍卖的等价模型" class="headerlink" title="可分割多物品拍卖的等价模型"></a>可分割多物品拍卖的等价模型</h2><p>对于按照混合信号策略 $\varphi$ 来发送信号，考虑如下等价模型：有 $m$ 个物品和 $n$ 个买家，物品是可分割的（例如蛋糕）。第 $i$ 个买家对第 $j$ 个物品的价值为 $\psi_{i,j}$。对于任意 $S\in \mathcal{S}_\varphi$，将其看成包含了多个物品的混合，其中 $S$ 包含了第 $j$ 个物品的 $\varphi_{j,S}$ 比例。然后对每个混合 $S$ 分别进行二价拍卖。</p>
-<p>容易看出混合信号策略和多物品拍卖中的物品划分方案一一对应，且卖家的收益相同。因此计算最优混合信号策略等价于寻找多物品拍卖的最优划分方案。</p>
-<h1 id="混合信号策略收益大于纯信号策略"><a href="#混合信号策略收益大于纯信号策略" class="headerlink" title="混合信号策略收益大于纯信号策略"></a>混合信号策略收益大于纯信号策略</h1><p>下面的构造可以说明：对任意偶数 $k$，存在一个有 $n=k+1$ 个买家和 $m=k+1$ 种物品类型的拍卖，使得混合信号策略的收益至少是纯信号策略收益的两倍。</p>
-<p>将买家和信号均按照 $0,\cdots,k$ 编号，所有物品类型等概率出现，价值函数为</p>
-<script type="math/tex; mode=display">
-v_{i,j}=\begin{cases}
-m & i=j=0\\
-1 & i=j\neq 0\\
-0 & otherwise
-\end{cases}</script><p>则最优的纯信号策略必然是将物品类型两两捆绑。因为若某个物品不捆绑，则其收益为 $0$；将 $s$ 个物品捆绑后，其中每个物品收益为 $1/s$。注意到 $k$ 是偶数，那么有 $\frac{k}{k+1}$ 的概率，卖家的收益是 $1/2$，即期望收益为 $\frac{k}{2(k+1)}$。</p>
-<p>考虑如下混合信号策略：信号集合为 $\{0,j\}_{j=1,\cdots,k}$。对于任意 $j$，$\Pr[\{0,j\}|\text{type }0]=\frac{1}{k}$ 并且 $\Pr[\{0,j\}|\text{type }j]=1$。容易计算得到卖家对每个信号的收益都是 $\frac{k}{k+1}$。</p>
-<h1 id="最优混合策略的计算"><a href="#最优混合策略的计算" class="headerlink" title="最优混合策略的计算"></a>最优混合策略的计算</h1><h2 id="一些记号"><a href="#一些记号" class="headerlink" title="一些记号"></a>一些记号</h2><p>对于信号 $S$，令 $w_1(S)$ 表示在多个可分割物品拍卖中赢得了混合 $S$ 的买家编号，$w_2(S)$ 表示对 $S$ 估价第二高的买家编号。具体来说：</p>
-<script type="math/tex; mode=display">
-w_1(S)=\arg\max_i\{\sum_{j\in S}\psi_{i,j}\varphi_{j,S}\}</script><script type="math/tex; mode=display">
-w_2(S)=\arg\max_i2\{\sum_{j\in S}\psi_{i,j}\varphi_{j,S}\}</script><p>称 $S$ 是单独的如果 $|S|=1$。记 $w_1(j)=w_1(\{j\}),w_2(j)=w_2(\{j\})$。令 $d(i)$ 表示所有 $i$ 估价最高的物品类型的集合，即 $d(i)=\{j:w_1(j)=i\}$。记 $rev(S)$ 表示混合 $S$ 的收益，即 $rev(S)=\sum_{j\in S}\varphi_{j,S}\psi_{w_2(S),j}$。同样令 $rev(j)=rev(\{j\})$。卖家采取信号策略 $\varphi$ 的收益为 $rev(\varphi)=\sum_{S\in\mathcal{S}_{\varphi}}rev(S)$。</p>
-<h2 id="最优混合信号策略的性质"><a href="#最优混合信号策略的性质" class="headerlink" title="最优混合信号策略的性质"></a>最优混合信号策略的性质</h2><p>注意到对于两个信号 $S$ 和 $T$，如果 $w_1(S)=w_1(T)$ 且 $w_2(S)=w_2(T)$，那么把这两个信号合并成一个后，卖家的收益并不会发生改变。因此必然存在一种最优混合信号策略，使得使用信号的数量不超过 $n(n-1)$。</p>
-<p>下面考虑更多的性质。</p>
-<h4 id="Definition-4-2"><a href="#Definition-4-2" class="headerlink" title="Definition 4.2"></a>Definition 4.2</h4><p>给定信号策略 $\varphi$ 后，称信号 $S$ 是可分如果存在划分 $S=S_1\cup S_2\cup\cdots\cup S_t$，使得 $\sum_{k=1}^trev(S_k)\ge rev(S)$。称 $S$ 是单独可分的如果 $\sum_{j\in S}rev(j)\ge rev(S)$。</p>
-<h4 id="Claim-4-3"><a href="#Claim-4-3" class="headerlink" title="Claim 4.3"></a>Claim 4.3</h4><p>令 $S$ 是在最优混合信号策略中的一个单独不可分的信号，即 $rev(S)&gt;\sum_{j\in S}\varphi_{j,S}rev(j)$。那么 $w_1(S)$ 和 $w_2(S)$ 在那些赢得了 $S$ 中某个物品的买家集合中，即 $\{w_1(j):j\in S\}$。</p>
-<p><strong>证明</strong> 假设 $w_1(S)$ 不属于 $\{w_1(j):j\in S\}$，那么对于任意 $j\in S$，对它的第二高的估价至少是 $w_1(S)$ 对它的估价。因此</p>
-<script type="math/tex; mode=display">
-\sum_{j\in S}\varphi_{j,S}rev(j)\ge\sum_{j\in S}\varphi_{j,S}\psi_{w_1(S),j}\ge\sum_{j\in S}\varphi_{j,S}\psi_{w_2(S),j}=rev(S)</script><p>矛盾。同理可证 $w_2(S)$ 也满足。</p>
-<h4 id="Corollary-4-4"><a href="#Corollary-4-4" class="headerlink" title="Corollary 4.4"></a>Corollary 4.4</h4><p>对于信号 $S$，若 $|\{w_1(j):j\in S\}|=1$，那么 $S$ 是单独可分的。</p>
-<hr>
-<p>那么不可分的信号 $S$ 满足 $\{w_1(s):j\in S\}$ 大小至少为 $2$。接下来再证明不存在不可分的信号 $S$ 满足 $|\{w_1(j):j\in S\}|\ge 3$。</p>
-<h4 id="Claim-4-5"><a href="#Claim-4-5" class="headerlink" title="Claim 4.5"></a>Claim 4.5</h4><p>不存在不可分的信号 $S$ 满足 $|\{w_1(j):j\in S\}|\ge 3$。</p>
-<p><strong>证明</strong> 反证。不妨设 $1=w_1(S),2=w_2(S)$，可知 $1,2\in \{w_1(j):j\in S\}$，且 $rev(S)=\sum_{j\in S}\psi_{2,j}\varphi(j,S)$。往证 $S$ 是可分的。</p>
-<p>令 $S_1=S\cap d(1),S_2=S\cap d(2)$。由假设可知 $S_1\cup S_2\neq S$。将 $S$ 划分成 $(S_1\cup S_2)$ 以及 $|S\backslash (S_1\cup S_2)|$ 个单独的信号，总共是 $|S\backslash (S_1\cup S_2)|+1$ 个信号。</p>
-<p>首先考虑那些单独的信号带来的收益。由于买家 $1$ 和买家 $2$ 对这些物品的估价都不是最高的，那么这些信号的收益至少是买家 $1$ 或买家 $2$ 对这些信号的估价之和，即</p>
-<script type="math/tex; mode=display">
-\sum_{j\neq S_1\cup S_2}rev(j)\ge\max\{\sum_{j\in S\backslash (S_1\cup S_2)}\varphi_{j,S}\psi_{1,j},\sum_{j\in S\backslash (S_1\cup S_2)}\varphi_{j,S}\psi_{2,j}\}</script><p>对于 $S_1\cup S_2$ 的信号收益，买家 $1$ 和 $2$ 中至少有一人对该信号的估价不是最大的。无论是哪种，结合上面的不等式都可以得到，进行上述划分后，卖家的收益不会变得更低。</p>
-<hr>
-<p>结合上面两个 Claim，我们有如下推论：</p>
-<h4 id="Corollary-4-6"><a href="#Corollary-4-6" class="headerlink" title="Corollary 4.6"></a>Corollary 4.6</h4><p>若 $S$ 是不可分的信号，那么 $\{w_1(j):j\in S\}=\{w_1(S),w_2(S)\}$。换句话说，$supp(S)\subseteq d(w_1(S))\cup d(w_2(S))$。</p>
-<h4 id="Observation-4-7"><a href="#Observation-4-7" class="headerlink" title="Observation 4.7"></a>Observation 4.7</h4><p>存在一个最优混合信号策略，使得对于任意非单独的信号 $S$，$w_1(S)$ 和 $w_2(S)$ 对 $S$ 的估价是相等的。</p>
-<p><strong>证明</strong> 假设对于信号 $S$，$w_1(S)$ 对 $S$ 的估价大于 $w_2(S)$ 对 $S$ 的估价。令 $S_1=S\cup d(1),S_2=S\cup d(2)$。由之前的结论可知 $S=S_1\cup S_2$ 且 $S_1$ 和 $S_2$ 均非空。令</p>
-<script type="math/tex; mode=display">
-g=\frac{\sum_{j\in S_2}\varphi_{j,S}(\psi_{2,j}-\psi_{1,j})}{\sum_{j\in S_1}\varphi_{j,S}(\psi_{1,j}-\psi_{2,j})}</script><p>由假设</p>
-<script type="math/tex; mode=display">
-\sum_{j\in S}\varphi(j,S)\psi_{1,j}>\sum_{j\in S}\varphi(j,S)\psi_{2,j}</script><p>可知 $g&lt;1$。构造新信号策略 $\varphi’$ 如下：对于 $j\in S_1$，降低观测到 $j$ 后发送 $S$ 的概率：$\varphi’(j,S)=g\cdot \varphi_{j,S}$；相应地则增加发送信号 $\{j\}$ 的概率：$\varphi’(j,\{j\})=\varphi_{j,\{j\}}+(1-g)\cdot\varphi_{j,S}$。注意到在 $\varphi’$ 中，买家 $1$ 和买家 $2$ 对 $S$ 的估价分别为</p>
-<script type="math/tex; mode=display">
-g\sum_{j\in S_1}\varphi(j,S)\psi_{1,j}+\sum_{j\in S_2}\varphi(j,S)\psi_{1,j},\quad g\sum_{j\in S_1}\varphi(j,S)\psi_{2,j}+\sum_{j\in S_2}\varphi(j,S)\psi_{2,j}</script><p>由相减为 $0$ 可知买家 $1$ 和 $2$ 对 $S$ 的估价相等</p>
-<p>再证卖家在 $\varphi’$ 下的收益不会降低：信号 $\{j\}$ 的收益改变量为</p>
-<script type="math/tex; mode=display">
-(1-g)\varphi_{j,S}rev(j)=(1-g)\varphi_{j,S}\psi_{1,j}\ge(1-g)\varphi_{j,S}\psi_{2,j}</script><p>信号 $S$ 的收益至少是买家 $1$ 和买家 $2$ 对 $S$ 的估价取 $\min$。可知卖家的收益并不会降低。</p>
-<h2 id="线性规划求解最优混合信号策略"><a href="#线性规划求解最优混合信号策略" class="headerlink" title="线性规划求解最优混合信号策略"></a>线性规划求解最优混合信号策略</h2><p>因此可以用如下线性规划求解最优混合信号策略：</p>
-<script type="math/tex; mode=display">
-\max \sum_jx_j\psi_{w_2(j),j}+\sum_{i_1}\sum_{i_2<i_1}\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_2,j}</script><p>限制为</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-&\forall i_1,\forall i_2<i_1 & \sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_1,j}\ge\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_2,j}\\
-& \forall i_1,\forall i_2<i_1\text{, and }i\neq i_1,i_2 & \sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_1,j}\ge\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i,j}\\
-& & \sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_2,j}\ge\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i,j}\\
-& \forall j & x_j+\sum_{i_1}\sum_{i_2<i_1}[j \in d(i_1)\cup d(i_2)]y_j(i_1.i_2)\le 1\\
-& \forall j,\forall i_1,\forall i_2<i_1 & x_j\ge 0,\quad y_j(i_1,i_2)\ge 0
-\end{aligned}</script><p>其中 $y_j(i_1,i_2)$ 表示 $\varphi(j,S)$，其中 $w_1(S)=i_1,w_2(S)=i_2$。$x_j$ 表示 $\varphi(j,\{j\})$。只需要考虑 $i_2&lt;i_1$ 是因为存在最优策略，满足 $i_2$ 和 $i_1$ 对 $S$ 的估价相等。</p>
-<h1 id="最优混合信号策略收益的近似"><a href="#最优混合信号策略收益的近似" class="headerlink" title="最优混合信号策略收益的近似"></a>最优混合信号策略收益的近似</h1><p>文章中考虑了这样一个 benchmark：</p>
-<script type="math/tex; mode=display">
-\mathcal{B}=\min_{i'}\left(\sum_j\max_{i\neq i'}\psi_{i,j}\right)</script><p>并证明了最优策略的收益至少是 $\mathcal{B}/2$。由于证明是没什么意思且比较复杂，这里就不赘述了。</p>
 ]]></content>
       <categories>
         <category>Paper Reading</category>

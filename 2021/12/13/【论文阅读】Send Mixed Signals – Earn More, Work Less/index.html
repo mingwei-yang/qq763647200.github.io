@@ -28,7 +28,7 @@
 <meta property="og:description" content="Abstract考虑多类型的单物品拍卖，且所有买家的价值已知，并假定使用二价拍卖。文章说明了混合信号策略比纯信号策略收益更高，给出了计算最优混合信号策略的线性规划，并将其变量数降至多项式级别，因此能在多项式时间内求解。同时证明了使用最优信号策略的收益对某个指标有很好的近似比。证明中利用了混合信号策略等价于多个可分割物品拍卖的性质。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-12-13T02:25:22.000Z">
-<meta property="article:modified_time" content="2021-12-13T02:25:39.325Z">
+<meta property="article:modified_time" content="2021-12-13T02:44:22.476Z">
 <meta property="article:author" content="Mingwei Yang">
 <meta property="article:tag" content="Convex Optimization">
 <meta property="article:tag" content="Information Design">
@@ -214,7 +214,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-12-13 10:25:22 / 修改时间：10:25:39" itemprop="dateCreated datePublished" datetime="2021-12-13T10:25:22+08:00">2021-12-13</time>
+              <time title="创建时间：2021-12-13 10:25:22 / 修改时间：10:44:22" itemprop="dateCreated datePublished" datetime="2021-12-13T10:25:22+08:00">2021-12-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,7 +247,7 @@
         <h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>考虑多类型的单物品拍卖，且所有买家的价值已知，并假定使用二价拍卖。文章说明了混合信号策略比纯信号策略收益更高，给出了计算最优混合信号策略的线性规划，并将其变量数降至多项式级别，因此能在多项式时间内求解。同时证明了使用最优信号策略的收益对某个指标有很好的近似比。证明中利用了混合信号策略等价于多个可分割物品拍卖的性质。</p>
 <span id="more"></span>
 <h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>在信息不对称的情形下，即卖家拥有私有信息，为了最大化自己的收益，卖家通过信号的形式透露部分信息是很合理的方式。相较于纯信号策略，显然使用混合的信号策略效果不会更差。</p>
-<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>有一个物品和 $n$ 个买家。物品有 $m$ 种类型，服从概率分布 $(p_1,\cdots,p_m)$。买家 $i$ 对类型 $j$ 的价值是 $v_{i,j}$，其中 $v$ 和 $p$ 都是公有信息。卖家要预先提供一个信号策略 $\varphi:[m]\times \mathbb{N}\to [0,1]$ 并告知买家，其中 $\varphi(j,S)$ 表示当卖家观测到物品类型为 $j$ 时发送信号 $S$ 的概率。后文中 $S$ 也可以表示所有可能发送信号 $S$ 的类型集合，即 $\{j:\varphi(j,S)&gt;0\}$。令 $\mathcal{S}_\varphi$ 表示有效的信号集合，即 $\{S:\exist j,\varphi(j,S)&gt;0\}$。默认使用二价拍卖。</p>
+<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>有一个物品和 $n$ 个买家。物品有 $m$ 种类型，服从概率分布 $(p_1,\cdots,p_m)$。买家 $i$ 对类型 $j$ 的价值是 $v_{i,j}$，其中 $v$ 和 $p$ 都是公有信息。卖家要预先提供一个信号策略 $\varphi:[m]\times \mathbb{N}\to [0,1]$ 并告知买家，其中 $\varphi(j,S)$ 表示当卖家观测到物品类型为 $j$ 时发送信号 $S$ 的概率。后文中 $S$ 也可以表示所有可能发送信号 $S$ 的类型集合，即 $\{j:\varphi(j,S)&gt;0\}$。令 $\mathcal{S}_\varphi$ 表示有效的信号集合，即 $\{S:\exists j,\varphi(j,S)&gt;0\}$。默认使用二价拍卖。</p>
 <p>纯信号策略是指卖家观测到物品类型 $j$ 后，发送的信号固定，即 $\varphi(j,S)\in\{0,1\}$。纯信号策略等价于对类型进行二次分类，并告知买家属于哪一个类。混合信号策略是指以某个概率分布发送信号。那么买家收到信号 $S$ 的概率为 $\sum_jp_j\varphi(j,S)$。收到信号 $S$ 后，物品类型为 $j$ 的概率</p>
 <script type="math/tex; mode=display">
 \Pr[j|S]=\frac{p_j\varphi(j,S)}{\sum_{j'}p_{j'}\varphi(j',S)}</script><p>因此收到信号 $S$ 后，买家 $i$ 的期望收益变为</p>
