@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前言这篇文章讨论了价格歧视垄断的模型，并为该模型找到了解决方案。之后说明了该模型与 Myerson 的论文 Optimal Auction Design 里的最优拍卖模型是等价的。这个模型的转换从另一个角度描述了拍卖模型中的最优策略，将其与一些经济学中的概念联系了起来，从而能够有更直观的理解，也为之后对 Myerson 拍卖的分析找到了更简单的模型。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【论文阅读】The Simple Economics of Optimal Auctions">
+<meta property="og:url" content="http://example.com/2021/12/30/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91The%20Simple%20Economics%20of%20Optimal%20Auctions/index.html">
+<meta property="og:site_name" content="Mingwei Yang&#39;s Blog">
+<meta property="og:description" content="前言这篇文章讨论了价格歧视垄断的模型，并为该模型找到了解决方案。之后说明了该模型与 Myerson 的论文 Optimal Auction Design 里的最优拍卖模型是等价的。这个模型的转换从另一个角度描述了拍卖模型中的最优策略，将其与一些经济学中的概念联系了起来，从而能够有更直观的理解，也为之后对 Myerson 拍卖的分析找到了更简单的模型。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-30T07:17:22.000Z">
+<meta property="article:modified_time" content="2021-12-30T07:18:12.018Z">
+<meta property="article:author" content="Mingwei Yang">
+<meta property="article:tag" content="Auction">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/12/30/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91The%20Simple%20Economics%20of%20Optimal%20Auctions/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>【论文阅读】The Simple Economics of Optimal Auctions | Mingwei Yang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Mingwei Yang's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/30/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91The%20Simple%20Economics%20of%20Optimal%20Auctions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Mingwei Yang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mingwei Yang's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【论文阅读】The Simple Economics of Optimal Auctions
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-12-30 15:17:22 / 修改时间：15:18:12" itemprop="dateCreated datePublished" datetime="2021-12-30T15:17:22+08:00">2021-12-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Paper-Reading/" itemprop="url" rel="index"><span itemprop="name">Paper Reading</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这篇文章讨论了价格歧视垄断的模型，并为该模型找到了解决方案。之后说明了该模型与 Myerson 的论文 Optimal Auction Design 里的最优拍卖模型是等价的。这个模型的转换从另一个角度描述了拍卖模型中的最优策略，将其与一些经济学中的概念联系了起来，从而能够有更直观的理解，也为之后对 Myerson 拍卖的分析找到了更简单的模型。</p>
+<span id="more"></span>
+<h1 id="解决最优拍卖问题的方法"><a href="#解决最优拍卖问题的方法" class="headerlink" title="解决最优拍卖问题的方法"></a>解决最优拍卖问题的方法</h1><p>首先介绍一下拍卖模型，以及在证明了该模型与价格歧视垄断模型的等价性后，最优拍卖问题的解决方法。</p>
+<p>假设有 $n$ 个买家和一件物品。物品对每个买家的价值 $v_i$ 独立地从概率函数为 $F_i$ 的分布中抽取，其中 $F_i(\underline{v}_i)=0,F_i(\overline{v}_i)=1$。概率函数是公有信息，但具体的价值是私有信息。物品对卖家而言价值为 $0$。</p>
+<p>使得卖家能够最大化收益的最优的拍卖方案如下：</p>
+<ol>
+<li><p>对于每个买家，令 $1-F_i(v)\equiv q$ 为价值至少为 $v$ 的概率。若把 $v$ 看成价格，$q$ 看成需求，那么 $q-v$ 的函数图像就可以看成是买家的“需求曲线”，即需求随价值的变化函数。</p>
+</li>
+<li><p>对每条需求曲线，计算其边际收益曲线。其中边际收益指增加一单位产量后增加的收益，计算方法为价格与需求量的乘积对需求量求导。代入需求量为 $q$，价格 $v=F_i^{-1}(1-q)$，有</p>
+<script type="math/tex; mode=display">
+\frac{dqF_i^{-1}(1-q)}{dq}=F_i^{-1}(1-q)-\frac{q}{f_i(F_i^{-1}(1-q))}</script><p>把边际收益曲线表示成 $v$ 的函数：</p>
+<script type="math/tex; mode=display">
+MR_i(v)=v-\frac{1-F_i(v)}{f_i(v)}</script></li>
+<li><p>采用第二边际收益拍卖：每个买家报价后，卖家计算出每个买家的边际收益（这里假设 $MR$ 单调递增），把物品卖给边际收益最高的买家。向该买家收取最低的价格 $p$，使得该买家报价为 $p$ 时仍能胜出。具体来说，若所有买家的边际收益均非正，则不出售物品。不妨设买家 $1$ 的边际收益最高。若其他买家的边际收益均非正，则向其收取 $MR^{-1}_1(0)$ 的价格。否则不妨设第二高的边际收益为 $M_2$，那么向其收取 $MR_1^{-1}(M_2)$ 的价格。</p>
+</li>
+</ol>
+<p>注意到在上述拍卖机制下，价值最高的人未必边际收益最高。同时每个买家的最优策略必然是诚实报价。以及 $MR_i^{-1}(0)$ 可以看作是买家 $i$ 的“保留价值”，即价值超过该值才可能获得物品。</p>
+<p>注意到在对称情形下，即所有 $F_i$ 相同，上述拍卖等价于二价拍卖。但在非对称情形下，就可能会出现市场中的所谓“价格歧视”现象，即同一物品向不同的买家收取不同的价格。</p>
+<p>拓展到有 $k$ 个相同的物品且每个买家最多获得一件物品的情形：把物品分配给边际收益前 $k$ 大且大于 $0$ 的买家，对买家 $i$ 收取价格为 $\max\{MR_i^{-1}(0),MR_i^{-1}(M_{k+1})\}$，其中 $M_{k+1}$ 为第 $k+1$ 大的边际收益。</p>
+<p>扩展到买家需要付出递增的边际成本来生产物品的情形，即生产第 $k$ 件物品的成本大于成产第 $k-1$ 件物品的成本：将 $k$ 件物品分别卖给边际收益前 $k$ 大的买家，满足第 $k$ 件物品的边际成本小于第 $k$ 大的边际收益，且第 $k+1$ 件物品的边际成本大于第 $k+1$ 大的边际收益。向每个买家收取的价格为第 $k$ 件物品的边际成本和第 $k+1$ 大的边际收益分别对应的边际收益曲线中的值的较大值，即最小的能够使该买家得到物品的报价。</p>
+<h1 id="价格歧视垄断和最优拍卖的关系"><a href="#价格歧视垄断和最优拍卖的关系" class="headerlink" title="价格歧视垄断和最优拍卖的关系"></a>价格歧视垄断和最优拍卖的关系</h1><h2 id="价格歧视垄断问题"><a href="#价格歧视垄断问题" class="headerlink" title="价格歧视垄断问题"></a>价格歧视垄断问题</h2><p>下面首先对第三价格歧视的问题进行建模并分析，之后说明该问题与最优拍卖问题在数学形式上是等价的，即可以相互转换。</p>
+<p>考虑一个垄断者在 $n$ 个市场中出售相同的物品，需要为每个市场设置一个价格。每个市场中有若干个买家，每个买家最多买一件物品。设市场 $i$ 中的买家价值在 $\underline{v}_i$ 和 $\overline{v}_i$ 之间，且价值不超过 $v$ 的买家有 $F_i(v)$ 个。归一化使得 $F_i(\overline{v}_i)=1$。设所有市场的边际收益曲线都是递减的，且垄断者能够以 $0$ 的边际成本生产最多 $Q$ 个物品。其中 $Q$ 是 $[\underline{Q},\overline{Q}]$ 之间的随机变量，概率密度函数为 $h(Q)$。设垄断者根据真实的 $Q$ 来为每个市场设定价值来最大化其收益。</p>
+<p>令 $p_i(v,Q)$ 表示当容量为 $Q$ 时，市场 $i$ 中价值为 $v$ 的买家能够获得一件物品的概率，即垄断者在市场 $i$ 中设置的价格不超过 $v$。令</p>
+<script type="math/tex; mode=display">
+\overline{p}_i(v)\equiv \int_{\underline{Q}}^{\overline{Q}}p_i(v,Q)h(Q)dQ</script><p>表示该买家获得一件物品的概率。</p>
+<p>考虑卖家的收益，将其表示成社会价值（所有获得物品的买家的价值之和）减去消费者剩余（买家的价值与其付的钱之差的和）。注意到社会价值等于</p>
+<script type="math/tex; mode=display">
+\int_{\underline{Q}}^{\overline{Q}}h(Q)\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}vf_i(v)p_i(v,Q)dvdQ=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}vf_i(v)\overline{p}_i(v)dv\tag{2}</script><p>其中 $f_i(v)=F’_i(v)$ 表示市场 $i$ 中价值为 $v$ 的买家数量。而消费者剩余等于</p>
+<script type="math/tex; mode=display">
+\int_{\underline{Q}}^{\overline{Q}}h(Q)\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^{\overline{v}_i}p_i(x,Q)dxdvdQ=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^v\overline{p}_i(v)dxdv\tag{3}</script><p>这样理解：价值为 $v$ 的买家获得物品的概率 $\overline{p}_i(v)$。如果价值增加 $dv$，期望增加的消费者剩余就是 $\overline{p}_i(v)dv$。因此垄断者的期望收益就是</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}vf_i(v)\overline{p}_i(v)dv-\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^v\overline{p}_i(v)dxdv\tag{4}</script><p>问题变成最大化 $(4)$ 且满足容量限制：</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)p_i(v,Q)dv\le Q\quad \forall Q\tag{5}</script><p>若在市场 $i$ 设置价格 $w$，那么对于 $v&lt;w$ 有 $p_i(v,Q)=0$；对于 $v\ge w$ 有 $p_i(v,Q)=1$。</p>
+<p>注意到只需要对每个 $Q$ 分别找到最优解，等价于找下面式子的最大值：</p>
+<script type="math/tex; mode=display">
+\pi(Q)=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}vf_i(v)p_i(v,Q)dv-\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^vp_i(x,Q)dxdv\tag{4'}</script><p>对 $(4’)$ 的第二项进行化简：</p>
+<script type="math/tex; mode=display">
+\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^vp_i(x,Q)dxdv=\int_{\underline{v}_i}^{\overline{v}_i}p_i(x,Q)\int_v^{\overline{v}_i}f_i(x)dxdv=\int_{\underline{v}_i}^{\overline{v}_i}[1-F_i(v)]p_i(v,Q)dv</script><p>代入 $(4’)$ 后得到期望收益等于</p>
+<script type="math/tex; mode=display">
+ER=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}\left[v-\frac{1-F_i(v)}{f_i(v)}\right]f_i(v)p_i(v,Q)dv=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}MR_i(v)f_i(v)p_i(v,Q)dv\tag{7}</script><p>容易看出垄断者的最优策略就是在满足限制的前提下，把物品卖给那些边际收益非负且尽量高的人买家。</p>
+<h2 id="最优拍卖问题"><a href="#最优拍卖问题" class="headerlink" title="最优拍卖问题"></a>最优拍卖问题</h2><p>下面证明在 Myerson 的论文中讨论的拍卖形式与上述垄断者模型的等价性。首先 $F_i(v)$ 的含义变成了买家 $i$ 的价值不超过 $v$ 的概率，$p_i$ 由 $v,Q$ 的函数变成了 $v_1,\cdots,v_n$ 的函数。注意到 $\overline{p}_i(v)=E(p_i(v_1,\cdots,v_{i-1},v,v_{i+1},\cdots,v_n))$ 仍然表示买家 $i$ 价值为 $v$ 时获得物品的概率。</p>
+<p>令 $S_i(v)$ 表示在某个均衡下，当买家 $i$ 的价值为 $v$ 时其消费者剩余的期望。注意到当 $i$ 的价值是 $v+dv$ 时，通过模仿价值为 $v$ 时的策略，获得的消费者剩余 $S_i(v+dv)$ 至少是 $S_i(v)+\overline{p}_i(v)dv$。因此</p>
+<script type="math/tex; mode=display">
+\frac{\partial S_i(v)}{\partial v}=\overline{p}_i(v)\ge 0\tag{8}</script><p>表明买家的消费者剩余是随着其价值 $v$ 单调不降的。又因为卖家的收益等于社会价值减去消费者剩余，为了最大化自己的收益，卖家会使 $S_i(\underline{v}_i)=0$。因此</p>
+<script type="math/tex; mode=display">
+S_i(v)=0+\int_{\underline{v}_i}^{v}\left[\frac{\partial S_i(x)}{\partial x}\right]dx=\int_{\underline{v}_i}^v\overline{p}_i(x)dx</script><p>因此最优拍卖模型和垄断者模型的目标函数是类似的。两个模型的不同之处在于最优拍卖模型中的限制是</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^np_i(v_1,\cdots,v_n)\le 1\tag{9}</script><p>以及 $0\le p_i\le 1$ 和 $\partial p_i/\partial v_i\ge 0$。目标函数 $(7)$ 此时变为</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^n\int_{\underline{v}_1}^{\overline{v}_1}\cdots\int_{\underline{v}_n}^{\overline{v}_n}MR_i(v_i)f_1(v_1)\cdots f_n(v_n)p_i(v_1,\cdots,v_n)dv_1\cdots dv_n\tag{10}</script><p>注意到当 $v_1,\cdots,v_n$ 固定后 $f_1(v_1),\cdots,f_n(v_n)$ 也都固定，那么卖家的最优策略必然是把物品分配给边际收益最大的买家。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Auction/" rel="tag"># Auction</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/13/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Send%20Mixed%20Signals%20%E2%80%93%20Earn%20More,%20Work%20Less/" rel="prev" title="【论文阅读】Send Mixed Signals – Earn More, Work Less">
+      <i class="fa fa-chevron-left"></i> 【论文阅读】Send Mixed Signals – Earn More, Work Less
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%9C%80%E4%BC%98%E6%8B%8D%E5%8D%96%E9%97%AE%E9%A2%98%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">解决最优拍卖问题的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%B7%E6%A0%BC%E6%AD%A7%E8%A7%86%E5%9E%84%E6%96%AD%E5%92%8C%E6%9C%80%E4%BC%98%E6%8B%8D%E5%8D%96%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">3.</span> <span class="nav-text">价格歧视垄断和最优拍卖的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%B7%E6%A0%BC%E6%AD%A7%E8%A7%86%E5%9E%84%E6%96%AD%E9%97%AE%E9%A2%98"><span class="nav-number">3.1.</span> <span class="nav-text">价格歧视垄断问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E6%8B%8D%E5%8D%96%E9%97%AE%E9%A2%98"><span class="nav-number">3.2.</span> <span class="nav-text">最优拍卖问题</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Mingwei Yang"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Mingwei Yang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mingwei Yang</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
