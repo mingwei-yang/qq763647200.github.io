@@ -326,7 +326,7 @@ C=\text{Conv}\{v_0,\cdots,v_k\}=\{\theta_0v_0+\cdots+\theta_kv_k|\theta\ge 0,1^T
 <p>对于 $x\in C\subseteq \mathbb{R}^n$，$C$ 是单纯形等价于 $x=\theta_0v_0+\cdots+\theta_kv_k\in C$，其中 $1^T\theta=1$，$\theta\ge 0$ 且 $v_1-v_0,\cdots,v_k-v_0$ 线性无关。</p>
 <p>定义 $[\theta_1,\cdots,\theta_k]^T=y$，那么 $y\ge 0$，$1^Ty=1$。$[v_1-v_0,\cdots,v_k-v_0]=B\in \mathbb{R}^{n\times k}$。那么 $x\in C$ 等价于</p>
 <script type="math/tex; mode=display">
-x=\theta_0v_0+\cdots+\theta_kv_k=v_0+\theta_1(v_1-v_0)+\cdots+\theta_k(v_k-v_0)=v_0+By</script><p>由于 $B$ 中列向量线性无关，有 $rank(B)=k$。则存在线性变换 $A=\begin{bmatrix}A_1\\ A_2\end{bmatrix}\in \mathbb{R}^{n\times n}$ 将其变为</p>
+x=\theta_0v_0+\cdots+\theta_kv_k=v_0+\theta_1(v_1-v_0)+\cdots+\theta_k(v_k-v_0)=v_0+By</script><p>由于 $B$ 中列向量线性无关，有 $rank(B)=k$。则存在线性变换 $A=\begin{bmatrix}A_1\ A_2\end{bmatrix}\in \mathbb{R}^{n\times n}$ 将其变为</p>
 <script type="math/tex; mode=display">
 AB=\begin{bmatrix}
 A_1\\

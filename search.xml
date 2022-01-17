@@ -1,80 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>【笔记】非完全信息下的动态博弈（序贯均衡）</title>
-    <url>/2021/12/30/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E9%9D%9E%E5%AE%8C%E5%85%A8%E4%BF%A1%E6%81%AF%E4%B8%8B%E7%9A%84%E5%8A%A8%E6%80%81%E5%8D%9A%E5%BC%88%EF%BC%88%E5%BA%8F%E8%B4%AF%E5%9D%87%E8%A1%A1%EF%BC%89/</url>
-    <content><![CDATA[<p>来源于mit的Economic Applications of Game Theory这门课的<a href="https://ocw.mit.edu/courses/economics/14-12-economic-applications-of-game-theory-fall-2012/lecture-notes/">Lecture Notes</a>的第16章。</p>
+    <title>【笔记】凸优化1</title>
+    <url>/2021/12/11/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E5%87%B8%E4%BC%98%E5%8C%961/</url>
+    <content><![CDATA[<p>b站凌青老师凸优化课程1-6课笔记。</p>
 <span id="more"></span>
-<h2 id="序贯均衡"><a href="#序贯均衡" class="headerlink" title="序贯均衡"></a>序贯均衡</h2><p>考虑如下博弈：</p>
-<p><img src="/images/photo1.png" alt></p>
-<p>员工有 $0.7$ 的概率是勤奋的，$0.3$ 的概率是懒惰的。公司可以选择雇佣或者不雇佣该员工；若雇佣，则员工可以选择工作或偷懒。注意到加粗的线表示了一个贝叶斯纳什均衡（Bayesian Nash equilibrium），这显然不是我们想要的结果。为了解决这个问题，不妨设员工是<strong>序贯理性</strong>（sequentially rational）的，即对于每一个其所在的信息集（information set）都会选择能使其期望收益最大的策略，那么员工就会选择工作而不是偷懒。而得知员工会选择工作后，公司也会改为雇佣该员工。</p>
-<p>注意到第二个均衡是上述博弈中唯一的完美子博弈均衡（subgame-perfect equilibrium），那么使用完美子博弈均衡的方法是不是通用的呢？答案是否定的。考虑如下博弈：</p>
-<p><img src="/images/photo2.png" alt></p>
-<p>这显然是一个完美子博弈均衡，因为并不存在真子博弈（proper subgame），同时这也是一个纳什均衡。注意到此时玩家 $2$ 并不是序贯理性的，因此序贯理性的引入是必要的。下面形式化描述序贯理性：</p>
-<h4 id="定义1（信念估计）"><a href="#定义1（信念估计）" class="headerlink" title="定义1（信念估计）"></a>定义1（信念估计）</h4><p>定义<strong>信念估计</strong>（belief assessment） $b$ 为每个信息集选取一个概率分布构成的列表。给定信息集 $I$，则 $b(\cdot|I)$ 给出了 $I$ 上的概率分布。</p>
-<hr>
-<p>对于给定的信息集 $I$，在该信息集上做决策的玩家会相信自己以 $b(\cdot|I)$ 的概率分布位于 $I$ 上的节点。</p>
-<h4 id="定义2（序贯理性）"><a href="#定义2（序贯理性）" class="headerlink" title="定义2（序贯理性）"></a>定义2（序贯理性）</h4><p>令 $s$ 为策略组合（strategy profile），$b$ 为信念估计。称 $(s,b)$ 是<strong>序贯理性</strong>的当且仅当对于每个信息集 $I$，在以下条件下，在 $I$ 上做决策的玩家最大化了自己的收益：</p>
-<ol>
-<li>该玩家相信自己以 $b(\cdot|I)$ 的概率分布位于 $I$ 的节点上；</li>
-<li>在 $I$ 之后的博弈中，每个玩家都会根据 $s$ 来决策。</li>
-</ol>
-<hr>
-<p>例如在上一个博弈中，若玩家 $2$ 以 $\mu$ 的概率位于左边的节点，$1-\mu$ 的概率位于右边的节点。若玩家 $2$ 是序列理性的，则无论 $\mu$ 的值是多少，他都会选择决策 $R$。</p>
-<p>但这仍然不够。为了获得均衡，我们仍需要 $b$ 是与 $s$ 一致的。举例来说，仍然考虑上面的博弈</p>
-<p><img src="/images/photo3.png" alt></p>
-<p>序贯理性的玩家 $2$ 以 $0.1$ 的概率位于左边的节点，他会选择 $R$ 作为决策。此时玩家 $1$ 会选择决策 $T$ 作为决策 $R$ 的最佳反应（best response）。显然这不是个均衡。问题就在于在均衡中，每个玩家都知道其他玩家的策略。但知道了玩家 $1$ 的决策后，玩家 $2$ 的信念估计就会发生改变。因此我们需要引入一致性：</p>
-<h4 id="定义3（一致性）"><a href="#定义3（一致性）" class="headerlink" title="定义3（一致性）"></a>定义3（一致性）</h4><p>给定策略组合 $s$ 和信念估计 $b$，令 $I$ 为根据 $s$ 进行决策时有可能被到达的信息集。称 $b(\cdot|I)$ 与 $s$ <strong>一致</strong>当且按照 $s$ 进行决策时，到达 $I$ 上的概率分布恰好是 $b(\cdot|I)$。即对于 $\forall n\in I$，</p>
-<script type="math/tex; mode=display">
-b(n|I)=\frac{\Pr(n|s)}{\sum_{n'\in I}\Pr(n'|s)}</script><p>其中 $\Pr(n|s)$ 表示根据 $s$ 进行决策时到达 $n$ 的概率。</p>
-<hr>
-<p>但对于那些到达的概率为 $0$ 的节点，上述式子的分母为 $0$，那么我们如何定义其一致性呢？一个方法是让每一条边均有一个很小的概率被选取，然后令这些概率趋于 $0$，得到的就是对应的概率分布。例如考虑如下博弈：</p>
-<p><img src="/images/photo4.png" alt></p>
-<p>在策略组合是 $(X,T,L)$ 时，玩家 $3$ 的信息集被到达的概率为 $0$。不妨令玩家 $1$ 和 $2$ 分别有一个很小的概率 $\epsilon_1,\epsilon_2$ 发生“抖动”，即玩家 $1$ 选择 $E$ 的概率是 $\epsilon_1$，选择 $X$ 的概率是 $1-\epsilon_1$；玩家 $2$ 选择 $B$ 的概率是 $\epsilon_2$。此时再计算到达 $T$ 指向的节点 $n_T$ 的概率</p>
-<script type="math/tex; mode=display">
-\Pr(n_T|I_3,\epsilon_1,\epsilon_2)=\frac{\epsilon_1(1-\epsilon_2)}{\epsilon_1(1-\epsilon_2)+\epsilon_1\epsilon_2}=1-\epsilon_2</script><p>令 $\epsilon_2\to 0$ 就可以得到 $b(n_T|I_3)=1$ 而不是 $0.1$。</p>
-<h4 id="定义4（更完备的一致性）"><a href="#定义4（更完备的一致性）" class="headerlink" title="定义4（更完备的一致性）"></a>定义4（更完备的一致性）</h4><p>给定 $(s,b)$，称 $b$ 与 $s$ <strong>一致</strong>当且仅当加入某些趋于 $0$ 的抖动概率后，根据 $s$ 计算出来的所有信息集的概率分布都趋于 $b$ 给出的概率分布。即存在序列 $(s^m,b^m)$ 使得</p>
-<ol>
-<li>$(s^m,b^m)\to (s,b)$；</li>
-<li>对于任意 $m$，$s^m$ 满足每一个决策都有可能被选择；</li>
-<li>$b^m$ 是通过 $s^m$ 计算出来的。</li>
-</ol>
-<hr>
-<p>通过序贯理性和一致性可以定义出序贯均衡（sequential equilibrium）：</p>
-<h4 id="定义5（序贯均衡）"><a href="#定义5（序贯均衡）" class="headerlink" title="定义5（序贯均衡）"></a>定义5（序贯均衡）</h4><p>称 $(s,b)$ 是<strong>序贯均衡</strong>的，如果 $(s,b)$ 是序贯理性的，并且 $b$ 与 $s$ 一致。</p>
-<hr>
-<p>可以验证上面的博弈中，唯一的完美子博弈均衡是 $s^<em>=(E,T,R)$。令 $b^</em>(n_T|I_3)=1$ 是信念估计，则可以验证 $(s^<em>,b^</em>)$ 是序贯均衡。</p>
-<h2 id="非完全信息下的出价博弈"><a href="#非完全信息下的出价博弈" class="headerlink" title="非完全信息下的出价博弈"></a>非完全信息下的出价博弈</h2><p>考虑这样一个有意思的博弈：一个卖家要出售一件物品给一个买家。物品对卖家来说价值为 $0$，对买家来说价值为 $v$。其中 $v$ 在 $[0,1]$ 上均匀分布，且只有买家自己知道。游戏分两轮：在第一轮中，卖家出价 $p_0$；若买家选择以 $p_0$ 的价格购买，则卖家和买家的收益分别是 $p_0$ 和 $v-p_0$，游戏结束；若不购买，则进行第二轮。在第二轮中，卖家出价 $p_1$；若买家选择以 $p_1$ 的价格购买，则卖家和买家的收益分别是 $\delta p_1$ 和 $\delta(p_1-v)$，其中 $\delta\in (0,1)$；若不购买，则双方的收益均为 $0$，游戏结束。</p>
-<p>买家的策略可以用 $a,b$ 两个函数形式化表示：第一轮中购买当且仅当 $v\ge a(p_0)$；第二轮中购买当且仅当 $v\ge b(p_1)$。现在考虑这个博弈的序贯均衡。</p>
-<p>容易发现在第二轮中，买家收益非负当且仅当 $v\ge p_1$，因此 $b(p_1)=p_1$。在第一轮中，当买家拒绝以 $p_0$ 的价格购买时，卖家可以得知 $v\le a(p_0)$，即对于卖家来说 $v$ 在 $[0,a(p_0)]$ 中均匀分布。若在第二轮中出价 $p_1$，则卖家的期望收益为</p>
-<script type="math/tex; mode=display">
-U_S(p_1|p_0)=p_1\Pr(p_1<v|v\le a(p_0))=p_1(a(p_0)-p_1)/a(p_0)</script><p>由于卖家想要最大化自己的收益，得到</p>
-<script type="math/tex; mode=display">
-p_1(p_0)=a(p_0)/2</script><p>下面考虑第一轮。给定 $p_0$ 后，当 $v\ge a(p_0)$ 时，买家会在第一轮以 $p_0$ 的价值购买；当 $v\in [a(p_0)/2,a(p_0))$ 时，买家会在第二轮以 $a(p_0)/2$ 的价值购买；否则不买。根据序贯理性，我们有</p>
-<script type="math/tex; mode=display">
-v-p_0\ge \delta(v-p_1(p_0))\text{ for }v\ge a(p_0)</script><script type="math/tex; mode=display">
-v-p_0\le \delta(v-p_1(p_0))\text{ for }v\in [a(p_0)/2,a(p_0))</script><p>根据连续性，当 $v=a(p_0)$ 时上述不等式取等号，即</p>
-<script type="math/tex; mode=display">
-a(p_0)-p_0=\delta(a(p_0)-p_1(p_0))</script><p>代入 $p_1(p_0)=a(p_0)/2$ 得到</p>
-<script type="math/tex; mode=display">
-a(p_0)=\frac{p_0}{1-\delta/2}</script><p>最后考虑如何设置 $p_0$：当 $v\ge a(p_0)$ 时卖家收益为 $p_0$；当 $v\in [a(p_0)/2,a(p_0))$ 时收益为 $\delta p_1(p_0)=\delta a(p_0)/2$；其余情况收益为 $0$。因此期望收益为</p>
+<h1 id="什么是优化"><a href="#什么是优化" class="headerlink" title="什么是优化"></a>什么是优化</h1><p>优化就是从一个可行解的集合中，寻找出最优的元素。写成数学形式：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-U_S(p_0)&=p_0\cdot(1-a(p_0))+\delta(a(p_0)/2)\cdot(a(p_0)-a(p_0)/2)\\
-&=p_0\left(1-\frac{p_0}{1-\delta/2}\right)+\delta\left(\frac{p_0}{2-\delta}\right)^2
-\end{aligned}</script><p>计算 $U_S(p_0)$ 的最大值得到</p>
+&\text{minimize }f_0(x)\\
+&\text{subject to }f_i(x)\le b_i\quad i=1,\cdots,M
+\end{aligned}</script><p>其中 $x=[x_1,\cdots,x_n]^T$ 称为优化变量，$f_0:\mathbb{R}^n\to \mathbb{R}$ 称为目标函数，$f_i:\mathbb{R}^n\to \mathbb{R}$ 称为不等式约束。</p>
+<h1 id="优化问题的分类"><a href="#优化问题的分类" class="headerlink" title="优化问题的分类"></a>优化问题的分类</h1><p>优化问题一般有如下分类，其中前者通常较简单，后者通常较难。</p>
+<h4 id="线性规划-非线性规划"><a href="#线性规划-非线性规划" class="headerlink" title="线性规划 / 非线性规划"></a>线性规划 / 非线性规划</h4><p>称 $f$ 为线性函数如果 $f(\alpha x+\beta y)=\alpha f(x)+\beta f(y)$。</p>
+<p>若限制函数和目标函数均为线性函数，则称该问题为线性规划，否则称其为非线性规划。</p>
+<h4 id="凸规划-非凸规划"><a href="#凸规划-非凸规划" class="headerlink" title="凸规划 / 非凸规划"></a>凸规划 / 非凸规划</h4><p>称 $f$ 是凸函数如果 $f(\alpha x+\beta y)\le \alpha f(x)+\beta f(y)$。</p>
+<p>若限制函数和目标函数均为凸函数，则称该问题为凸规划，否则称其为非凸规划。</p>
+<hr>
+<p>通常还有光滑 / 非光滑，连续 / 离散，单目标 / 多目标等分类。</p>
+<h1 id="凸集"><a href="#凸集" class="headerlink" title="凸集"></a>凸集</h1><h4 id="直线和线段"><a href="#直线和线段" class="headerlink" title="直线和线段"></a>直线和线段</h4><p>对于 $x_1\neq x_2\in \mathbb{R}^n$，定义过 $x_1,x_2$ 的直线为</p>
 <script type="math/tex; mode=display">
-p_0=\frac{(1-\delta/2)^2}{2(1-3\delta/4)}</script>]]></content>
+\{\theta x_1+(1-\theta)x_2|\theta\in \mathbb{R}\}</script><p>定义 $x_1,x_2$ 构成的线段为</p>
+<script type="math/tex; mode=display">
+\{\theta x_1+(1-\theta)x_2|\theta\in [0,1]\}</script><h2 id="仿射集"><a href="#仿射集" class="headerlink" title="仿射集"></a>仿射集</h2><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p><strong>定义1</strong> 称集合 $C$ 是仿射集，若 $\forall x_1,x_2\in C$，连接 $x_1$ 与 $x_2$ 的直线都在 $C$ 内。</p>
+<p><strong>仿射组合</strong> 设 $x_1,\cdots,x_k$，称 $\theta_1x_1+\cdots+\theta_kx_k$ 为其仿射组合，其中 $\theta_1,\cdots,\theta_k\in \mathbb{R}$，且 $\theta_1+\cdots+\theta_k=1$。</p>
+<p><strong>定义2</strong> 称集合 $C$ 是仿射集，若 $\forall x_1,\cdots,x_k\in c$，它们的所有仿射组合都在 $C$ 内。</p>
+<h4 id="定理"><a href="#定理" class="headerlink" title="定理"></a>定理</h4><p>上述两个定义等价。</p>
+<p><strong>证明</strong> 由定义2显然可以推出定义1。往证由定义1可推出定义2。</p>
+<p>假设有仿射集 $C$，先证任意三个元素的仿射组合都在 $C$ 中。取 $x_1,x_2,x_3\in c$，$\theta_1,\theta_2,\theta_3\in \mathbb{R}$ 且 $\theta_1+\theta_2+\theta_3=1$，根据定义1可知</p>
+<script type="math/tex; mode=display">
+\frac{\theta_1}{\theta_1+\theta_2}x_1+\frac{\theta_2}{\theta_1+\theta_2}x_2\in C</script><p>那么有</p>
+<script type="math/tex; mode=display">
+(\theta_1+\theta_2)\left(\frac{\theta_1}{\theta_1+\theta_2}x_1+\frac{\theta_2}{\theta_1+\theta_2}x_2\right)+(1-\theta_1-\theta_2)x_3\in C</script><p>展开即可得到 $\theta_1x_1+\theta_2x_2+\theta_3x_3\in C$。由归纳法可知两个定义等价。</p>
+<h4 id="关于仿射集的子空间"><a href="#关于仿射集的子空间" class="headerlink" title="关于仿射集的子空间"></a>关于仿射集的子空间</h4><p>假设 $C$ 是仿射集，$x_1,x_2\in C$。把 令 $\gamma=\alpha x_1+\beta x_2$，则当 $\alpha+\beta\neq 1$ 时 $\gamma$ 未必在 $C$ 中。构造新集合：</p>
+<script type="math/tex; mode=display">
+V=c-x_0=\{x-x_0|x\in c\}\quad \forall x_0\in c</script><p>称 $V$ 为与 $C$ 相关的子空间。那么对于 $\forall v_1,v_2\in V$，$\forall \alpha,\beta\in \mathbb{R}$，都有 $\alpha v_1+\beta v_2\in V$。因为</p>
+<script type="math/tex; mode=display">
+\alpha(v_1+x_0)+\beta(v_2+x_0)+(1-\alpha-\beta)x_0\in C</script><p>从而</p>
+<script type="math/tex; mode=display">
+\alpha v_1+\beta v_2+x_0\in C</script><p>注意到子空间必须经过原点。</p>
+<h4 id="仿射包"><a href="#仿射包" class="headerlink" title="仿射包"></a>仿射包</h4><p>定义集合 $C$ 的仿射包为</p>
+<script type="math/tex; mode=display">
+\text{aff }C=\{\theta x_1+\cdots+\theta_kx_k|\forall x_1,\cdots,x_k\in C,\forall \theta_1+\cdots+\theta_k=1\}</script><p>那么 $\text{aff }C$ 为包含 $C$ 的最小仿射集。</p>
+<h2 id="凸集-1"><a href="#凸集-1" class="headerlink" title="凸集"></a>凸集</h2><h4 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h4><p><strong>定义1</strong> 称集合 $C$ 是凸集，如果任意两点之间的线段都在 $C$ 内。形式化描述：对于 $\forall x_1,x_2\in C$，$\forall\theta\in [0,1]$，都有 $\theta x_1+(1-\theta)x_2\in C$。</p>
+<p>注意到仿射集是凸集的特例。</p>
+<p><strong>凸组合</strong> 对于 $x_1,\cdots,x_k$，称 $\theta_1x_1+\cdots+\theta_kx_k$ 为其凸组合，其中 $\theta_1,\cdots,\theta_k\in [0,1]$ 且 $\theta_1+\cdots+\theta_k=1$。</p>
+<p><strong>定义2</strong> 称集合 $C$ 是凸集，如果 $C$ 中任意元素的凸组合都在 $C$ 内。</p>
+<p>用跟仿射集相同的方法可证两个定义等价。</p>
+<h4 id="凸包"><a href="#凸包" class="headerlink" title="凸包"></a>凸包</h4><p>对于集合 $C$，定义其凸包为</p>
+<script type="math/tex; mode=display">
+\text{Conv }C=\{\theta_1x_1+\cdots+\theta_kx_k|\forall x_1,\cdots,x_k\in C,\forall \theta_1,\cdots,\theta_k\in [0,1],\theta_1+\cdots+\theta_k=1\}</script><p>$C$ 的凸包为包含 $C$ 的最小凸集。</p>
+<h2 id="凸锥"><a href="#凸锥" class="headerlink" title="凸锥"></a>凸锥</h2><h4 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h4><p>称集合 $C$ 是锥，如果 $\forall x\in C$，$\forall\theta\ge 0$，有 $\theta x\in C$。</p>
+<p><strong>定义1</strong> 称集合 $C$ 是凸锥，如果 $\forall x_1,x_2\in C$，$\forall\theta_1,\theta_2\ge 0$，有 $x_1\theta_1+x_2\theta_2\in C$。</p>
+<p>凸锥的定义等价于凸的锥。首先凸锥必然是凸的。反过来，若锥 $C$ 是凸的，那么 $\forall x_1,x_2\in C$，$\forall \theta_1,\theta_2\ge 0$，由凸性可知</p>
+<script type="math/tex; mode=display">
+\frac{\theta_1}{\theta_1+\theta_2}x_1+\frac{\theta_2}{\theta_1+\theta_2}x_2\in C</script><p>由锥性可知 $\theta_1x_1+\theta_2x_2\in C$。</p>
+<p><strong>凸锥组合</strong> 对于 $x_1,\cdots,x_k$，称 $\theta_1x_1+\cdots+\theta_kx_k$ 为其凸锥组合，其中 $\theta_1,\cdots,\theta_k\ge 0$。</p>
+<p><strong>定义2</strong> 称集合 $C$ 是凸锥，如果 $C$ 中任意元素的凸锥组合都在 $C$ 内。</p>
+<hr>
+<h4 id="单点和空集"><a href="#单点和空集" class="headerlink" title="单点和空集"></a>单点和空集</h4><p>对于一个点的集合 $C=\{x\}$，其必然是仿射集或凸集，但未必是凸锥。空集既是仿射集，又是凸集，也是凸锥。</p>
+<h2 id="一些重要的凸集"><a href="#一些重要的凸集" class="headerlink" title="一些重要的凸集"></a>一些重要的凸集</h2><p>$\mathbb{R}^n$ 空间，$\mathbb{R}^n$ 空间的子空间，任意直线，任意线段。</p>
+<p><strong>超平面</strong> $\{x|a^Tx=b\}$，其中 $x,a\in \mathbb{R}^n$，$b\in \mathbb{R}$，$a\neq 0$。</p>
+<p><strong>半空间</strong> $\{x|a^Tx\ge b\}$，其中 $x,a\in \mathbb{R}^n$，$b\in \mathbb{R}$，$a\neq 0$。</p>
+<h4 id="球和椭球"><a href="#球和椭球" class="headerlink" title="球和椭球"></a>球和椭球</h4><p><strong>球</strong> $B(x_c,r)=\{x\big|\Vert x-x_c\Vert_2\le r\}$。</p>
+<p>证明球是凸集：对于 $\forall x_1,x_2\in B$，$\Vert x_1-x_c\Vert_2\le r$，$\Vert x_2-x_c\Vert\le r$，$\forall 0\le\theta\le 1$，有</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\Vert \theta x_1+(1-\theta)x_2-x_c\Vert_2\\
+=&\Vert \theta(x_1-x_c)+(1-\theta)(x_2-x_c)\Vert_2\\
+\le &\Vert\theta(x_1-x_c)\Vert_2+\Vert(1-\theta)(x_2-x_c)\Vert_2\\
+=&\theta\Vert x_1-x_c\Vert_2+(1-\theta)\Vert x_2-x_c\Vert_2\\
+\le &r
+\end{aligned}</script><hr>
+<p><strong>椭球</strong> $\epsilon(x_c,P)=\{x|(x-x_c)^TP^{-1}(x-x_c)\le 1\}$。其中 $x_c\in \mathbb{R}^n$，$P\in S^n_{++}$ 是一个 $n$ 维正定对称矩阵。这里 $(x-x_c)^TP^{-1}(x-x_c)$ 可以看成是一个加权二范数。</p>
+<h4 id="多面体和单纯形"><a href="#多面体和单纯形" class="headerlink" title="多面体和单纯形"></a>多面体和单纯形</h4><p><strong>多面体</strong> $P=\{x|a_j^Tx\le b_j(j=1,\cdots,m),c_j^Tx=d_j(j=1,\cdots,p)\}$。即若干个半空间和超平面的交集。多面体可能是无界的。</p>
+<p><strong>单纯形</strong> $\mathbb{R}^n$ 空间中选择 $v_0,\cdots,v_k$ 共 $k+1$ 个点，$v_1-v_0,\cdots,v_k-v_0$ 线性无关，则与上述点相关的单纯形为</p>
+<script type="math/tex; mode=display">
+C=\text{Conv}\{v_0,\cdots,v_k\}=\{\theta_0v_0+\cdots+\theta_kv_k|\theta\ge 0,1^T\theta=1\}</script><p>证明单纯形是多面体的一种：</p>
+<p>对于 $x\in C\subseteq \mathbb{R}^n$，$C$ 是单纯形等价于 $x=\theta_0v_0+\cdots+\theta_kv_k\in C$，其中 $1^T\theta=1$，$\theta\ge 0$ 且 $v_1-v_0,\cdots,v_k-v_0$ 线性无关。</p>
+<p>定义 $[\theta_1,\cdots,\theta_k]^T=y$，那么 $y\ge 0$，$1^Ty=1$。$[v_1-v_0,\cdots,v_k-v_0]=B\in \mathbb{R}^{n\times k}$。那么 $x\in C$ 等价于</p>
+<script type="math/tex; mode=display">
+x=\theta_0v_0+\cdots+\theta_kv_k=v_0+\theta_1(v_1-v_0)+\cdots+\theta_k(v_k-v_0)=v_0+By</script><p>由于 $B$ 中列向量线性无关，有 $rank(B)=k$。则存在线性变换 $A=\begin{bmatrix}A_1\ A_2\end{bmatrix}\in \mathbb{R}^{n\times n}$ 将其变为</p>
+<script type="math/tex; mode=display">
+AB=\begin{bmatrix}
+A_1\\
+A_2
+\end{bmatrix}B
+=\begin{bmatrix}
+I_k\\
+0
+\end{bmatrix}</script><p>$A$ 满足为非奇异矩阵，即所有奇异值非零。在 $x=v_0+By$ 两侧同乘 $A$，得到</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&x=v_0+By\\
+\Leftrightarrow &Ax=Ax_0+ABy\\
+\Leftrightarrow &\begin{bmatrix}
+A_1\\
+A_2
+\end{bmatrix}x=
+\begin{bmatrix}
+A_1\\
+A_2
+\end{bmatrix}v_0+
+\begin{bmatrix}
+A_1B\\
+A_2B
+\end{bmatrix}y\\
+\Leftrightarrow & \begin{cases}
+A_1x=A_1v_0+y\\A_2x=A_2v_0
+\end{cases}\\
+\Leftrightarrow &\begin{cases}
+A_1x\ge A_1v_0\\
+1^TA_1x=1+1^TA_1v_0\\
+A_2x=A_2v_0
+\end{cases}
+\end{aligned}</script><p>其中第三个等价是因为 $A_2v_0=0$，第四个等价是代入了 $y\ge 0,1^Ty=1$ 的两个限制。表明单纯性可由上述若干个等式和不等式约束来描述。</p>
+<h4 id="矩阵凸集"><a href="#矩阵凸集" class="headerlink" title="矩阵凸集"></a>矩阵凸集</h4><p>对称矩阵集合 $S^n=\{x\in \mathbb{R}^{n\times n}|x=x^T\}$。</p>
+<p>对称半正定矩阵集合 $S^n_+=\{x\in \mathbb{R}^{n\times n}|x=x^T,x\succeq 0\}$，其中 $X\succeq 0$ 表示 $X$ 的所有特征值均非负。</p>
+<p>对称正定矩阵集合 $S_{++}^n=\{x\in \mathbb{R}^{n\times n}|x=x^T,x\succ 0\}$。</p>
+<hr>
+<p>证明 $S_+^n$ 是凸锥：$\forall \theta_1,\theta_2\ge 0$，$\forall A,B\in S_+^n$，往证 $\theta_1A+\theta_2B\in S_+^n$。由于 $\forall x\in \mathbb{R}^n$，$x^TAx\ge 0,x^TBx\ge 0$，有</p>
+<script type="math/tex; mode=display">
+x^T(\theta_1A+\theta_2B)x=x^T\theta_1Ax+x^T\theta_2Bx\ge 0</script><p>因此 $S_+^n$ 是凸锥。</p>
+<p>显然对称矩阵集合是凸锥。</p>
+<p>但 $S_{++}^n$ 不是凸锥。当 $n=1$ 时，$S_+^n=\mathbb{R}_+$，$S_{++}^n=\mathbb{R}_{++}$，$S^n=\mathbb{R}$。显然 $\mathbb{R}{++}$ 不是凸锥。考虑 $n$ 更大的时候，在 $S_n^=$ 是凸锥的证明中最后一步不能用大于号，因为 $\theta_1,\theta_2$ 可以同时为 $0$。</p>
+]]></content>
       <categories>
         <category>Note</category>
       </categories>
       <tags>
-        <tag>Algorithmic Game Theory</tag>
+        <tag>Convex Optimization</tag>
       </tags>
   </entry>
   <entry>
-    <title>【笔记】非完全信息下的动态博弈（序贯均衡）</title>
-    <url>/2021/12/30/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%B7%B7%E5%90%88(%E7%BA%AF)%E7%BA%B3%E4%BB%80%E5%9D%87%E8%A1%A1%E4%B8%8EPPAD(PLS)%E5%AE%8C%E5%85%A8/</url>
+    <title>【笔记】混合(纯)纳什均衡与PPAD(PLS)完全</title>
+    <url>/2022/01/17/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%B7%B7%E5%90%88(%E7%BA%AF)%E7%BA%B3%E4%BB%80%E5%9D%87%E8%A1%A1%E4%B8%8EPPAD(PLS)%E5%AE%8C%E5%85%A8/</url>
     <content><![CDATA[<p>参考CS364A的Lecture Note #19和#20.</p>
 <span id="more"></span>
 <h1 id="纯纳什均衡与-PLS-完全"><a href="#纯纳什均衡与-PLS-完全" class="headerlink" title="纯纳什均衡与 $PLS$ 完全"></a>纯纳什均衡与 $PLS$ 完全</h1><h2 id="局部搜索问题-Local-Search-Problems"><a href="#局部搜索问题-Local-Search-Problems" class="headerlink" title="局部搜索问题 (Local Search Problems)"></a>局部搜索问题 (Local Search Problems)</h2><h3 id="最大割问题"><a href="#最大割问题" class="headerlink" title="最大割问题"></a>最大割问题</h3><p>最大割问题是研究局部搜索问题的经典问题. 给定一个无向图 $G=(V,E)$, 每条边有非负边权 $w_e\ge 0$. 目标是找到 $V$ 的一个分割 $(S,\overline{S})$, 其中 $S$ 和 $\overline{S}$ 均非空, 使得两个端点分别位于 $S$ 和 $\overline{S}$ 中的边的边权和尽量大. 最大割问题是 NP 难问题.</p>
@@ -171,135 +231,221 @@ g_i(x_i',x)=E_{s_i\sim x_i',s_{-i}\sim x_{-i}}[\pi(s)]-\Vert x_i'-x_i\Vert_2^2</
       </tags>
   </entry>
   <entry>
-    <title>【笔记】凸优化1</title>
-    <url>/2021/12/11/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E5%87%B8%E4%BC%98%E5%8C%961/</url>
-    <content><![CDATA[<p>b站凌青老师凸优化课程1-6课笔记。</p>
+    <title>【笔记】非完全信息下的动态博弈（序贯均衡）</title>
+    <url>/2021/12/30/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E9%9D%9E%E5%AE%8C%E5%85%A8%E4%BF%A1%E6%81%AF%E4%B8%8B%E7%9A%84%E5%8A%A8%E6%80%81%E5%8D%9A%E5%BC%88%EF%BC%88%E5%BA%8F%E8%B4%AF%E5%9D%87%E8%A1%A1%EF%BC%89/</url>
+    <content><![CDATA[<p>来源于mit的Economic Applications of Game Theory这门课的<a href="https://ocw.mit.edu/courses/economics/14-12-economic-applications-of-game-theory-fall-2012/lecture-notes/">Lecture Notes</a>的第16章。</p>
 <span id="more"></span>
-<h1 id="什么是优化"><a href="#什么是优化" class="headerlink" title="什么是优化"></a>什么是优化</h1><p>优化就是从一个可行解的集合中，寻找出最优的元素。写成数学形式：</p>
+<h2 id="序贯均衡"><a href="#序贯均衡" class="headerlink" title="序贯均衡"></a>序贯均衡</h2><p>考虑如下博弈：</p>
+<p><img src="/images/photo1.png" alt></p>
+<p>员工有 $0.7$ 的概率是勤奋的，$0.3$ 的概率是懒惰的。公司可以选择雇佣或者不雇佣该员工；若雇佣，则员工可以选择工作或偷懒。注意到加粗的线表示了一个贝叶斯纳什均衡（Bayesian Nash equilibrium），这显然不是我们想要的结果。为了解决这个问题，不妨设员工是<strong>序贯理性</strong>（sequentially rational）的，即对于每一个其所在的信息集（information set）都会选择能使其期望收益最大的策略，那么员工就会选择工作而不是偷懒。而得知员工会选择工作后，公司也会改为雇佣该员工。</p>
+<p>注意到第二个均衡是上述博弈中唯一的完美子博弈均衡（subgame-perfect equilibrium），那么使用完美子博弈均衡的方法是不是通用的呢？答案是否定的。考虑如下博弈：</p>
+<p><img src="/images/photo2.png" alt></p>
+<p>这显然是一个完美子博弈均衡，因为并不存在真子博弈（proper subgame），同时这也是一个纳什均衡。注意到此时玩家 $2$ 并不是序贯理性的，因此序贯理性的引入是必要的。下面形式化描述序贯理性：</p>
+<h4 id="定义1（信念估计）"><a href="#定义1（信念估计）" class="headerlink" title="定义1（信念估计）"></a>定义1（信念估计）</h4><p>定义<strong>信念估计</strong>（belief assessment） $b$ 为每个信息集选取一个概率分布构成的列表。给定信息集 $I$，则 $b(\cdot|I)$ 给出了 $I$ 上的概率分布。</p>
+<hr>
+<p>对于给定的信息集 $I$，在该信息集上做决策的玩家会相信自己以 $b(\cdot|I)$ 的概率分布位于 $I$ 上的节点。</p>
+<h4 id="定义2（序贯理性）"><a href="#定义2（序贯理性）" class="headerlink" title="定义2（序贯理性）"></a>定义2（序贯理性）</h4><p>令 $s$ 为策略组合（strategy profile），$b$ 为信念估计。称 $(s,b)$ 是<strong>序贯理性</strong>的当且仅当对于每个信息集 $I$，在以下条件下，在 $I$ 上做决策的玩家最大化了自己的收益：</p>
+<ol>
+<li>该玩家相信自己以 $b(\cdot|I)$ 的概率分布位于 $I$ 的节点上；</li>
+<li>在 $I$ 之后的博弈中，每个玩家都会根据 $s$ 来决策。</li>
+</ol>
+<hr>
+<p>例如在上一个博弈中，若玩家 $2$ 以 $\mu$ 的概率位于左边的节点，$1-\mu$ 的概率位于右边的节点。若玩家 $2$ 是序列理性的，则无论 $\mu$ 的值是多少，他都会选择决策 $R$。</p>
+<p>但这仍然不够。为了获得均衡，我们仍需要 $b$ 是与 $s$ 一致的。举例来说，仍然考虑上面的博弈</p>
+<p><img src="/images/photo3.png" alt></p>
+<p>序贯理性的玩家 $2$ 以 $0.1$ 的概率位于左边的节点，他会选择 $R$ 作为决策。此时玩家 $1$ 会选择决策 $T$ 作为决策 $R$ 的最佳反应（best response）。显然这不是个均衡。问题就在于在均衡中，每个玩家都知道其他玩家的策略。但知道了玩家 $1$ 的决策后，玩家 $2$ 的信念估计就会发生改变。因此我们需要引入一致性：</p>
+<h4 id="定义3（一致性）"><a href="#定义3（一致性）" class="headerlink" title="定义3（一致性）"></a>定义3（一致性）</h4><p>给定策略组合 $s$ 和信念估计 $b$，令 $I$ 为根据 $s$ 进行决策时有可能被到达的信息集。称 $b(\cdot|I)$ 与 $s$ <strong>一致</strong>当且按照 $s$ 进行决策时，到达 $I$ 上的概率分布恰好是 $b(\cdot|I)$。即对于 $\forall n\in I$，</p>
+<script type="math/tex; mode=display">
+b(n|I)=\frac{\Pr(n|s)}{\sum_{n'\in I}\Pr(n'|s)}</script><p>其中 $\Pr(n|s)$ 表示根据 $s$ 进行决策时到达 $n$ 的概率。</p>
+<hr>
+<p>但对于那些到达的概率为 $0$ 的节点，上述式子的分母为 $0$，那么我们如何定义其一致性呢？一个方法是让每一条边均有一个很小的概率被选取，然后令这些概率趋于 $0$，得到的就是对应的概率分布。例如考虑如下博弈：</p>
+<p><img src="/images/photo4.png" alt></p>
+<p>在策略组合是 $(X,T,L)$ 时，玩家 $3$ 的信息集被到达的概率为 $0$。不妨令玩家 $1$ 和 $2$ 分别有一个很小的概率 $\epsilon_1,\epsilon_2$ 发生“抖动”，即玩家 $1$ 选择 $E$ 的概率是 $\epsilon_1$，选择 $X$ 的概率是 $1-\epsilon_1$；玩家 $2$ 选择 $B$ 的概率是 $\epsilon_2$。此时再计算到达 $T$ 指向的节点 $n_T$ 的概率</p>
+<script type="math/tex; mode=display">
+\Pr(n_T|I_3,\epsilon_1,\epsilon_2)=\frac{\epsilon_1(1-\epsilon_2)}{\epsilon_1(1-\epsilon_2)+\epsilon_1\epsilon_2}=1-\epsilon_2</script><p>令 $\epsilon_2\to 0$ 就可以得到 $b(n_T|I_3)=1$ 而不是 $0.1$。</p>
+<h4 id="定义4（更完备的一致性）"><a href="#定义4（更完备的一致性）" class="headerlink" title="定义4（更完备的一致性）"></a>定义4（更完备的一致性）</h4><p>给定 $(s,b)$，称 $b$ 与 $s$ <strong>一致</strong>当且仅当加入某些趋于 $0$ 的抖动概率后，根据 $s$ 计算出来的所有信息集的概率分布都趋于 $b$ 给出的概率分布。即存在序列 $(s^m,b^m)$ 使得</p>
+<ol>
+<li>$(s^m,b^m)\to (s,b)$；</li>
+<li>对于任意 $m$，$s^m$ 满足每一个决策都有可能被选择；</li>
+<li>$b^m$ 是通过 $s^m$ 计算出来的。</li>
+</ol>
+<hr>
+<p>通过序贯理性和一致性可以定义出序贯均衡（sequential equilibrium）：</p>
+<h4 id="定义5（序贯均衡）"><a href="#定义5（序贯均衡）" class="headerlink" title="定义5（序贯均衡）"></a>定义5（序贯均衡）</h4><p>称 $(s,b)$ 是<strong>序贯均衡</strong>的，如果 $(s,b)$ 是序贯理性的，并且 $b$ 与 $s$ 一致。</p>
+<hr>
+<p>可以验证上面的博弈中，唯一的完美子博弈均衡是 $s^<em>=(E,T,R)$。令 $b^</em>(n_T|I_3)=1$ 是信念估计，则可以验证 $(s^<em>,b^</em>)$ 是序贯均衡。</p>
+<h2 id="非完全信息下的出价博弈"><a href="#非完全信息下的出价博弈" class="headerlink" title="非完全信息下的出价博弈"></a>非完全信息下的出价博弈</h2><p>考虑这样一个有意思的博弈：一个卖家要出售一件物品给一个买家。物品对卖家来说价值为 $0$，对买家来说价值为 $v$。其中 $v$ 在 $[0,1]$ 上均匀分布，且只有买家自己知道。游戏分两轮：在第一轮中，卖家出价 $p_0$；若买家选择以 $p_0$ 的价格购买，则卖家和买家的收益分别是 $p_0$ 和 $v-p_0$，游戏结束；若不购买，则进行第二轮。在第二轮中，卖家出价 $p_1$；若买家选择以 $p_1$ 的价格购买，则卖家和买家的收益分别是 $\delta p_1$ 和 $\delta(p_1-v)$，其中 $\delta\in (0,1)$；若不购买，则双方的收益均为 $0$，游戏结束。</p>
+<p>买家的策略可以用 $a,b$ 两个函数形式化表示：第一轮中购买当且仅当 $v\ge a(p_0)$；第二轮中购买当且仅当 $v\ge b(p_1)$。现在考虑这个博弈的序贯均衡。</p>
+<p>容易发现在第二轮中，买家收益非负当且仅当 $v\ge p_1$，因此 $b(p_1)=p_1$。在第一轮中，当买家拒绝以 $p_0$ 的价格购买时，卖家可以得知 $v\le a(p_0)$，即对于卖家来说 $v$ 在 $[0,a(p_0)]$ 中均匀分布。若在第二轮中出价 $p_1$，则卖家的期望收益为</p>
+<script type="math/tex; mode=display">
+U_S(p_1|p_0)=p_1\Pr(p_1<v|v\le a(p_0))=p_1(a(p_0)-p_1)/a(p_0)</script><p>由于卖家想要最大化自己的收益，得到</p>
+<script type="math/tex; mode=display">
+p_1(p_0)=a(p_0)/2</script><p>下面考虑第一轮。给定 $p_0$ 后，当 $v\ge a(p_0)$ 时，买家会在第一轮以 $p_0$ 的价值购买；当 $v\in [a(p_0)/2,a(p_0))$ 时，买家会在第二轮以 $a(p_0)/2$ 的价值购买；否则不买。根据序贯理性，我们有</p>
+<script type="math/tex; mode=display">
+v-p_0\ge \delta(v-p_1(p_0))\text{ for }v\ge a(p_0)</script><script type="math/tex; mode=display">
+v-p_0\le \delta(v-p_1(p_0))\text{ for }v\in [a(p_0)/2,a(p_0))</script><p>根据连续性，当 $v=a(p_0)$ 时上述不等式取等号，即</p>
+<script type="math/tex; mode=display">
+a(p_0)-p_0=\delta(a(p_0)-p_1(p_0))</script><p>代入 $p_1(p_0)=a(p_0)/2$ 得到</p>
+<script type="math/tex; mode=display">
+a(p_0)=\frac{p_0}{1-\delta/2}</script><p>最后考虑如何设置 $p_0$：当 $v\ge a(p_0)$ 时卖家收益为 $p_0$；当 $v\in [a(p_0)/2,a(p_0))$ 时收益为 $\delta p_1(p_0)=\delta a(p_0)/2$；其余情况收益为 $0$。因此期望收益为</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-&\text{minimize }f_0(x)\\
-&\text{subject to }f_i(x)\le b_i\quad i=1,\cdots,M
-\end{aligned}</script><p>其中 $x=[x_1,\cdots,x_n]^T$ 称为优化变量，$f_0:\mathbb{R}^n\to \mathbb{R}$ 称为目标函数，$f_i:\mathbb{R}^n\to \mathbb{R}$ 称为不等式约束。</p>
-<h1 id="优化问题的分类"><a href="#优化问题的分类" class="headerlink" title="优化问题的分类"></a>优化问题的分类</h1><p>优化问题一般有如下分类，其中前者通常较简单，后者通常较难。</p>
-<h4 id="线性规划-非线性规划"><a href="#线性规划-非线性规划" class="headerlink" title="线性规划 / 非线性规划"></a>线性规划 / 非线性规划</h4><p>称 $f$ 为线性函数如果 $f(\alpha x+\beta y)=\alpha f(x)+\beta f(y)$。</p>
-<p>若限制函数和目标函数均为线性函数，则称该问题为线性规划，否则称其为非线性规划。</p>
-<h4 id="凸规划-非凸规划"><a href="#凸规划-非凸规划" class="headerlink" title="凸规划 / 非凸规划"></a>凸规划 / 非凸规划</h4><p>称 $f$ 是凸函数如果 $f(\alpha x+\beta y)\le \alpha f(x)+\beta f(y)$。</p>
-<p>若限制函数和目标函数均为凸函数，则称该问题为凸规划，否则称其为非凸规划。</p>
-<hr>
-<p>通常还有光滑 / 非光滑，连续 / 离散，单目标 / 多目标等分类。</p>
-<h1 id="凸集"><a href="#凸集" class="headerlink" title="凸集"></a>凸集</h1><h4 id="直线和线段"><a href="#直线和线段" class="headerlink" title="直线和线段"></a>直线和线段</h4><p>对于 $x_1\neq x_2\in \mathbb{R}^n$，定义过 $x_1,x_2$ 的直线为</p>
+U_S(p_0)&=p_0\cdot(1-a(p_0))+\delta(a(p_0)/2)\cdot(a(p_0)-a(p_0)/2)\\
+&=p_0\left(1-\frac{p_0}{1-\delta/2}\right)+\delta\left(\frac{p_0}{2-\delta}\right)^2
+\end{aligned}</script><p>计算 $U_S(p_0)$ 的最大值得到</p>
 <script type="math/tex; mode=display">
-\{\theta x_1+(1-\theta)x_2|\theta\in \mathbb{R}\}</script><p>定义 $x_1,x_2$ 构成的线段为</p>
-<script type="math/tex; mode=display">
-\{\theta x_1+(1-\theta)x_2|\theta\in [0,1]\}</script><h2 id="仿射集"><a href="#仿射集" class="headerlink" title="仿射集"></a>仿射集</h2><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p><strong>定义1</strong> 称集合 $C$ 是仿射集，若 $\forall x_1,x_2\in C$，连接 $x_1$ 与 $x_2$ 的直线都在 $C$ 内。</p>
-<p><strong>仿射组合</strong> 设 $x_1,\cdots,x_k$，称 $\theta_1x_1+\cdots+\theta_kx_k$ 为其仿射组合，其中 $\theta_1,\cdots,\theta_k\in \mathbb{R}$，且 $\theta_1+\cdots+\theta_k=1$。</p>
-<p><strong>定义2</strong> 称集合 $C$ 是仿射集，若 $\forall x_1,\cdots,x_k\in c$，它们的所有仿射组合都在 $C$ 内。</p>
-<h4 id="定理"><a href="#定理" class="headerlink" title="定理"></a>定理</h4><p>上述两个定义等价。</p>
-<p><strong>证明</strong> 由定义2显然可以推出定义1。往证由定义1可推出定义2。</p>
-<p>假设有仿射集 $C$，先证任意三个元素的仿射组合都在 $C$ 中。取 $x_1,x_2,x_3\in c$，$\theta_1,\theta_2,\theta_3\in \mathbb{R}$ 且 $\theta_1+\theta_2+\theta_3=1$，根据定义1可知</p>
-<script type="math/tex; mode=display">
-\frac{\theta_1}{\theta_1+\theta_2}x_1+\frac{\theta_2}{\theta_1+\theta_2}x_2\in C</script><p>那么有</p>
-<script type="math/tex; mode=display">
-(\theta_1+\theta_2)\left(\frac{\theta_1}{\theta_1+\theta_2}x_1+\frac{\theta_2}{\theta_1+\theta_2}x_2\right)+(1-\theta_1-\theta_2)x_3\in C</script><p>展开即可得到 $\theta_1x_1+\theta_2x_2+\theta_3x_3\in C$。由归纳法可知两个定义等价。</p>
-<h4 id="关于仿射集的子空间"><a href="#关于仿射集的子空间" class="headerlink" title="关于仿射集的子空间"></a>关于仿射集的子空间</h4><p>假设 $C$ 是仿射集，$x_1,x_2\in C$。把 令 $\gamma=\alpha x_1+\beta x_2$，则当 $\alpha+\beta\neq 1$ 时 $\gamma$ 未必在 $C$ 中。构造新集合：</p>
-<script type="math/tex; mode=display">
-V=c-x_0=\{x-x_0|x\in c\}\quad \forall x_0\in c</script><p>称 $V$ 为与 $C$ 相关的子空间。那么对于 $\forall v_1,v_2\in V$，$\forall \alpha,\beta\in \mathbb{R}$，都有 $\alpha v_1+\beta v_2\in V$。因为</p>
-<script type="math/tex; mode=display">
-\alpha(v_1+x_0)+\beta(v_2+x_0)+(1-\alpha-\beta)x_0\in C</script><p>从而</p>
-<script type="math/tex; mode=display">
-\alpha v_1+\beta v_2+x_0\in C</script><p>注意到子空间必须经过原点。</p>
-<h4 id="仿射包"><a href="#仿射包" class="headerlink" title="仿射包"></a>仿射包</h4><p>定义集合 $C$ 的仿射包为</p>
-<script type="math/tex; mode=display">
-\text{aff }C=\{\theta x_1+\cdots+\theta_kx_k|\forall x_1,\cdots,x_k\in C,\forall \theta_1+\cdots+\theta_k=1\}</script><p>那么 $\text{aff }C$ 为包含 $C$ 的最小仿射集。</p>
-<h2 id="凸集-1"><a href="#凸集-1" class="headerlink" title="凸集"></a>凸集</h2><h4 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h4><p><strong>定义1</strong> 称集合 $C$ 是凸集，如果任意两点之间的线段都在 $C$ 内。形式化描述：对于 $\forall x_1,x_2\in C$，$\forall\theta\in [0,1]$，都有 $\theta x_1+(1-\theta)x_2\in C$。</p>
-<p>注意到仿射集是凸集的特例。</p>
-<p><strong>凸组合</strong> 对于 $x_1,\cdots,x_k$，称 $\theta_1x_1+\cdots+\theta_kx_k$ 为其凸组合，其中 $\theta_1,\cdots,\theta_k\in [0,1]$ 且 $\theta_1+\cdots+\theta_k=1$。</p>
-<p><strong>定义2</strong> 称集合 $C$ 是凸集，如果 $C$ 中任意元素的凸组合都在 $C$ 内。</p>
-<p>用跟仿射集相同的方法可证两个定义等价。</p>
-<h4 id="凸包"><a href="#凸包" class="headerlink" title="凸包"></a>凸包</h4><p>对于集合 $C$，定义其凸包为</p>
-<script type="math/tex; mode=display">
-\text{Conv }C=\{\theta_1x_1+\cdots+\theta_kx_k|\forall x_1,\cdots,x_k\in C,\forall \theta_1,\cdots,\theta_k\in [0,1],\theta_1+\cdots+\theta_k=1\}</script><p>$C$ 的凸包为包含 $C$ 的最小凸集。</p>
-<h2 id="凸锥"><a href="#凸锥" class="headerlink" title="凸锥"></a>凸锥</h2><h4 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h4><p>称集合 $C$ 是锥，如果 $\forall x\in C$，$\forall\theta\ge 0$，有 $\theta x\in C$。</p>
-<p><strong>定义1</strong> 称集合 $C$ 是凸锥，如果 $\forall x_1,x_2\in C$，$\forall\theta_1,\theta_2\ge 0$，有 $x_1\theta_1+x_2\theta_2\in C$。</p>
-<p>凸锥的定义等价于凸的锥。首先凸锥必然是凸的。反过来，若锥 $C$ 是凸的，那么 $\forall x_1,x_2\in C$，$\forall \theta_1,\theta_2\ge 0$，由凸性可知</p>
-<script type="math/tex; mode=display">
-\frac{\theta_1}{\theta_1+\theta_2}x_1+\frac{\theta_2}{\theta_1+\theta_2}x_2\in C</script><p>由锥性可知 $\theta_1x_1+\theta_2x_2\in C$。</p>
-<p><strong>凸锥组合</strong> 对于 $x_1,\cdots,x_k$，称 $\theta_1x_1+\cdots+\theta_kx_k$ 为其凸锥组合，其中 $\theta_1,\cdots,\theta_k\ge 0$。</p>
-<p><strong>定义2</strong> 称集合 $C$ 是凸锥，如果 $C$ 中任意元素的凸锥组合都在 $C$ 内。</p>
-<hr>
-<h4 id="单点和空集"><a href="#单点和空集" class="headerlink" title="单点和空集"></a>单点和空集</h4><p>对于一个点的集合 $C=\{x\}$，其必然是仿射集或凸集，但未必是凸锥。空集既是仿射集，又是凸集，也是凸锥。</p>
-<h2 id="一些重要的凸集"><a href="#一些重要的凸集" class="headerlink" title="一些重要的凸集"></a>一些重要的凸集</h2><p>$\mathbb{R}^n$ 空间，$\mathbb{R}^n$ 空间的子空间，任意直线，任意线段。</p>
-<p><strong>超平面</strong> $\{x|a^Tx=b\}$，其中 $x,a\in \mathbb{R}^n$，$b\in \mathbb{R}$，$a\neq 0$。</p>
-<p><strong>半空间</strong> $\{x|a^Tx\ge b\}$，其中 $x,a\in \mathbb{R}^n$，$b\in \mathbb{R}$，$a\neq 0$。</p>
-<h4 id="球和椭球"><a href="#球和椭球" class="headerlink" title="球和椭球"></a>球和椭球</h4><p><strong>球</strong> $B(x_c,r)=\{x\big|\Vert x-x_c\Vert_2\le r\}$。</p>
-<p>证明球是凸集：对于 $\forall x_1,x_2\in B$，$\Vert x_1-x_c\Vert_2\le r$，$\Vert x_2-x_c\Vert\le r$，$\forall 0\le\theta\le 1$，有</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-&\Vert \theta x_1+(1-\theta)x_2-x_c\Vert_2\\
-=&\Vert \theta(x_1-x_c)+(1-\theta)(x_2-x_c)\Vert_2\\
-\le &\Vert\theta(x_1-x_c)\Vert_2+\Vert(1-\theta)(x_2-x_c)\Vert_2\\
-=&\theta\Vert x_1-x_c\Vert_2+(1-\theta)\Vert x_2-x_c\Vert_2\\
-\le &r
-\end{aligned}</script><hr>
-<p><strong>椭球</strong> $\epsilon(x_c,P)=\{x|(x-x_c)^TP^{-1}(x-x_c)\le 1\}$。其中 $x_c\in \mathbb{R}^n$，$P\in S^n_{++}$ 是一个 $n$ 维正定对称矩阵。这里 $(x-x_c)^TP^{-1}(x-x_c)$ 可以看成是一个加权二范数。</p>
-<h4 id="多面体和单纯形"><a href="#多面体和单纯形" class="headerlink" title="多面体和单纯形"></a>多面体和单纯形</h4><p><strong>多面体</strong> $P=\{x|a_j^Tx\le b_j(j=1,\cdots,m),c_j^Tx=d_j(j=1,\cdots,p)\}$。即若干个半空间和超平面的交集。多面体可能是无界的。</p>
-<p><strong>单纯形</strong> $\mathbb{R}^n$ 空间中选择 $v_0,\cdots,v_k$ 共 $k+1$ 个点，$v_1-v_0,\cdots,v_k-v_0$ 线性无关，则与上述点相关的单纯形为</p>
-<script type="math/tex; mode=display">
-C=\text{Conv}\{v_0,\cdots,v_k\}=\{\theta_0v_0+\cdots+\theta_kv_k|\theta\ge 0,1^T\theta=1\}</script><p>证明单纯形是多面体的一种：</p>
-<p>对于 $x\in C\subseteq \mathbb{R}^n$，$C$ 是单纯形等价于 $x=\theta_0v_0+\cdots+\theta_kv_k\in C$，其中 $1^T\theta=1$，$\theta\ge 0$ 且 $v_1-v_0,\cdots,v_k-v_0$ 线性无关。</p>
-<p>定义 $[\theta_1,\cdots,\theta_k]^T=y$，那么 $y\ge 0$，$1^Ty=1$。$[v_1-v_0,\cdots,v_k-v_0]=B\in \mathbb{R}^{n\times k}$。那么 $x\in C$ 等价于</p>
-<script type="math/tex; mode=display">
-x=\theta_0v_0+\cdots+\theta_kv_k=v_0+\theta_1(v_1-v_0)+\cdots+\theta_k(v_k-v_0)=v_0+By</script><p>由于 $B$ 中列向量线性无关，有 $rank(B)=k$。则存在线性变换 $A=\begin{bmatrix}A_1\\ A_2\end{bmatrix}\in \mathbb{R}^{n\times n}$ 将其变为</p>
-<script type="math/tex; mode=display">
-AB=\begin{bmatrix}
-A_1\\
-A_2
-\end{bmatrix}B
-=\begin{bmatrix}
-I_k\\
-0
-\end{bmatrix}</script><p>$A$ 满足为非奇异矩阵，即所有奇异值非零。在 $x=v_0+By$ 两侧同乘 $A$，得到</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-&x=v_0+By\\
-\Leftrightarrow &Ax=Ax_0+ABy\\
-\Leftrightarrow &\begin{bmatrix}
-A_1\\
-A_2
-\end{bmatrix}x=
-\begin{bmatrix}
-A_1\\
-A_2
-\end{bmatrix}v_0+
-\begin{bmatrix}
-A_1B\\
-A_2B
-\end{bmatrix}y\\
-\Leftrightarrow & \begin{cases}
-A_1x=A_1v_0+y\\A_2x=A_2v_0
-\end{cases}\\
-\Leftrightarrow &\begin{cases}
-A_1x\ge A_1v_0\\
-1^TA_1x=1+1^TA_1v_0\\
-A_2x=A_2v_0
-\end{cases}
-\end{aligned}</script><p>其中第三个等价是因为 $A_2v_0=0$，第四个等价是代入了 $y\ge 0,1^Ty=1$ 的两个限制。表明单纯性可由上述若干个等式和不等式约束来描述。</p>
-<h4 id="矩阵凸集"><a href="#矩阵凸集" class="headerlink" title="矩阵凸集"></a>矩阵凸集</h4><p>对称矩阵集合 $S^n=\{x\in \mathbb{R}^{n\times n}|x=x^T\}$。</p>
-<p>对称半正定矩阵集合 $S^n_+=\{x\in \mathbb{R}^{n\times n}|x=x^T,x\succeq 0\}$，其中 $X\succeq 0$ 表示 $X$ 的所有特征值均非负。</p>
-<p>对称正定矩阵集合 $S_{++}^n=\{x\in \mathbb{R}^{n\times n}|x=x^T,x\succ 0\}$。</p>
-<hr>
-<p>证明 $S_+^n$ 是凸锥：$\forall \theta_1,\theta_2\ge 0$，$\forall A,B\in S_+^n$，往证 $\theta_1A+\theta_2B\in S_+^n$。由于 $\forall x\in \mathbb{R}^n$，$x^TAx\ge 0,x^TBx\ge 0$，有</p>
-<script type="math/tex; mode=display">
-x^T(\theta_1A+\theta_2B)x=x^T\theta_1Ax+x^T\theta_2Bx\ge 0</script><p>因此 $S_+^n$ 是凸锥。</p>
-<p>显然对称矩阵集合是凸锥。</p>
-<p>但 $S_{++}^n$ 不是凸锥。当 $n=1$ 时，$S_+^n=\mathbb{R}_+$，$S_{++}^n=\mathbb{R}_{++}$，$S^n=\mathbb{R}$。显然 $\mathbb{R}{++}$ 不是凸锥。考虑 $n$ 更大的时候，在 $S_n^=$ 是凸锥的证明中最后一步不能用大于号，因为 $\theta_1,\theta_2$ 可以同时为 $0$。</p>
-]]></content>
+p_0=\frac{(1-\delta/2)^2}{2(1-3\delta/4)}</script>]]></content>
       <categories>
         <category>Note</category>
       </categories>
       <tags>
+        <tag>Algorithmic Game Theory</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【论文阅读】Send Mixed Signals – Earn More, Work Less</title>
+    <url>/2021/12/13/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Send%20Mixed%20Signals%20%E2%80%93%20Earn%20More,%20Work%20Less/</url>
+    <content><![CDATA[<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>考虑多类型的单物品拍卖，且所有买家的价值已知，并假定使用二价拍卖。文章说明了混合信号策略比纯信号策略收益更高，给出了计算最优混合信号策略的线性规划，并将其变量数降至多项式级别，因此能在多项式时间内求解。同时证明了使用最优信号策略的收益对某个指标有很好的近似比。证明中利用了混合信号策略等价于多个可分割物品拍卖的性质。</p>
+<span id="more"></span>
+<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>在信息不对称的情形下，即卖家拥有私有信息，为了最大化自己的收益，卖家通过信号的形式透露部分信息是很合理的方式。相较于纯信号策略，显然使用混合的信号策略效果不会更差。</p>
+<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>有一个物品和 $n$ 个买家。物品有 $m$ 种类型，服从概率分布 $(p_1,\cdots,p_m)$。买家 $i$ 对类型 $j$ 的价值是 $v_{i,j}$，其中 $v$ 和 $p$ 都是公有信息。卖家要预先提供一个信号策略 $\varphi:[m]\times \mathbb{N}\to [0,1]$ 并告知买家，其中 $\varphi(j,S)$ 表示当卖家观测到物品类型为 $j$ 时发送信号 $S$ 的概率。后文中 $S$ 也可以表示所有可能发送信号 $S$ 的类型集合，即 $\{j:\varphi(j,S)&gt;0\}$。令 $\mathcal{S}_\varphi$ 表示有效的信号集合，即 $\{S:\exists j,\varphi(j,S)&gt;0\}$。默认使用二价拍卖。</p>
+<p>纯信号策略是指卖家观测到物品类型 $j$ 后，发送的信号固定，即 $\varphi(j,S)\in\{0,1\}$。纯信号策略等价于对类型进行二次分类，并告知买家属于哪一个类。混合信号策略是指以某个概率分布发送信号。那么买家收到信号 $S$ 的概率为 $\sum_jp_j\varphi(j,S)$。收到信号 $S$ 后，物品类型为 $j$ 的概率</p>
+<script type="math/tex; mode=display">
+\Pr[j|S]=\frac{p_j\varphi(j,S)}{\sum_{j'}p_{j'}\varphi(j',S)}</script><p>因此收到信号 $S$ 后，买家 $i$ 的期望收益变为</p>
+<script type="math/tex; mode=display">
+E[v_i|S]=\sum_j\Pr[j|S]v_{i,j}=\frac{\sum_jv_{i,j}p_j\varphi(j,S)}{\sum_{j'}p_{j'}\varphi(j',S)}</script><p>由于二价拍卖中，买家的最优策略为采取真实报价，因此收到信号 $S$ 后，卖家的收益为</p>
+<script type="math/tex; mode=display">
+\max_i2\{E[v_i|S]\}=\max_i2\left\{\frac{\sum_jv_{i,j}p_j\varphi(j,S)}{\sum_{j}p_{j}\varphi(j,S)}\right\}</script><p>我们想要找到 $\varphi$ 来最大化卖家的总收益</p>
+<script type="math/tex; mode=display">
+\sum_{S\in\mathcal{S}_\varphi}\Pr[S]\max_i2\{E[v_i|S]\}=\sum_{S\in\mathcal{S}\varphi}\left\{\sum_jv_{i,j}p_j\varphi(j,S)\right\}=\sum_{S\in\mathcal{S}\varphi}\left\{\sum_j\psi_{i,j}\varphi(j,S)\right\}</script><p>其中 $\psi_{i,j}=v_{i,j}p_j$。</p>
+<h2 id="可分割多物品拍卖的等价模型"><a href="#可分割多物品拍卖的等价模型" class="headerlink" title="可分割多物品拍卖的等价模型"></a>可分割多物品拍卖的等价模型</h2><p>对于按照混合信号策略 $\varphi$ 来发送信号，考虑如下等价模型：有 $m$ 个物品和 $n$ 个买家，物品是可分割的（例如蛋糕）。第 $i$ 个买家对第 $j$ 个物品的价值为 $\psi_{i,j}$。对于任意 $S\in \mathcal{S}_\varphi$，将其看成包含了多个物品的混合，其中 $S$ 包含了第 $j$ 个物品的 $\varphi_{j,S}$ 比例。然后对每个混合 $S$ 分别进行二价拍卖。</p>
+<p>容易看出混合信号策略和多物品拍卖中的物品划分方案一一对应，且卖家的收益相同。因此计算最优混合信号策略等价于寻找多物品拍卖的最优划分方案。</p>
+<h1 id="混合信号策略收益大于纯信号策略"><a href="#混合信号策略收益大于纯信号策略" class="headerlink" title="混合信号策略收益大于纯信号策略"></a>混合信号策略收益大于纯信号策略</h1><p>下面的构造可以说明：对任意偶数 $k$，存在一个有 $n=k+1$ 个买家和 $m=k+1$ 种物品类型的拍卖，使得混合信号策略的收益至少是纯信号策略收益的两倍。</p>
+<p>将买家和信号均按照 $0,\cdots,k$ 编号，所有物品类型等概率出现，价值函数为</p>
+<script type="math/tex; mode=display">
+v_{i,j}=\begin{cases}
+m & i=j=0\\
+1 & i=j\neq 0\\
+0 & otherwise
+\end{cases}</script><p>则最优的纯信号策略必然是将物品类型两两捆绑。因为若某个物品不捆绑，则其收益为 $0$；将 $s$ 个物品捆绑后，其中每个物品收益为 $1/s$。注意到 $k$ 是偶数，那么有 $\frac{k}{k+1}$ 的概率，卖家的收益是 $1/2$，即期望收益为 $\frac{k}{2(k+1)}$。</p>
+<p>考虑如下混合信号策略：信号集合为 $\{0,j\}_{j=1,\cdots,k}$。对于任意 $j$，$\Pr[\{0,j\}|\text{type }0]=\frac{1}{k}$ 并且 $\Pr[\{0,j\}|\text{type }j]=1$。容易计算得到卖家对每个信号的收益都是 $\frac{k}{k+1}$。</p>
+<h1 id="最优混合策略的计算"><a href="#最优混合策略的计算" class="headerlink" title="最优混合策略的计算"></a>最优混合策略的计算</h1><h2 id="一些记号"><a href="#一些记号" class="headerlink" title="一些记号"></a>一些记号</h2><p>对于信号 $S$，令 $w_1(S)$ 表示在多个可分割物品拍卖中赢得了混合 $S$ 的买家编号，$w_2(S)$ 表示对 $S$ 估价第二高的买家编号。具体来说：</p>
+<script type="math/tex; mode=display">
+w_1(S)=\arg\max_i\{\sum_{j\in S}\psi_{i,j}\varphi_{j,S}\}</script><script type="math/tex; mode=display">
+w_2(S)=\arg\max_i2\{\sum_{j\in S}\psi_{i,j}\varphi_{j,S}\}</script><p>称 $S$ 是单独的如果 $|S|=1$。记 $w_1(j)=w_1(\{j\}),w_2(j)=w_2(\{j\})$。令 $d(i)$ 表示所有 $i$ 估价最高的物品类型的集合，即 $d(i)=\{j:w_1(j)=i\}$。记 $rev(S)$ 表示混合 $S$ 的收益，即 $rev(S)=\sum_{j\in S}\varphi_{j,S}\psi_{w_2(S),j}$。同样令 $rev(j)=rev(\{j\})$。卖家采取信号策略 $\varphi$ 的收益为 $rev(\varphi)=\sum_{S\in\mathcal{S}_{\varphi}}rev(S)$。</p>
+<h2 id="最优混合信号策略的性质"><a href="#最优混合信号策略的性质" class="headerlink" title="最优混合信号策略的性质"></a>最优混合信号策略的性质</h2><p>注意到对于两个信号 $S$ 和 $T$，如果 $w_1(S)=w_1(T)$ 且 $w_2(S)=w_2(T)$，那么把这两个信号合并成一个后，卖家的收益并不会发生改变。因此必然存在一种最优混合信号策略，使得使用信号的数量不超过 $n(n-1)$。</p>
+<p>下面考虑更多的性质。</p>
+<h4 id="Definition-4-2"><a href="#Definition-4-2" class="headerlink" title="Definition 4.2"></a>Definition 4.2</h4><p>给定信号策略 $\varphi$ 后，称信号 $S$ 是可分如果存在划分 $S=S_1\cup S_2\cup\cdots\cup S_t$，使得 $\sum_{k=1}^trev(S_k)\ge rev(S)$。称 $S$ 是单独可分的如果 $\sum_{j\in S}rev(j)\ge rev(S)$。</p>
+<h4 id="Claim-4-3"><a href="#Claim-4-3" class="headerlink" title="Claim 4.3"></a>Claim 4.3</h4><p>令 $S$ 是在最优混合信号策略中的一个单独不可分的信号，即 $rev(S)&gt;\sum_{j\in S}\varphi_{j,S}rev(j)$。那么 $w_1(S)$ 和 $w_2(S)$ 在那些赢得了 $S$ 中某个物品的买家集合中，即 $\{w_1(j):j\in S\}$。</p>
+<p><strong>证明</strong> 假设 $w_1(S)$ 不属于 $\{w_1(j):j\in S\}$，那么对于任意 $j\in S$，对它的第二高的估价至少是 $w_1(S)$ 对它的估价。因此</p>
+<script type="math/tex; mode=display">
+\sum_{j\in S}\varphi_{j,S}rev(j)\ge\sum_{j\in S}\varphi_{j,S}\psi_{w_1(S),j}\ge\sum_{j\in S}\varphi_{j,S}\psi_{w_2(S),j}=rev(S)</script><p>矛盾。同理可证 $w_2(S)$ 也满足。</p>
+<h4 id="Corollary-4-4"><a href="#Corollary-4-4" class="headerlink" title="Corollary 4.4"></a>Corollary 4.4</h4><p>对于信号 $S$，若 $|\{w_1(j):j\in S\}|=1$，那么 $S$ 是单独可分的。</p>
+<hr>
+<p>那么不可分的信号 $S$ 满足 $\{w_1(s):j\in S\}$ 大小至少为 $2$。接下来再证明不存在不可分的信号 $S$ 满足 $|\{w_1(j):j\in S\}|\ge 3$。</p>
+<h4 id="Claim-4-5"><a href="#Claim-4-5" class="headerlink" title="Claim 4.5"></a>Claim 4.5</h4><p>不存在不可分的信号 $S$ 满足 $|\{w_1(j):j\in S\}|\ge 3$。</p>
+<p><strong>证明</strong> 反证。不妨设 $1=w_1(S),2=w_2(S)$，可知 $1,2\in \{w_1(j):j\in S\}$，且 $rev(S)=\sum_{j\in S}\psi_{2,j}\varphi(j,S)$。往证 $S$ 是可分的。</p>
+<p>令 $S_1=S\cap d(1),S_2=S\cap d(2)$。由假设可知 $S_1\cup S_2\neq S$。将 $S$ 划分成 $(S_1\cup S_2)$ 以及 $|S\backslash (S_1\cup S_2)|$ 个单独的信号，总共是 $|S\backslash (S_1\cup S_2)|+1$ 个信号。</p>
+<p>首先考虑那些单独的信号带来的收益。由于买家 $1$ 和买家 $2$ 对这些物品的估价都不是最高的，那么这些信号的收益至少是买家 $1$ 或买家 $2$ 对这些信号的估价之和，即</p>
+<script type="math/tex; mode=display">
+\sum_{j\neq S_1\cup S_2}rev(j)\ge\max\{\sum_{j\in S\backslash (S_1\cup S_2)}\varphi_{j,S}\psi_{1,j},\sum_{j\in S\backslash (S_1\cup S_2)}\varphi_{j,S}\psi_{2,j}\}</script><p>对于 $S_1\cup S_2$ 的信号收益，买家 $1$ 和 $2$ 中至少有一人对该信号的估价不是最大的。无论是哪种，结合上面的不等式都可以得到，进行上述划分后，卖家的收益不会变得更低。</p>
+<hr>
+<p>结合上面两个 Claim，我们有如下推论：</p>
+<h4 id="Corollary-4-6"><a href="#Corollary-4-6" class="headerlink" title="Corollary 4.6"></a>Corollary 4.6</h4><p>若 $S$ 是不可分的信号，那么 $\{w_1(j):j\in S\}=\{w_1(S),w_2(S)\}$。换句话说，$supp(S)\subseteq d(w_1(S))\cup d(w_2(S))$。</p>
+<h4 id="Observation-4-7"><a href="#Observation-4-7" class="headerlink" title="Observation 4.7"></a>Observation 4.7</h4><p>存在一个最优混合信号策略，使得对于任意非单独的信号 $S$，$w_1(S)$ 和 $w_2(S)$ 对 $S$ 的估价是相等的。</p>
+<p><strong>证明</strong> 假设对于信号 $S$，$w_1(S)$ 对 $S$ 的估价大于 $w_2(S)$ 对 $S$ 的估价。令 $S_1=S\cup d(1),S_2=S\cup d(2)$。由之前的结论可知 $S=S_1\cup S_2$ 且 $S_1$ 和 $S_2$ 均非空。令</p>
+<script type="math/tex; mode=display">
+g=\frac{\sum_{j\in S_2}\varphi_{j,S}(\psi_{2,j}-\psi_{1,j})}{\sum_{j\in S_1}\varphi_{j,S}(\psi_{1,j}-\psi_{2,j})}</script><p>由假设</p>
+<script type="math/tex; mode=display">
+\sum_{j\in S}\varphi(j,S)\psi_{1,j}>\sum_{j\in S}\varphi(j,S)\psi_{2,j}</script><p>可知 $g&lt;1$。构造新信号策略 $\varphi’$ 如下：对于 $j\in S_1$，降低观测到 $j$ 后发送 $S$ 的概率：$\varphi’(j,S)=g\cdot \varphi_{j,S}$；相应地则增加发送信号 $\{j\}$ 的概率：$\varphi’(j,\{j\})=\varphi_{j,\{j\}}+(1-g)\cdot\varphi_{j,S}$。注意到在 $\varphi’$ 中，买家 $1$ 和买家 $2$ 对 $S$ 的估价分别为</p>
+<script type="math/tex; mode=display">
+g\sum_{j\in S_1}\varphi(j,S)\psi_{1,j}+\sum_{j\in S_2}\varphi(j,S)\psi_{1,j},\quad g\sum_{j\in S_1}\varphi(j,S)\psi_{2,j}+\sum_{j\in S_2}\varphi(j,S)\psi_{2,j}</script><p>由相减为 $0$ 可知买家 $1$ 和 $2$ 对 $S$ 的估价相等</p>
+<p>再证卖家在 $\varphi’$ 下的收益不会降低：信号 $\{j\}$ 的收益改变量为</p>
+<script type="math/tex; mode=display">
+(1-g)\varphi_{j,S}rev(j)=(1-g)\varphi_{j,S}\psi_{1,j}\ge(1-g)\varphi_{j,S}\psi_{2,j}</script><p>信号 $S$ 的收益至少是买家 $1$ 和买家 $2$ 对 $S$ 的估价取 $\min$。可知卖家的收益并不会降低。</p>
+<h2 id="线性规划求解最优混合信号策略"><a href="#线性规划求解最优混合信号策略" class="headerlink" title="线性规划求解最优混合信号策略"></a>线性规划求解最优混合信号策略</h2><p>因此可以用如下线性规划求解最优混合信号策略：</p>
+<script type="math/tex; mode=display">
+\max \sum_jx_j\psi_{w_2(j),j}+\sum_{i_1}\sum_{i_2<i_1}\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_2,j}</script><p>限制为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\forall i_1,\forall i_2<i_1 & \sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_1,j}\ge\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_2,j}\\
+& \forall i_1,\forall i_2<i_1\text{, and }i\neq i_1,i_2 & \sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_1,j}\ge\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i,j}\\
+& & \sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_2,j}\ge\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i,j}\\
+& \forall j & x_j+\sum_{i_1}\sum_{i_2<i_1}[j \in d(i_1)\cup d(i_2)]y_j(i_1.i_2)\le 1\\
+& \forall j,\forall i_1,\forall i_2<i_1 & x_j\ge 0,\quad y_j(i_1,i_2)\ge 0
+\end{aligned}</script><p>其中 $y_j(i_1,i_2)$ 表示 $\varphi(j,S)$，其中 $w_1(S)=i_1,w_2(S)=i_2$。$x_j$ 表示 $\varphi(j,\{j\})$。只需要考虑 $i_2&lt;i_1$ 是因为存在最优策略，满足 $i_2$ 和 $i_1$ 对 $S$ 的估价相等。</p>
+<h1 id="最优混合信号策略收益的近似"><a href="#最优混合信号策略收益的近似" class="headerlink" title="最优混合信号策略收益的近似"></a>最优混合信号策略收益的近似</h1><p>文章中考虑了这样一个 benchmark：</p>
+<script type="math/tex; mode=display">
+\mathcal{B}=\min_{i'}\left(\sum_j\max_{i\neq i'}\psi_{i,j}\right)</script><p>并证明了最优策略的收益至少是 $\mathcal{B}/2$。由于证明是没什么意思且比较复杂，这里就不赘述了。</p>
+]]></content>
+      <categories>
+        <category>Paper Reading</category>
+      </categories>
+      <tags>
         <tag>Convex Optimization</tag>
+        <tag>Information Design</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【论文阅读】The Simple Economics of Optimal Auctions</title>
+    <url>/2021/12/30/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91The%20Simple%20Economics%20of%20Optimal%20Auctions/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这篇文章讨论了价格歧视垄断的模型，并为该模型找到了解决方案。之后说明了该模型与 Myerson 的论文 Optimal Auction Design 里的最优拍卖模型是等价的。这个模型的转换从另一个角度描述了拍卖模型中的最优策略，将其与一些经济学中的概念联系了起来，从而能够有更直观的理解，也为之后对 Myerson 拍卖的分析找到了更简单的模型。</p>
+<span id="more"></span>
+<h1 id="解决最优拍卖问题的方法"><a href="#解决最优拍卖问题的方法" class="headerlink" title="解决最优拍卖问题的方法"></a>解决最优拍卖问题的方法</h1><p>首先介绍一下拍卖模型，以及在证明了该模型与价格歧视垄断模型的等价性后，最优拍卖问题的解决方法。</p>
+<p>假设有 $n$ 个买家和一件物品。物品对每个买家的价值 $v_i$ 独立地从概率函数为 $F_i$ 的分布中抽取，其中 $F_i(\underline{v}_i)=0,F_i(\overline{v}_i)=1$。概率函数是公有信息，但具体的价值是私有信息。物品对卖家而言价值为 $0$。</p>
+<p>使得卖家能够最大化收益的最优的拍卖方案如下：</p>
+<ol>
+<li><p>对于每个买家，令 $1-F_i(v)\equiv q$ 为价值至少为 $v$ 的概率。若把 $v$ 看成价格，$q$ 看成需求，那么 $q-v$ 的函数图像就可以看成是买家的“需求曲线”，即需求随价值的变化函数。</p>
+</li>
+<li><p>对每条需求曲线，计算其边际收益曲线。其中边际收益指增加一单位产量后增加的收益，计算方法为价格与需求量的乘积对需求量求导。代入需求量为 $q$，价格 $v=F_i^{-1}(1-q)$，有</p>
+<script type="math/tex; mode=display">
+\frac{dqF_i^{-1}(1-q)}{dq}=F_i^{-1}(1-q)-\frac{q}{f_i(F_i^{-1}(1-q))}</script><p>把边际收益曲线表示成 $v$ 的函数：</p>
+<script type="math/tex; mode=display">
+MR_i(v)=v-\frac{1-F_i(v)}{f_i(v)}</script></li>
+<li><p>采用第二边际收益拍卖：每个买家报价后，卖家计算出每个买家的边际收益（这里假设 $MR$ 单调递增），把物品卖给边际收益最高的买家。向该买家收取最低的价格 $p$，使得该买家报价为 $p$ 时仍能胜出。具体来说，若所有买家的边际收益均非正，则不出售物品。不妨设买家 $1$ 的边际收益最高。若其他买家的边际收益均非正，则向其收取 $MR^{-1}_1(0)$ 的价格。否则不妨设第二高的边际收益为 $M_2$，那么向其收取 $MR_1^{-1}(M_2)$ 的价格。</p>
+</li>
+</ol>
+<p>注意到在上述拍卖机制下，价值最高的人未必边际收益最高。同时每个买家的最优策略必然是诚实报价。以及 $MR_i^{-1}(0)$ 可以看作是买家 $i$ 的“保留价值”，即价值超过该值才可能获得物品。</p>
+<p>注意到在对称情形下，即所有 $F_i$ 相同，上述拍卖等价于二价拍卖。但在非对称情形下，就可能会出现市场中的所谓“价格歧视”现象，即同一物品向不同的买家收取不同的价格。</p>
+<p>拓展到有 $k$ 个相同的物品且每个买家最多获得一件物品的情形：把物品分配给边际收益前 $k$ 大且大于 $0$ 的买家，对买家 $i$ 收取价格为 $\max\{MR_i^{-1}(0),MR_i^{-1}(M_{k+1})\}$，其中 $M_{k+1}$ 为第 $k+1$ 大的边际收益。</p>
+<p>扩展到买家需要付出递增的边际成本来生产物品的情形，即生产第 $k$ 件物品的成本大于成产第 $k-1$ 件物品的成本：将 $k$ 件物品分别卖给边际收益前 $k$ 大的买家，满足第 $k$ 件物品的边际成本小于第 $k$ 大的边际收益，且第 $k+1$ 件物品的边际成本大于第 $k+1$ 大的边际收益。向每个买家收取的价格为第 $k$ 件物品的边际成本和第 $k+1$ 大的边际收益分别对应的边际收益曲线中的值的较大值，即最小的能够使该买家得到物品的报价。</p>
+<h1 id="价格歧视垄断和最优拍卖的关系"><a href="#价格歧视垄断和最优拍卖的关系" class="headerlink" title="价格歧视垄断和最优拍卖的关系"></a>价格歧视垄断和最优拍卖的关系</h1><h2 id="价格歧视垄断问题"><a href="#价格歧视垄断问题" class="headerlink" title="价格歧视垄断问题"></a>价格歧视垄断问题</h2><p>下面首先对第三价格歧视的问题进行建模并分析，之后说明该问题与最优拍卖问题在数学形式上是等价的，即可以相互转换。</p>
+<p>考虑一个垄断者在 $n$ 个市场中出售相同的物品，需要为每个市场设置一个价格。每个市场中有若干个买家，每个买家最多买一件物品。设市场 $i$ 中的买家价值在 $\underline{v}_i$ 和 $\overline{v}_i$ 之间，且价值不超过 $v$ 的买家有 $F_i(v)$ 个。归一化使得 $F_i(\overline{v}_i)=1$。设所有市场的边际收益曲线都是递减的，且垄断者能够以 $0$ 的边际成本生产最多 $Q$ 个物品。其中 $Q$ 是 $[\underline{Q},\overline{Q}]$ 之间的随机变量，概率密度函数为 $h(Q)$。设垄断者根据真实的 $Q$ 来为每个市场设定价值来最大化其收益。</p>
+<p>令 $p_i(v,Q)$ 表示当容量为 $Q$ 时，市场 $i$ 中价值为 $v$ 的买家能够获得一件物品的概率，即垄断者在市场 $i$ 中设置的价格不超过 $v$。令</p>
+<script type="math/tex; mode=display">
+\overline{p}_i(v)\equiv \int_{\underline{Q}}^{\overline{Q}}p_i(v,Q)h(Q)dQ</script><p>表示该买家获得一件物品的概率。</p>
+<p>考虑卖家的收益，将其表示成社会价值（所有获得物品的买家的价值之和）减去消费者剩余（买家的价值与其付的钱之差的和）。注意到社会价值等于</p>
+<script type="math/tex; mode=display">
+\int_{\underline{Q}}^{\overline{Q}}h(Q)\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}vf_i(v)p_i(v,Q)dvdQ=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}vf_i(v)\overline{p}_i(v)dv\tag{2}</script><p>其中 $f_i(v)=F’_i(v)$ 表示市场 $i$ 中价值为 $v$ 的买家数量。而消费者剩余等于</p>
+<script type="math/tex; mode=display">
+\int_{\underline{Q}}^{\overline{Q}}h(Q)\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^{\overline{v}_i}p_i(x,Q)dxdvdQ=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^v\overline{p}_i(v)dxdv\tag{3}</script><p>这样理解：价值为 $v$ 的买家获得物品的概率 $\overline{p}_i(v)$。如果价值增加 $dv$，期望增加的消费者剩余就是 $\overline{p}_i(v)dv$。因此垄断者的期望收益就是</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}vf_i(v)\overline{p}_i(v)dv-\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^v\overline{p}_i(v)dxdv\tag{4}</script><p>问题变成最大化 $(4)$ 且满足容量限制：</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)p_i(v,Q)dv\le Q\quad \forall Q\tag{5}</script><p>若在市场 $i$ 设置价格 $w$，那么对于 $v&lt;w$ 有 $p_i(v,Q)=0$；对于 $v\ge w$ 有 $p_i(v,Q)=1$。</p>
+<p>注意到只需要对每个 $Q$ 分别找到最优解，等价于找下面式子的最大值：</p>
+<script type="math/tex; mode=display">
+\pi(Q)=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}vf_i(v)p_i(v,Q)dv-\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^vp_i(x,Q)dxdv\tag{4'}</script><p>对 $(4’)$ 的第二项进行化简：</p>
+<script type="math/tex; mode=display">
+\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^vp_i(x,Q)dxdv=\int_{\underline{v}_i}^{\overline{v}_i}p_i(x,Q)\int_v^{\overline{v}_i}f_i(x)dxdv=\int_{\underline{v}_i}^{\overline{v}_i}[1-F_i(v)]p_i(v,Q)dv</script><p>代入 $(4’)$ 后得到期望收益等于</p>
+<script type="math/tex; mode=display">
+ER=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}\left[v-\frac{1-F_i(v)}{f_i(v)}\right]f_i(v)p_i(v,Q)dv=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}MR_i(v)f_i(v)p_i(v,Q)dv\tag{7}</script><p>容易看出垄断者的最优策略就是在满足限制的前提下，把物品卖给那些边际收益非负且尽量高的人买家。</p>
+<h2 id="最优拍卖问题"><a href="#最优拍卖问题" class="headerlink" title="最优拍卖问题"></a>最优拍卖问题</h2><p>下面证明在 Myerson 的论文中讨论的拍卖形式与上述垄断者模型的等价性。首先 $F_i(v)$ 的含义变成了买家 $i$ 的价值不超过 $v$ 的概率，$p_i$ 由 $v,Q$ 的函数变成了 $v_1,\cdots,v_n$ 的函数。注意到 $\overline{p}_i(v)=E(p_i(v_1,\cdots,v_{i-1},v,v_{i+1},\cdots,v_n))$ 仍然表示买家 $i$ 价值为 $v$ 时获得物品的概率。</p>
+<p>令 $S_i(v)$ 表示在某个均衡下，当买家 $i$ 的价值为 $v$ 时其消费者剩余的期望。注意到当 $i$ 的价值是 $v+dv$ 时，通过模仿价值为 $v$ 时的策略，获得的消费者剩余 $S_i(v+dv)$ 至少是 $S_i(v)+\overline{p}_i(v)dv$。因此</p>
+<script type="math/tex; mode=display">
+\frac{\partial S_i(v)}{\partial v}=\overline{p}_i(v)\ge 0\tag{8}</script><p>表明买家的消费者剩余是随着其价值 $v$ 单调不降的。又因为卖家的收益等于社会价值减去消费者剩余，为了最大化自己的收益，卖家会使 $S_i(\underline{v}_i)=0$。因此</p>
+<script type="math/tex; mode=display">
+S_i(v)=0+\int_{\underline{v}_i}^{v}\left[\frac{\partial S_i(x)}{\partial x}\right]dx=\int_{\underline{v}_i}^v\overline{p}_i(x)dx</script><p>因此最优拍卖模型和垄断者模型的目标函数是类似的。两个模型的不同之处在于最优拍卖模型中的限制是</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^np_i(v_1,\cdots,v_n)\le 1\tag{9}</script><p>以及 $0\le p_i\le 1$ 和 $\partial p_i/\partial v_i\ge 0$。目标函数 $(7)$ 此时变为</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^n\int_{\underline{v}_1}^{\overline{v}_1}\cdots\int_{\underline{v}_n}^{\overline{v}_n}MR_i(v_i)f_1(v_1)\cdots f_n(v_n)p_i(v_1,\cdots,v_n)dv_1\cdots dv_n\tag{10}</script><p>注意到当 $v_1,\cdots,v_n$ 固定后 $f_1(v_1),\cdots,f_n(v_n)$ 也都固定，那么卖家的最优策略必然是把物品分配给边际收益最大的买家。</p>
+]]></content>
+      <categories>
+        <category>Paper Reading</category>
+      </categories>
+      <tags>
+        <tag>Auction</tag>
       </tags>
   </entry>
   <entry>
@@ -417,152 +563,6 @@ f(\eta^{(1)})=-\frac{\alpha_2}{\alpha_1}f(\eta^{(2)})-\cdots-\frac{\alpha_k}{\al
 (R(i)-R(j))(C(i)-C(j))\le 0</script><p>且对于每一对 $i,j$，仅有唯一个 $\eta^s$ 位于 $i,j$ 之间的线段上。</p>
 <hr>
 <p>该引理的证明较为复杂。</p>
-]]></content>
-      <categories>
-        <category>Paper Reading</category>
-      </categories>
-      <tags>
-        <tag>Convex Optimization</tag>
-        <tag>Information Design</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【论文阅读】The Simple Economics of Optimal Auctions</title>
-    <url>/2021/12/30/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91The%20Simple%20Economics%20of%20Optimal%20Auctions/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这篇文章讨论了价格歧视垄断的模型，并为该模型找到了解决方案。之后说明了该模型与 Myerson 的论文 Optimal Auction Design 里的最优拍卖模型是等价的。这个模型的转换从另一个角度描述了拍卖模型中的最优策略，将其与一些经济学中的概念联系了起来，从而能够有更直观的理解，也为之后对 Myerson 拍卖的分析找到了更简单的模型。</p>
-<span id="more"></span>
-<h1 id="解决最优拍卖问题的方法"><a href="#解决最优拍卖问题的方法" class="headerlink" title="解决最优拍卖问题的方法"></a>解决最优拍卖问题的方法</h1><p>首先介绍一下拍卖模型，以及在证明了该模型与价格歧视垄断模型的等价性后，最优拍卖问题的解决方法。</p>
-<p>假设有 $n$ 个买家和一件物品。物品对每个买家的价值 $v_i$ 独立地从概率函数为 $F_i$ 的分布中抽取，其中 $F_i(\underline{v}_i)=0,F_i(\overline{v}_i)=1$。概率函数是公有信息，但具体的价值是私有信息。物品对卖家而言价值为 $0$。</p>
-<p>使得卖家能够最大化收益的最优的拍卖方案如下：</p>
-<ol>
-<li><p>对于每个买家，令 $1-F_i(v)\equiv q$ 为价值至少为 $v$ 的概率。若把 $v$ 看成价格，$q$ 看成需求，那么 $q-v$ 的函数图像就可以看成是买家的“需求曲线”，即需求随价值的变化函数。</p>
-</li>
-<li><p>对每条需求曲线，计算其边际收益曲线。其中边际收益指增加一单位产量后增加的收益，计算方法为价格与需求量的乘积对需求量求导。代入需求量为 $q$，价格 $v=F_i^{-1}(1-q)$，有</p>
-<script type="math/tex; mode=display">
-\frac{dqF_i^{-1}(1-q)}{dq}=F_i^{-1}(1-q)-\frac{q}{f_i(F_i^{-1}(1-q))}</script><p>把边际收益曲线表示成 $v$ 的函数：</p>
-<script type="math/tex; mode=display">
-MR_i(v)=v-\frac{1-F_i(v)}{f_i(v)}</script></li>
-<li><p>采用第二边际收益拍卖：每个买家报价后，卖家计算出每个买家的边际收益（这里假设 $MR$ 单调递增），把物品卖给边际收益最高的买家。向该买家收取最低的价格 $p$，使得该买家报价为 $p$ 时仍能胜出。具体来说，若所有买家的边际收益均非正，则不出售物品。不妨设买家 $1$ 的边际收益最高。若其他买家的边际收益均非正，则向其收取 $MR^{-1}_1(0)$ 的价格。否则不妨设第二高的边际收益为 $M_2$，那么向其收取 $MR_1^{-1}(M_2)$ 的价格。</p>
-</li>
-</ol>
-<p>注意到在上述拍卖机制下，价值最高的人未必边际收益最高。同时每个买家的最优策略必然是诚实报价。以及 $MR_i^{-1}(0)$ 可以看作是买家 $i$ 的“保留价值”，即价值超过该值才可能获得物品。</p>
-<p>注意到在对称情形下，即所有 $F_i$ 相同，上述拍卖等价于二价拍卖。但在非对称情形下，就可能会出现市场中的所谓“价格歧视”现象，即同一物品向不同的买家收取不同的价格。</p>
-<p>拓展到有 $k$ 个相同的物品且每个买家最多获得一件物品的情形：把物品分配给边际收益前 $k$ 大且大于 $0$ 的买家，对买家 $i$ 收取价格为 $\max\{MR_i^{-1}(0),MR_i^{-1}(M_{k+1})\}$，其中 $M_{k+1}$ 为第 $k+1$ 大的边际收益。</p>
-<p>扩展到买家需要付出递增的边际成本来生产物品的情形，即生产第 $k$ 件物品的成本大于成产第 $k-1$ 件物品的成本：将 $k$ 件物品分别卖给边际收益前 $k$ 大的买家，满足第 $k$ 件物品的边际成本小于第 $k$ 大的边际收益，且第 $k+1$ 件物品的边际成本大于第 $k+1$ 大的边际收益。向每个买家收取的价格为第 $k$ 件物品的边际成本和第 $k+1$ 大的边际收益分别对应的边际收益曲线中的值的较大值，即最小的能够使该买家得到物品的报价。</p>
-<h1 id="价格歧视垄断和最优拍卖的关系"><a href="#价格歧视垄断和最优拍卖的关系" class="headerlink" title="价格歧视垄断和最优拍卖的关系"></a>价格歧视垄断和最优拍卖的关系</h1><h2 id="价格歧视垄断问题"><a href="#价格歧视垄断问题" class="headerlink" title="价格歧视垄断问题"></a>价格歧视垄断问题</h2><p>下面首先对第三价格歧视的问题进行建模并分析，之后说明该问题与最优拍卖问题在数学形式上是等价的，即可以相互转换。</p>
-<p>考虑一个垄断者在 $n$ 个市场中出售相同的物品，需要为每个市场设置一个价格。每个市场中有若干个买家，每个买家最多买一件物品。设市场 $i$ 中的买家价值在 $\underline{v}_i$ 和 $\overline{v}_i$ 之间，且价值不超过 $v$ 的买家有 $F_i(v)$ 个。归一化使得 $F_i(\overline{v}_i)=1$。设所有市场的边际收益曲线都是递减的，且垄断者能够以 $0$ 的边际成本生产最多 $Q$ 个物品。其中 $Q$ 是 $[\underline{Q},\overline{Q}]$ 之间的随机变量，概率密度函数为 $h(Q)$。设垄断者根据真实的 $Q$ 来为每个市场设定价值来最大化其收益。</p>
-<p>令 $p_i(v,Q)$ 表示当容量为 $Q$ 时，市场 $i$ 中价值为 $v$ 的买家能够获得一件物品的概率，即垄断者在市场 $i$ 中设置的价格不超过 $v$。令</p>
-<script type="math/tex; mode=display">
-\overline{p}_i(v)\equiv \int_{\underline{Q}}^{\overline{Q}}p_i(v,Q)h(Q)dQ</script><p>表示该买家获得一件物品的概率。</p>
-<p>考虑卖家的收益，将其表示成社会价值（所有获得物品的买家的价值之和）减去消费者剩余（买家的价值与其付的钱之差的和）。注意到社会价值等于</p>
-<script type="math/tex; mode=display">
-\int_{\underline{Q}}^{\overline{Q}}h(Q)\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}vf_i(v)p_i(v,Q)dvdQ=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}vf_i(v)\overline{p}_i(v)dv\tag{2}</script><p>其中 $f_i(v)=F’_i(v)$ 表示市场 $i$ 中价值为 $v$ 的买家数量。而消费者剩余等于</p>
-<script type="math/tex; mode=display">
-\int_{\underline{Q}}^{\overline{Q}}h(Q)\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^{\overline{v}_i}p_i(x,Q)dxdvdQ=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^v\overline{p}_i(v)dxdv\tag{3}</script><p>这样理解：价值为 $v$ 的买家获得物品的概率 $\overline{p}_i(v)$。如果价值增加 $dv$，期望增加的消费者剩余就是 $\overline{p}_i(v)dv$。因此垄断者的期望收益就是</p>
-<script type="math/tex; mode=display">
-\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}vf_i(v)\overline{p}_i(v)dv-\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^v\overline{p}_i(v)dxdv\tag{4}</script><p>问题变成最大化 $(4)$ 且满足容量限制：</p>
-<script type="math/tex; mode=display">
-\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)p_i(v,Q)dv\le Q\quad \forall Q\tag{5}</script><p>若在市场 $i$ 设置价格 $w$，那么对于 $v&lt;w$ 有 $p_i(v,Q)=0$；对于 $v\ge w$ 有 $p_i(v,Q)=1$。</p>
-<p>注意到只需要对每个 $Q$ 分别找到最优解，等价于找下面式子的最大值：</p>
-<script type="math/tex; mode=display">
-\pi(Q)=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}vf_i(v)p_i(v,Q)dv-\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^vp_i(x,Q)dxdv\tag{4'}</script><p>对 $(4’)$ 的第二项进行化简：</p>
-<script type="math/tex; mode=display">
-\int_{\underline{v}_i}^{\overline{v}_i}f_i(v)\int_{\underline{v}_i}^vp_i(x,Q)dxdv=\int_{\underline{v}_i}^{\overline{v}_i}p_i(x,Q)\int_v^{\overline{v}_i}f_i(x)dxdv=\int_{\underline{v}_i}^{\overline{v}_i}[1-F_i(v)]p_i(v,Q)dv</script><p>代入 $(4’)$ 后得到期望收益等于</p>
-<script type="math/tex; mode=display">
-ER=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}\left[v-\frac{1-F_i(v)}{f_i(v)}\right]f_i(v)p_i(v,Q)dv=\sum_{i=1}^n\int_{\underline{v}_i}^{\overline{v}_i}MR_i(v)f_i(v)p_i(v,Q)dv\tag{7}</script><p>容易看出垄断者的最优策略就是在满足限制的前提下，把物品卖给那些边际收益非负且尽量高的人买家。</p>
-<h2 id="最优拍卖问题"><a href="#最优拍卖问题" class="headerlink" title="最优拍卖问题"></a>最优拍卖问题</h2><p>下面证明在 Myerson 的论文中讨论的拍卖形式与上述垄断者模型的等价性。首先 $F_i(v)$ 的含义变成了买家 $i$ 的价值不超过 $v$ 的概率，$p_i$ 由 $v,Q$ 的函数变成了 $v_1,\cdots,v_n$ 的函数。注意到 $\overline{p}_i(v)=E(p_i(v_1,\cdots,v_{i-1},v,v_{i+1},\cdots,v_n))$ 仍然表示买家 $i$ 价值为 $v$ 时获得物品的概率。</p>
-<p>令 $S_i(v)$ 表示在某个均衡下，当买家 $i$ 的价值为 $v$ 时其消费者剩余的期望。注意到当 $i$ 的价值是 $v+dv$ 时，通过模仿价值为 $v$ 时的策略，获得的消费者剩余 $S_i(v+dv)$ 至少是 $S_i(v)+\overline{p}_i(v)dv$。因此</p>
-<script type="math/tex; mode=display">
-\frac{\partial S_i(v)}{\partial v}=\overline{p}_i(v)\ge 0\tag{8}</script><p>表明买家的消费者剩余是随着其价值 $v$ 单调不降的。又因为卖家的收益等于社会价值减去消费者剩余，为了最大化自己的收益，卖家会使 $S_i(\underline{v}_i)=0$。因此</p>
-<script type="math/tex; mode=display">
-S_i(v)=0+\int_{\underline{v}_i}^{v}\left[\frac{\partial S_i(x)}{\partial x}\right]dx=\int_{\underline{v}_i}^v\overline{p}_i(x)dx</script><p>因此最优拍卖模型和垄断者模型的目标函数是类似的。两个模型的不同之处在于最优拍卖模型中的限制是</p>
-<script type="math/tex; mode=display">
-\sum_{i=1}^np_i(v_1,\cdots,v_n)\le 1\tag{9}</script><p>以及 $0\le p_i\le 1$ 和 $\partial p_i/\partial v_i\ge 0$。目标函数 $(7)$ 此时变为</p>
-<script type="math/tex; mode=display">
-\sum_{i=1}^n\int_{\underline{v}_1}^{\overline{v}_1}\cdots\int_{\underline{v}_n}^{\overline{v}_n}MR_i(v_i)f_1(v_1)\cdots f_n(v_n)p_i(v_1,\cdots,v_n)dv_1\cdots dv_n\tag{10}</script><p>注意到当 $v_1,\cdots,v_n$ 固定后 $f_1(v_1),\cdots,f_n(v_n)$ 也都固定，那么卖家的最优策略必然是把物品分配给边际收益最大的买家。</p>
-]]></content>
-      <categories>
-        <category>Paper Reading</category>
-      </categories>
-      <tags>
-        <tag>Auction</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【论文阅读】Send Mixed Signals – Earn More, Work Less</title>
-    <url>/2021/12/13/%E3%80%90%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E3%80%91Send%20Mixed%20Signals%20%E2%80%93%20Earn%20More,%20Work%20Less/</url>
-    <content><![CDATA[<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>考虑多类型的单物品拍卖，且所有买家的价值已知，并假定使用二价拍卖。文章说明了混合信号策略比纯信号策略收益更高，给出了计算最优混合信号策略的线性规划，并将其变量数降至多项式级别，因此能在多项式时间内求解。同时证明了使用最优信号策略的收益对某个指标有很好的近似比。证明中利用了混合信号策略等价于多个可分割物品拍卖的性质。</p>
-<span id="more"></span>
-<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>在信息不对称的情形下，即卖家拥有私有信息，为了最大化自己的收益，卖家通过信号的形式透露部分信息是很合理的方式。相较于纯信号策略，显然使用混合的信号策略效果不会更差。</p>
-<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>有一个物品和 $n$ 个买家。物品有 $m$ 种类型，服从概率分布 $(p_1,\cdots,p_m)$。买家 $i$ 对类型 $j$ 的价值是 $v_{i,j}$，其中 $v$ 和 $p$ 都是公有信息。卖家要预先提供一个信号策略 $\varphi:[m]\times \mathbb{N}\to [0,1]$ 并告知买家，其中 $\varphi(j,S)$ 表示当卖家观测到物品类型为 $j$ 时发送信号 $S$ 的概率。后文中 $S$ 也可以表示所有可能发送信号 $S$ 的类型集合，即 $\{j:\varphi(j,S)&gt;0\}$。令 $\mathcal{S}_\varphi$ 表示有效的信号集合，即 $\{S:\exists j,\varphi(j,S)&gt;0\}$。默认使用二价拍卖。</p>
-<p>纯信号策略是指卖家观测到物品类型 $j$ 后，发送的信号固定，即 $\varphi(j,S)\in\{0,1\}$。纯信号策略等价于对类型进行二次分类，并告知买家属于哪一个类。混合信号策略是指以某个概率分布发送信号。那么买家收到信号 $S$ 的概率为 $\sum_jp_j\varphi(j,S)$。收到信号 $S$ 后，物品类型为 $j$ 的概率</p>
-<script type="math/tex; mode=display">
-\Pr[j|S]=\frac{p_j\varphi(j,S)}{\sum_{j'}p_{j'}\varphi(j',S)}</script><p>因此收到信号 $S$ 后，买家 $i$ 的期望收益变为</p>
-<script type="math/tex; mode=display">
-E[v_i|S]=\sum_j\Pr[j|S]v_{i,j}=\frac{\sum_jv_{i,j}p_j\varphi(j,S)}{\sum_{j'}p_{j'}\varphi(j',S)}</script><p>由于二价拍卖中，买家的最优策略为采取真实报价，因此收到信号 $S$ 后，卖家的收益为</p>
-<script type="math/tex; mode=display">
-\max_i2\{E[v_i|S]\}=\max_i2\left\{\frac{\sum_jv_{i,j}p_j\varphi(j,S)}{\sum_{j}p_{j}\varphi(j,S)}\right\}</script><p>我们想要找到 $\varphi$ 来最大化卖家的总收益</p>
-<script type="math/tex; mode=display">
-\sum_{S\in\mathcal{S}_\varphi}\Pr[S]\max_i2\{E[v_i|S]\}=\sum_{S\in\mathcal{S}\varphi}\left\{\sum_jv_{i,j}p_j\varphi(j,S)\right\}=\sum_{S\in\mathcal{S}\varphi}\left\{\sum_j\psi_{i,j}\varphi(j,S)\right\}</script><p>其中 $\psi_{i,j}=v_{i,j}p_j$。</p>
-<h2 id="可分割多物品拍卖的等价模型"><a href="#可分割多物品拍卖的等价模型" class="headerlink" title="可分割多物品拍卖的等价模型"></a>可分割多物品拍卖的等价模型</h2><p>对于按照混合信号策略 $\varphi$ 来发送信号，考虑如下等价模型：有 $m$ 个物品和 $n$ 个买家，物品是可分割的（例如蛋糕）。第 $i$ 个买家对第 $j$ 个物品的价值为 $\psi_{i,j}$。对于任意 $S\in \mathcal{S}_\varphi$，将其看成包含了多个物品的混合，其中 $S$ 包含了第 $j$ 个物品的 $\varphi_{j,S}$ 比例。然后对每个混合 $S$ 分别进行二价拍卖。</p>
-<p>容易看出混合信号策略和多物品拍卖中的物品划分方案一一对应，且卖家的收益相同。因此计算最优混合信号策略等价于寻找多物品拍卖的最优划分方案。</p>
-<h1 id="混合信号策略收益大于纯信号策略"><a href="#混合信号策略收益大于纯信号策略" class="headerlink" title="混合信号策略收益大于纯信号策略"></a>混合信号策略收益大于纯信号策略</h1><p>下面的构造可以说明：对任意偶数 $k$，存在一个有 $n=k+1$ 个买家和 $m=k+1$ 种物品类型的拍卖，使得混合信号策略的收益至少是纯信号策略收益的两倍。</p>
-<p>将买家和信号均按照 $0,\cdots,k$ 编号，所有物品类型等概率出现，价值函数为</p>
-<script type="math/tex; mode=display">
-v_{i,j}=\begin{cases}
-m & i=j=0\\
-1 & i=j\neq 0\\
-0 & otherwise
-\end{cases}</script><p>则最优的纯信号策略必然是将物品类型两两捆绑。因为若某个物品不捆绑，则其收益为 $0$；将 $s$ 个物品捆绑后，其中每个物品收益为 $1/s$。注意到 $k$ 是偶数，那么有 $\frac{k}{k+1}$ 的概率，卖家的收益是 $1/2$，即期望收益为 $\frac{k}{2(k+1)}$。</p>
-<p>考虑如下混合信号策略：信号集合为 $\{0,j\}_{j=1,\cdots,k}$。对于任意 $j$，$\Pr[\{0,j\}|\text{type }0]=\frac{1}{k}$ 并且 $\Pr[\{0,j\}|\text{type }j]=1$。容易计算得到卖家对每个信号的收益都是 $\frac{k}{k+1}$。</p>
-<h1 id="最优混合策略的计算"><a href="#最优混合策略的计算" class="headerlink" title="最优混合策略的计算"></a>最优混合策略的计算</h1><h2 id="一些记号"><a href="#一些记号" class="headerlink" title="一些记号"></a>一些记号</h2><p>对于信号 $S$，令 $w_1(S)$ 表示在多个可分割物品拍卖中赢得了混合 $S$ 的买家编号，$w_2(S)$ 表示对 $S$ 估价第二高的买家编号。具体来说：</p>
-<script type="math/tex; mode=display">
-w_1(S)=\arg\max_i\{\sum_{j\in S}\psi_{i,j}\varphi_{j,S}\}</script><script type="math/tex; mode=display">
-w_2(S)=\arg\max_i2\{\sum_{j\in S}\psi_{i,j}\varphi_{j,S}\}</script><p>称 $S$ 是单独的如果 $|S|=1$。记 $w_1(j)=w_1(\{j\}),w_2(j)=w_2(\{j\})$。令 $d(i)$ 表示所有 $i$ 估价最高的物品类型的集合，即 $d(i)=\{j:w_1(j)=i\}$。记 $rev(S)$ 表示混合 $S$ 的收益，即 $rev(S)=\sum_{j\in S}\varphi_{j,S}\psi_{w_2(S),j}$。同样令 $rev(j)=rev(\{j\})$。卖家采取信号策略 $\varphi$ 的收益为 $rev(\varphi)=\sum_{S\in\mathcal{S}_{\varphi}}rev(S)$。</p>
-<h2 id="最优混合信号策略的性质"><a href="#最优混合信号策略的性质" class="headerlink" title="最优混合信号策略的性质"></a>最优混合信号策略的性质</h2><p>注意到对于两个信号 $S$ 和 $T$，如果 $w_1(S)=w_1(T)$ 且 $w_2(S)=w_2(T)$，那么把这两个信号合并成一个后，卖家的收益并不会发生改变。因此必然存在一种最优混合信号策略，使得使用信号的数量不超过 $n(n-1)$。</p>
-<p>下面考虑更多的性质。</p>
-<h4 id="Definition-4-2"><a href="#Definition-4-2" class="headerlink" title="Definition 4.2"></a>Definition 4.2</h4><p>给定信号策略 $\varphi$ 后，称信号 $S$ 是可分如果存在划分 $S=S_1\cup S_2\cup\cdots\cup S_t$，使得 $\sum_{k=1}^trev(S_k)\ge rev(S)$。称 $S$ 是单独可分的如果 $\sum_{j\in S}rev(j)\ge rev(S)$。</p>
-<h4 id="Claim-4-3"><a href="#Claim-4-3" class="headerlink" title="Claim 4.3"></a>Claim 4.3</h4><p>令 $S$ 是在最优混合信号策略中的一个单独不可分的信号，即 $rev(S)&gt;\sum_{j\in S}\varphi_{j,S}rev(j)$。那么 $w_1(S)$ 和 $w_2(S)$ 在那些赢得了 $S$ 中某个物品的买家集合中，即 $\{w_1(j):j\in S\}$。</p>
-<p><strong>证明</strong> 假设 $w_1(S)$ 不属于 $\{w_1(j):j\in S\}$，那么对于任意 $j\in S$，对它的第二高的估价至少是 $w_1(S)$ 对它的估价。因此</p>
-<script type="math/tex; mode=display">
-\sum_{j\in S}\varphi_{j,S}rev(j)\ge\sum_{j\in S}\varphi_{j,S}\psi_{w_1(S),j}\ge\sum_{j\in S}\varphi_{j,S}\psi_{w_2(S),j}=rev(S)</script><p>矛盾。同理可证 $w_2(S)$ 也满足。</p>
-<h4 id="Corollary-4-4"><a href="#Corollary-4-4" class="headerlink" title="Corollary 4.4"></a>Corollary 4.4</h4><p>对于信号 $S$，若 $|\{w_1(j):j\in S\}|=1$，那么 $S$ 是单独可分的。</p>
-<hr>
-<p>那么不可分的信号 $S$ 满足 $\{w_1(s):j\in S\}$ 大小至少为 $2$。接下来再证明不存在不可分的信号 $S$ 满足 $|\{w_1(j):j\in S\}|\ge 3$。</p>
-<h4 id="Claim-4-5"><a href="#Claim-4-5" class="headerlink" title="Claim 4.5"></a>Claim 4.5</h4><p>不存在不可分的信号 $S$ 满足 $|\{w_1(j):j\in S\}|\ge 3$。</p>
-<p><strong>证明</strong> 反证。不妨设 $1=w_1(S),2=w_2(S)$，可知 $1,2\in \{w_1(j):j\in S\}$，且 $rev(S)=\sum_{j\in S}\psi_{2,j}\varphi(j,S)$。往证 $S$ 是可分的。</p>
-<p>令 $S_1=S\cap d(1),S_2=S\cap d(2)$。由假设可知 $S_1\cup S_2\neq S$。将 $S$ 划分成 $(S_1\cup S_2)$ 以及 $|S\backslash (S_1\cup S_2)|$ 个单独的信号，总共是 $|S\backslash (S_1\cup S_2)|+1$ 个信号。</p>
-<p>首先考虑那些单独的信号带来的收益。由于买家 $1$ 和买家 $2$ 对这些物品的估价都不是最高的，那么这些信号的收益至少是买家 $1$ 或买家 $2$ 对这些信号的估价之和，即</p>
-<script type="math/tex; mode=display">
-\sum_{j\neq S_1\cup S_2}rev(j)\ge\max\{\sum_{j\in S\backslash (S_1\cup S_2)}\varphi_{j,S}\psi_{1,j},\sum_{j\in S\backslash (S_1\cup S_2)}\varphi_{j,S}\psi_{2,j}\}</script><p>对于 $S_1\cup S_2$ 的信号收益，买家 $1$ 和 $2$ 中至少有一人对该信号的估价不是最大的。无论是哪种，结合上面的不等式都可以得到，进行上述划分后，卖家的收益不会变得更低。</p>
-<hr>
-<p>结合上面两个 Claim，我们有如下推论：</p>
-<h4 id="Corollary-4-6"><a href="#Corollary-4-6" class="headerlink" title="Corollary 4.6"></a>Corollary 4.6</h4><p>若 $S$ 是不可分的信号，那么 $\{w_1(j):j\in S\}=\{w_1(S),w_2(S)\}$。换句话说，$supp(S)\subseteq d(w_1(S))\cup d(w_2(S))$。</p>
-<h4 id="Observation-4-7"><a href="#Observation-4-7" class="headerlink" title="Observation 4.7"></a>Observation 4.7</h4><p>存在一个最优混合信号策略，使得对于任意非单独的信号 $S$，$w_1(S)$ 和 $w_2(S)$ 对 $S$ 的估价是相等的。</p>
-<p><strong>证明</strong> 假设对于信号 $S$，$w_1(S)$ 对 $S$ 的估价大于 $w_2(S)$ 对 $S$ 的估价。令 $S_1=S\cup d(1),S_2=S\cup d(2)$。由之前的结论可知 $S=S_1\cup S_2$ 且 $S_1$ 和 $S_2$ 均非空。令</p>
-<script type="math/tex; mode=display">
-g=\frac{\sum_{j\in S_2}\varphi_{j,S}(\psi_{2,j}-\psi_{1,j})}{\sum_{j\in S_1}\varphi_{j,S}(\psi_{1,j}-\psi_{2,j})}</script><p>由假设</p>
-<script type="math/tex; mode=display">
-\sum_{j\in S}\varphi(j,S)\psi_{1,j}>\sum_{j\in S}\varphi(j,S)\psi_{2,j}</script><p>可知 $g&lt;1$。构造新信号策略 $\varphi’$ 如下：对于 $j\in S_1$，降低观测到 $j$ 后发送 $S$ 的概率：$\varphi’(j,S)=g\cdot \varphi_{j,S}$；相应地则增加发送信号 $\{j\}$ 的概率：$\varphi’(j,\{j\})=\varphi_{j,\{j\}}+(1-g)\cdot\varphi_{j,S}$。注意到在 $\varphi’$ 中，买家 $1$ 和买家 $2$ 对 $S$ 的估价分别为</p>
-<script type="math/tex; mode=display">
-g\sum_{j\in S_1}\varphi(j,S)\psi_{1,j}+\sum_{j\in S_2}\varphi(j,S)\psi_{1,j},\quad g\sum_{j\in S_1}\varphi(j,S)\psi_{2,j}+\sum_{j\in S_2}\varphi(j,S)\psi_{2,j}</script><p>由相减为 $0$ 可知买家 $1$ 和 $2$ 对 $S$ 的估价相等</p>
-<p>再证卖家在 $\varphi’$ 下的收益不会降低：信号 $\{j\}$ 的收益改变量为</p>
-<script type="math/tex; mode=display">
-(1-g)\varphi_{j,S}rev(j)=(1-g)\varphi_{j,S}\psi_{1,j}\ge(1-g)\varphi_{j,S}\psi_{2,j}</script><p>信号 $S$ 的收益至少是买家 $1$ 和买家 $2$ 对 $S$ 的估价取 $\min$。可知卖家的收益并不会降低。</p>
-<h2 id="线性规划求解最优混合信号策略"><a href="#线性规划求解最优混合信号策略" class="headerlink" title="线性规划求解最优混合信号策略"></a>线性规划求解最优混合信号策略</h2><p>因此可以用如下线性规划求解最优混合信号策略：</p>
-<script type="math/tex; mode=display">
-\max \sum_jx_j\psi_{w_2(j),j}+\sum_{i_1}\sum_{i_2<i_1}\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_2,j}</script><p>限制为</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-&\forall i_1,\forall i_2<i_1 & \sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_1,j}\ge\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_2,j}\\
-& \forall i_1,\forall i_2<i_1\text{, and }i\neq i_1,i_2 & \sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_1,j}\ge\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i,j}\\
-& & \sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i_2,j}\ge\sum_{j\in d(i_1)\cup d(i_2)}y_j(i_1,i_2)\psi_{i,j}\\
-& \forall j & x_j+\sum_{i_1}\sum_{i_2<i_1}[j \in d(i_1)\cup d(i_2)]y_j(i_1.i_2)\le 1\\
-& \forall j,\forall i_1,\forall i_2<i_1 & x_j\ge 0,\quad y_j(i_1,i_2)\ge 0
-\end{aligned}</script><p>其中 $y_j(i_1,i_2)$ 表示 $\varphi(j,S)$，其中 $w_1(S)=i_1,w_2(S)=i_2$。$x_j$ 表示 $\varphi(j,\{j\})$。只需要考虑 $i_2&lt;i_1$ 是因为存在最优策略，满足 $i_2$ 和 $i_1$ 对 $S$ 的估价相等。</p>
-<h1 id="最优混合信号策略收益的近似"><a href="#最优混合信号策略收益的近似" class="headerlink" title="最优混合信号策略收益的近似"></a>最优混合信号策略收益的近似</h1><p>文章中考虑了这样一个 benchmark：</p>
-<script type="math/tex; mode=display">
-\mathcal{B}=\min_{i'}\left(\sum_j\max_{i\neq i'}\psi_{i,j}\right)</script><p>并证明了最优策略的收益至少是 $\mathcal{B}/2$。由于证明是没什么意思且比较复杂，这里就不赘述了。</p>
 ]]></content>
       <categories>
         <category>Paper Reading</category>
